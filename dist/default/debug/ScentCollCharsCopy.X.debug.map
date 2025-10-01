@@ -4,13 +4,13 @@ Tool Name:
   /Applications/microchip/xc16/v2.10/bin/bin/../bin/elf-ld
 
 Command:
-  -T/tmp/tmp00000aaf.00 \
-  -T/tmp/tmp00000aaf.01 \
-  -T/tmp/tmp00000aaf.02 \
-  -T/tmp/tmp00000aaf.03 \
-  -T/tmp/tmp00000aaf.04 \
-  -T/tmp/tmp00000aaf.05 \
-  -T/tmp/tmp00000aaf.06 \
+  -T/tmp/tmp0001142a.00 \
+  -T/tmp/tmp0001142a.01 \
+  -T/tmp/tmp0001142a.02 \
+  -T/tmp/tmp0001142a.03 \
+  -T/tmp/tmp0001142a.04 \
+  -T/tmp/tmp0001142a.05 \
+  -T/tmp/tmp0001142a.06 \
   -p24FJ128GL306 \
   --mdfp=/Applications/microchip/mplabx/v6.25/packs/Microchip/PIC24F-GL-GU_DFP/1.6.243/xc16 \
   -o \
@@ -228,12 +228,12 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100              0x2db8          0x4494  (17556)
 .const                      0x2eb8               0x130           0x1c8  (456)
-.text                       0x2fe8              0x2874          0x3cae  (15534)
-.dinit                      0x585c               0x1f2           0x2eb  (747)
-.text                       0x5a4e               0x258           0x384  (900)
-.init.delay32               0x5ca6                0x1c            0x2a  (42)
+.text                       0x2fe8              0x2846          0x3c69  (15465)
+.dinit                      0x582e               0x1f2           0x2eb  (747)
+.text                       0x5a20               0x258           0x384  (900)
+.init.delay32               0x5c78                0x1c            0x2a  (42)
 
-                 Total "program" memory used (bytes):         0x89a3  (35235) 26%
+                 Total "program" memory used (bytes):         0x895e  (35166) 26%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
@@ -544,51 +544,51 @@ External Symbols in Program Memory (by address):
                   0x004606                  _BTRX
                   0x0048fc                  _activate_piezo
                   0x00499e                  _fire_piezo_R1
-                  0x004a8c                  _fire_piezo_R2
-                  0x004b50                  _fire_piezo_R3
-                  0x004c08                  _fire_piezo_L1
-                  0x004ccc                  _fire_piezo_L2
-                  0x004d90                  _fire_piezo_L3
-                  0x004e48                  _wait_4_piezo
-                  0x004e7a                  _fire_piezo
-                  0x004f50                  _fire_piezo_two
-                  0x0050fc                  _piezo_handler
-                  0x00514c                  _adjust_intensity
-                  0x005184                  _piezo_fifo_init
-                  0x00519a                  _piezo_fifo_right_get
-                  0x0051ee                  _piezo_fifo_right_put
-                  0x005216                  _piezo_fifo_right_items
-                  0x00521e                  _piezo_fifo_left_get
-                  0x005272                  _piezo_fifo_left_put
-                  0x00529a                  _piezo_fifo_left_items
-                  0x005332                  _init_pins
-                  0x0053d4                  _Setup_Timer1
-                  0x0053ea                  _Setup_Timer4
-                  0x005406                  _startUp
-                  0x0054b2                  _check_poll
-                  0x0055ae                  _check_boost_wdelay
-                  0x0055de                  _main
-                  0x005666                  _toggleLed
-                  0x005754                  _change_global_intensity
-                  0x005a4e                  _setup_adc
-                  0x005a7c                  _calc_adc
-                  0x005b7e                  _calc_pwm_multi
-                  0x005bd2                  _PWM_FREQ
-                  0x005c26                  _PWM_Setup
-                  0x005c42                  _PWM_PIEZO_R
-                  0x005c74                  _PWM_PIEZO_L
-                  0x005ca6                  ___delay32
+                  0x004a88                  _fire_piezo_R2
+                  0x004b46                  _fire_piezo_R3
+                  0x004bf8                  _fire_piezo_L1
+                  0x004cb6                  _fire_piezo_L2
+                  0x004d74                  _fire_piezo_L3
+                  0x004e26                  _wait_4_piezo
+                  0x004e58                  _fire_piezo
+                  0x004f28                  _fire_piezo_two
+                  0x0050ce                  _piezo_handler
+                  0x00511e                  _adjust_intensity
+                  0x005156                  _piezo_fifo_init
+                  0x00516c                  _piezo_fifo_right_get
+                  0x0051c0                  _piezo_fifo_right_put
+                  0x0051e8                  _piezo_fifo_right_items
+                  0x0051f0                  _piezo_fifo_left_get
+                  0x005244                  _piezo_fifo_left_put
+                  0x00526c                  _piezo_fifo_left_items
+                  0x005304                  _init_pins
+                  0x0053a6                  _Setup_Timer1
+                  0x0053bc                  _Setup_Timer4
+                  0x0053d8                  _startUp
+                  0x005484                  _check_poll
+                  0x005580                  _check_boost_wdelay
+                  0x0055b0                  _main
+                  0x005638                  _toggleLed
+                  0x005726                  _change_global_intensity
+                  0x005a20                  _setup_adc
+                  0x005a4e                  _calc_adc
+                  0x005b50                  _calc_pwm_multi
+                  0x005ba4                  _PWM_FREQ
+                  0x005bf8                  _PWM_Setup
+                  0x005c14                  _PWM_PIEZO_R
+                  0x005c46                  _PWM_PIEZO_L
+                  0x005c78                  ___delay32
 
 External Symbols in Program Memory (by name):
 
                   0x004606                  _BTRX
                   0x003fbc                  _BTTX
-                  0x005bd2                  _PWM_FREQ
-                  0x005c74                  _PWM_PIEZO_L
-                  0x005c42                  _PWM_PIEZO_R
-                  0x005c26                  _PWM_Setup
-                  0x0053d4                  _Setup_Timer1
-                  0x0053ea                  _Setup_Timer4
+                  0x005ba4                  _PWM_FREQ
+                  0x005c46                  _PWM_PIEZO_L
+                  0x005c14                  _PWM_PIEZO_R
+                  0x005bf8                  _PWM_Setup
+                  0x0053a6                  _Setup_Timer1
+                  0x0053bc                  _Setup_Timer4
                   0x0004a2                  __DefaultInterrupt
                   0x000312                  __INT1Interrupt
                   0x000368                  __INT2Interrupt
@@ -601,7 +601,7 @@ External Symbols in Program Memory (by name):
                   0x00056e                  ___addsf3
                   0x00056e                  ___addsf3x
                   0x001886                  ___cvt_u
-                  0x005ca6                  ___delay32
+                  0x005c78                  ___delay32
                   0x00290e                  ___divdf3
                   0x000d4e                  ___divdi3
                   0x000738                  ___divsf3
@@ -697,13 +697,13 @@ External Symbols in Program Memory (by name):
                   0x000ba0                  __unpackf
                   0x0048fc                  _activate_piezo
                   0x003cd0                  _add_pod
-                  0x00514c                  _adjust_intensity
+                  0x00511e                  _adjust_intensity
                   0x00201e                  _atoi
-                  0x005a7c                  _calc_adc
-                  0x005b7e                  _calc_pwm_multi
-                  0x005754                  _change_global_intensity
-                  0x0055ae                  _check_boost_wdelay
-                  0x0054b2                  _check_poll
+                  0x005a4e                  _calc_adc
+                  0x005b50                  _calc_pwm_multi
+                  0x005726                  _change_global_intensity
+                  0x005580                  _check_boost_wdelay
+                  0x005484                  _check_poll
                   0x002fe8                  _docrc8
                   0x0045a8                  _dump_OK
                   0x004054                  _enableSSP
@@ -713,21 +713,21 @@ External Symbols in Program Memory (by name):
                   0x003808                  _find_by_scent_id
                   0x00375c                  _find_channel_by_pod_code
                   0x003c60                  _find_missing
-                  0x004e7a                  _fire_piezo
-                  0x004c08                  _fire_piezo_L1
-                  0x004ccc                  _fire_piezo_L2
-                  0x004d90                  _fire_piezo_L3
+                  0x004e58                  _fire_piezo
+                  0x004bf8                  _fire_piezo_L1
+                  0x004cb6                  _fire_piezo_L2
+                  0x004d74                  _fire_piezo_L3
                   0x00499e                  _fire_piezo_R1
-                  0x004a8c                  _fire_piezo_R2
-                  0x004b50                  _fire_piezo_R3
-                  0x004f50                  _fire_piezo_two
+                  0x004a88                  _fire_piezo_R2
+                  0x004b46                  _fire_piezo_R3
+                  0x004f28                  _fire_piezo_two
                   0x002dc0                  _floorl
-                  0x005332                  _init_pins
+                  0x005304                  _init_pins
                   0x003bf4                  _initial_search
                   0x003a14                  _is_present
                   0x003bc2                  _is_present_all_roms
                   0x003e7a                  _locate_pods
-                  0x0055de                  _main
+                  0x0055b0                  _main
                   0x000ff6                  _memcmp
                   0x001012                  _memcpy
                   0x001020                  _memset
@@ -741,14 +741,14 @@ External Symbols in Program Memory (by name):
                   0x00302e                  _ow_write_bit
                   0x0030b6                  _ow_write_byte
                   0x00319e                  _ow_write_scratchpad
-                  0x005184                  _piezo_fifo_init
-                  0x00521e                  _piezo_fifo_left_get
-                  0x00529a                  _piezo_fifo_left_items
-                  0x005272                  _piezo_fifo_left_put
-                  0x00519a                  _piezo_fifo_right_get
-                  0x005216                  _piezo_fifo_right_items
-                  0x0051ee                  _piezo_fifo_right_put
-                  0x0050fc                  _piezo_handler
+                  0x005156                  _piezo_fifo_init
+                  0x0051f0                  _piezo_fifo_left_get
+                  0x00526c                  _piezo_fifo_left_items
+                  0x005244                  _piezo_fifo_left_put
+                  0x00516c                  _piezo_fifo_right_get
+                  0x0051e8                  _piezo_fifo_right_items
+                  0x0051c0                  _piezo_fifo_right_put
+                  0x0050ce                  _piezo_handler
                   0x003a54                  _pod_added_led
                   0x003b48                  _pod_error_led
                   0x003ace                  _pod_removed_led
@@ -782,8 +782,8 @@ External Symbols in Program Memory (by name):
                   0x00393a                  _set_scent_id
                   0x0039ce                  _set_scent_level
                   0x003f2a                  _setupBT
-                  0x005a4e                  _setup_adc
-                  0x005406                  _startUp
+                  0x005a20                  _setup_adc
+                  0x0053d8                  _startUp
                   0x00262a                  _strcpy
                   0x002638                  _strlen
                   0x00115a                  _strtoimax
@@ -792,11 +792,11 @@ External Symbols in Program Memory (by name):
                   0x00114a                  _strtoul
                   0x00113a                  _strtoull
                   0x00115c                  _strtoumax
-                  0x005666                  _toggleLed
+                  0x005638                  _toggleLed
                   0x002668                  _tolower
                   0x002676                  _toupper
                   0x00359e                  _verify_eeprom
-                  0x004e48                  _wait_4_piezo
+                  0x004e26                  _wait_4_piezo
                   0x003316                  _write_save_eeprom
 
 Memory Configuration
@@ -1376,51 +1376,51 @@ __FDEVOPT1
  .debug_abbrev    0x000dad         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
  .debug_abbrev    0x000dc1         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
 
-.debug_line       0x000000       0x1d83
+.debug_line       0x000000       0x1d6c
  *(.debug_line)
  .debug_line      0x000000        0x13d build/default/debug/PWM.o
  .debug_line      0x00013d        0x28e build/default/debug/bluetooth.o
  .debug_line      0x0003cb        0x2cc build/default/debug/main.o
  .debug_line      0x000697        0x31f build/default/debug/owire.o
  .debug_line      0x0009b6        0x124 build/default/debug/adc.o
- .debug_line      0x000ada        0x28a build/default/debug/piezos.o
- .debug_line      0x000d64         0x37 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
- .debug_line      0x000d9b         0x35 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
- .debug_line      0x000dd0         0x56 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
- .debug_line      0x000e26         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
- .debug_line      0x000e79         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
- .debug_line      0x000eb3         0x3b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_line      0x000eee         0x4a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
- .debug_line      0x000f38        0x136 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(addsf3x.DA_o)
- .debug_line      0x00106e        0x124 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_line      0x001192         0xcc /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsf3x.DA_o)
- .debug_line      0x00125e         0x72 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dnrmpackfx.DA_o)
- .debug_line      0x0012d0         0x7a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackdnrmfx.DA_o)
- .debug_line      0x00134a         0x5e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(typefx.DA_o)
- .debug_line      0x0013a8         0x51 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(propnanfx.DA_o)
- .debug_line      0x0013f9         0x98 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(spackfx.DA_o)
- .debug_line      0x001491         0x79 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_line      0x00150a         0x1a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(errno.DA_o)
- .debug_line      0x001524         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
- .debug_line      0x001577         0x47 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
- .debug_line      0x0015be         0x6c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_line      0x00162a         0x5a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
- .debug_line      0x001684         0x3e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
- .debug_line      0x0016c2         0x57 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
- .debug_line      0x001719         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
- .debug_line      0x001753         0x38 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
- .debug_line      0x00178b         0x59 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_line      0x0017e4         0x61 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
- .debug_line      0x001845         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
- .debug_line      0x00187f         0xa2 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
- .debug_line      0x001921        0x100 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
- .debug_line      0x001a21         0xde /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
- .debug_line      0x001aff         0xe8 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
- .debug_line      0x001be7         0x5f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
- .debug_line      0x001c46         0x45 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
- .debug_line      0x001c8b         0x5c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
- .debug_line      0x001ce7         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
- .debug_line      0x001d3a         0x49 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
+ .debug_line      0x000ada        0x273 build/default/debug/piezos.o
+ .debug_line      0x000d4d         0x37 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
+ .debug_line      0x000d84         0x35 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
+ .debug_line      0x000db9         0x56 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
+ .debug_line      0x000e0f         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
+ .debug_line      0x000e62         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
+ .debug_line      0x000e9c         0x3b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_line      0x000ed7         0x4a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
+ .debug_line      0x000f21        0x136 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(addsf3x.DA_o)
+ .debug_line      0x001057        0x124 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_line      0x00117b         0xcc /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsf3x.DA_o)
+ .debug_line      0x001247         0x72 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dnrmpackfx.DA_o)
+ .debug_line      0x0012b9         0x7a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackdnrmfx.DA_o)
+ .debug_line      0x001333         0x5e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(typefx.DA_o)
+ .debug_line      0x001391         0x51 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(propnanfx.DA_o)
+ .debug_line      0x0013e2         0x98 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_line      0x00147a         0x79 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_line      0x0014f3         0x1a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(errno.DA_o)
+ .debug_line      0x00150d         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
+ .debug_line      0x001560         0x47 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
+ .debug_line      0x0015a7         0x6c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_line      0x001613         0x5a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
+ .debug_line      0x00166d         0x3e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
+ .debug_line      0x0016ab         0x57 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
+ .debug_line      0x001702         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
+ .debug_line      0x00173c         0x38 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
+ .debug_line      0x001774         0x59 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_line      0x0017cd         0x61 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
+ .debug_line      0x00182e         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_line      0x001868         0xa2 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
+ .debug_line      0x00190a        0x100 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
+ .debug_line      0x001a0a         0xde /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
+ .debug_line      0x001ae8         0xe8 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
+ .debug_line      0x001bd0         0x5f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
+ .debug_line      0x001c2f         0x45 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
+ .debug_line      0x001c74         0x5c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
+ .debug_line      0x001cd0         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
+ .debug_line      0x001d23         0x49 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
 
 .debug_frame      0x000000        0xd92
  *(.debug_frame)
@@ -3601,7 +3601,7 @@ __c30_signature
 .const              0xaeb8        0x130 load address 0x002eb8  
  .const             0xaeb8        0x130 build/default/debug/bluetooth.o
 
-.text             0x002fe8       0x2874
+.text             0x002fe8       0x2846
  .text            0x002fe8        0xf42 build/default/debug/owire.o
                   0x002fe8                  _docrc8
                   0x002ffe                  _ow_reset
@@ -3665,51 +3665,51 @@ __c30_signature
                   0x00451e                  _sendPowerStatsOLD
                   0x0045a8                  _dump_OK
                   0x004606                  _BTRX
- .text            0x0048fc        0x9a6 build/default/debug/piezos.o
+ .text            0x0048fc        0x978 build/default/debug/piezos.o
                   0x0048fc                  _activate_piezo
                   0x00499e                  _fire_piezo_R1
-                  0x004a8c                  _fire_piezo_R2
-                  0x004b50                  _fire_piezo_R3
-                  0x004c08                  _fire_piezo_L1
-                  0x004ccc                  _fire_piezo_L2
-                  0x004d90                  _fire_piezo_L3
-                  0x004e48                  _wait_4_piezo
-                  0x004e7a                  _fire_piezo
-                  0x004f50                  _fire_piezo_two
-                  0x0050fc                  _piezo_handler
-                  0x00514c                  _adjust_intensity
-                  0x005184                  _piezo_fifo_init
-                  0x00519a                  _piezo_fifo_right_get
-                  0x0051ee                  _piezo_fifo_right_put
-                  0x005216                  _piezo_fifo_right_items
-                  0x00521e                  _piezo_fifo_left_get
-                  0x005272                  _piezo_fifo_left_put
-                  0x00529a                  _piezo_fifo_left_items
- .text            0x0052a2        0x5ba build/default/debug/main.o
-                  0x005332                  _init_pins
-                  0x0053d4                  _Setup_Timer1
-                  0x0053ea                  _Setup_Timer4
-                  0x005406                  _startUp
-                  0x0054b2                  _check_poll
-                  0x0055ae                  _check_boost_wdelay
-                  0x0055de                  _main
-                  0x005666                  _toggleLed
-                  0x005754                  _change_global_intensity
+                  0x004a88                  _fire_piezo_R2
+                  0x004b46                  _fire_piezo_R3
+                  0x004bf8                  _fire_piezo_L1
+                  0x004cb6                  _fire_piezo_L2
+                  0x004d74                  _fire_piezo_L3
+                  0x004e26                  _wait_4_piezo
+                  0x004e58                  _fire_piezo
+                  0x004f28                  _fire_piezo_two
+                  0x0050ce                  _piezo_handler
+                  0x00511e                  _adjust_intensity
+                  0x005156                  _piezo_fifo_init
+                  0x00516c                  _piezo_fifo_right_get
+                  0x0051c0                  _piezo_fifo_right_put
+                  0x0051e8                  _piezo_fifo_right_items
+                  0x0051f0                  _piezo_fifo_left_get
+                  0x005244                  _piezo_fifo_left_put
+                  0x00526c                  _piezo_fifo_left_items
+ .text            0x005274        0x5ba build/default/debug/main.o
+                  0x005304                  _init_pins
+                  0x0053a6                  _Setup_Timer1
+                  0x0053bc                  _Setup_Timer4
+                  0x0053d8                  _startUp
+                  0x005484                  _check_poll
+                  0x005580                  _check_boost_wdelay
+                  0x0055b0                  _main
+                  0x005638                  _toggleLed
+                  0x005726                  _change_global_intensity
 
-.dinit            0x00585c        0x1f2
- .dinit           0x00585c        0x1f2 data_init
+.dinit            0x00582e        0x1f2
+ .dinit           0x00582e        0x1f2 data_init
 
-.text             0x005a4e        0x258
- .text            0x005a4e        0x130 build/default/debug/adc.o
-                  0x005a4e                  _setup_adc
-                  0x005a7c                  _calc_adc
- .text            0x005b7e        0x128 build/default/debug/PWM.o
-                  0x005b7e                  _calc_pwm_multi
-                  0x005bd2                  _PWM_FREQ
-                  0x005c26                  _PWM_Setup
-                  0x005c42                  _PWM_PIEZO_R
-                  0x005c74                  _PWM_PIEZO_L
+.text             0x005a20        0x258
+ .text            0x005a20        0x130 build/default/debug/adc.o
+                  0x005a20                  _setup_adc
+                  0x005a4e                  _calc_adc
+ .text            0x005b50        0x128 build/default/debug/PWM.o
+                  0x005b50                  _calc_pwm_multi
+                  0x005ba4                  _PWM_FREQ
+                  0x005bf8                  _PWM_Setup
+                  0x005c14                  _PWM_PIEZO_R
+                  0x005c46                  _PWM_PIEZO_L
 
-.init.delay32     0x005ca6         0x1c
- .init.delay32    0x005ca6         0x1c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
-                  0x005ca6                  ___delay32
+.init.delay32     0x005c78         0x1c
+ .init.delay32    0x005c78         0x1c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
+                  0x005c78                  ___delay32

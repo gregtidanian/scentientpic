@@ -53,11 +53,11 @@ int fire_piezo_R1(uint8_t intensity, uint16_t duration)
     uint8_t to_use = (duration / 1000);
     if (!(pod.scent_level - to_use) || (pod.scent_level - to_use) > 100)
     {
-        BLUE = 1;
+        //BLUE = 1;
         return 2;
     }
     
-    GREEN = 1;
+    //GREEN = 1;
 #ifdef LOCAL_PIEZO
     // CHANGED: PIEZO_V_EN not used -> commenting out
     // PIEZO_V_EN = 1;     // Toggle piezo volts enable pin high.
@@ -89,18 +89,18 @@ int fire_piezo_R2(uint8_t intensity, uint16_t duration)
     PodData pod = find_by_channel_num(1);
     if (!pod.pod_id)
     {
-        RED = 1;
+        //RED = 1;
         return 1;
     }
     
     uint8_t to_use = (duration / 1000);
     if (!(pod.scent_level - to_use) || (pod.scent_level - to_use) > 100)
     {
-        BLUE = 1;
+        //BLUE = 1;
         return 2;
     }
     
-    GREEN = 1;
+    //GREEN = 1;
 #ifdef LOCAL_PIEZO
     // CHANGED: PIEZO_V_EN not used -> commenting out
     // PIEZO_V_EN = 1;     // Toggle piezo volts enable pin high.
@@ -131,18 +131,18 @@ int fire_piezo_R3(uint8_t intensity, uint16_t duration)
     PodData pod = find_by_channel_num(2);
     if (!pod.pod_id)
     {
-        RED = 1;
+        //RED = 1;
         return 1;
     }
     
     uint8_t to_use = (duration / 1000);
     if (!(pod.scent_level - to_use) || (pod.scent_level - to_use) > 100)
     {
-        BLUE = 1;
+        //BLUE = 1;
         return 2;
     }
     
-    GREEN = 1;
+    //GREEN = 1;
 #ifdef LOCAL_PIEZO
     // CHANGED: PIEZO_V_EN not used -> commenting out
     // PIEZO_V_EN = 1;     // Toggle piezo volts enable pin high.
@@ -173,18 +173,18 @@ int fire_piezo_L1(uint8_t intensity, uint16_t duration)
     PodData pod = find_by_channel_num(3);
     if (!pod.pod_id)
     {
-        RED = 1;
+        //RED = 1;
         return 1;
     }
     
     uint8_t to_use = (duration / 1000);
     if (!(pod.scent_level - to_use) || (pod.scent_level - to_use) > 100)
     {
-        BLUE = 1;
+        //BLUE = 1;
         return 2;
     }
     
-    GREEN = 1;
+    //GREEN = 1;
 #ifdef LOCAL_PIEZO
     // CHANGED: PIEZO_V_EN not used -> commenting out
     // PIEZO_V_EN = 1;     // Toggle piezo volts enable pin high.
@@ -215,18 +215,18 @@ int fire_piezo_L2(uint8_t intensity, uint16_t duration)
     PodData pod = find_by_channel_num(4);
     if (!pod.pod_id)
     {
-        RED = 1;
+        //RED = 1;
         return 1;
     }
     
     uint8_t to_use = (duration / 1000);
     if (!(pod.scent_level - to_use) || (pod.scent_level - to_use) > 100)
     {
-        BLUE = 1;
+        //BLUE = 1;
         return 2;
     }
     
-    GREEN = 1;
+    //GREEN = 1;
 #ifdef LOCAL_PIEZO
     // CHANGED: PIEZO_V_EN not used -> commenting out
     // PIEZO_V_EN = 1;     // Toggle piezo volts enable pin high.
@@ -257,18 +257,18 @@ int fire_piezo_L3(uint8_t intensity, uint16_t duration)
     PodData pod = find_by_channel_num(5);
     if (!pod.pod_id)
     {
-        RED = 1;
+        //RED = 1;
         return 1;
     }
     
     uint8_t to_use = (duration / 1000);
     if (!(pod.scent_level - to_use) || (pod.scent_level - to_use) > 100)
     {
-        BLUE = 1;
+        //BLUE = 1;
         return 2;
     }
     
-    GREEN = 1;
+    //GREEN = 1;
 #ifdef LOCAL_PIEZO
     // CHANGED: PIEZO_V_EN not used -> commenting out
     // PIEZO_V_EN = 1;     // Toggle piezo volts enable pin high.
@@ -310,18 +310,18 @@ int fire_piezo(uint8_t chan, bool is_right, uint8_t intensity, uint16_t duration
     PodData pod = find_by_channel_num(chan-1);
     if (!pod.pod_id)
     {
-        RED = 1;
+        //RED = 1;
         return 1;
     }
     
     uint8_t to_use = (duration / 1000);
     if (!(pod.scent_level - to_use) || (pod.scent_level - to_use) > 100)
     {
-        BLUE = 1;
+        //BLUE = 1;
         return 2;
     }
     
-    GREEN = 1;
+    //GREEN = 1;
     //PWM_FREQ(intensity);
     piezo_interrupt = 0;
     uint16_t pwm = calc_pwm_multi(intensity);
@@ -368,7 +368,7 @@ int fire_piezo_two(uint8_t rchan, uint8_t lchan, uint8_t rintensity, uint16_t rd
     PodData lpod = find_by_channel_num(lchan-1);
     if (!rpod.pod_id || !lpod.pod_id)
     {
-        RED = 1;
+        //RED = 1;
         return 1;
     }
     
@@ -377,11 +377,11 @@ int fire_piezo_two(uint8_t rchan, uint8_t lchan, uint8_t rintensity, uint16_t rd
     if ((!(rpod.scent_level - rto_use) || (rpod.scent_level - rto_use) > 100) &&
             (!(lpod.scent_level - lto_use) || (lpod.scent_level - lto_use) > 100))
     {
-        BLUE = 1;
+        //BLUE = 1;
         return 2;
     }
     
-    GREEN = 1;
+    // GREEN = 1;
     // CHANGED: PIEZO_V_EN/adjust_voltage not used -> commenting out enable; keep PWM and relay control
     // PIEZO_V_EN = 1;     // Toggle piezo volts enable pin high.
     PWM_PIEZO_R(50);

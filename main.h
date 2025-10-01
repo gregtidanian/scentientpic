@@ -39,8 +39,8 @@
 // CHANGED: STAT old RD2 -> new RF6
 #define STAT        PORTFbits.RF6
 
-#define CLEAR_LEDS  (RED = BLUE = GREEN = 0)
-#define IDLE_PURPLE (RED = BLUE = 1)
+#define CLEAR_LEDS do {} //(RED = BLUE = GREEN = 0)
+#define IDLE_PURPLE do {} //(RED = BLUE = 1)
 
 // Firmware information
 #define VER_NUM         (double)0.01
