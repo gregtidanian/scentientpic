@@ -33,6 +33,11 @@ volatile uint8_t int3_state = 0;   // 0: idle, 1: wait 500ms, 2: wait 1000ms
 #define UART1RXPIN	26	// RG7 (RP26)
 #define UART1TXPIN	21	// RG6 (RP21)
 
+/* NOTE: Verify this PPS function code in the datasheet's PPS table for GL306.
+   16 is a COMMON value for MCCP2 Output A, but confirm on your DFP/datasheet. */
+#define MCCP2A_FUNC_CODE  (16)
+#define MCCP3A_FUNC_CODE  (18)
+
 static inline void pps_unlock(void)  { __builtin_write_OSCCONL(OSCCON & 0xBF); }
 static inline void pps_lock(void)    { __builtin_write_OSCCONL(OSCCON | 0x40); }
 
@@ -49,11 +54,9 @@ static void uart1_init(void)
     //ANSG = 0x0300;
     ANSGbits.ANSELG6 = 0;
     ANSGbits.ANSELG7 = 0;
-
-	pps_unlock();
-	RPINR18bits.U1RXR = UART1RXPIN;		// U1RX <- RP26 (RG7)
-	RPOR10bits.RP21R  = 3;				// RP21 -> U1TX (RG6)
-	pps_lock();
+    
+    //PWM_PIEZO_R(47);
+    //while(1);
 
 	U1MODEbits.URXINV = 0;
 	U1MODEbits.BRGH   = 1;
@@ -69,6 +72,15 @@ static void uart1_init(void)
 	IEC0bits.U1RXIE = 1;
 }
 
+void pps_init(void)
+{
+    pps_unlock();
+	RPINR18bits.U1RXR = UART1RXPIN;		// U1RX <- RP26 (RG7)
+	RPOR10bits.RP21R  = 3;				// RP21 -> U1TX (RG6)
+    RPOR3bits.RP6R = MCCP2A_FUNC_CODE;    // RP6 <- MCCP2 Output A  (check func code!)
+    RPOR5bits.RP11R = MCCP3A_FUNC_CODE;
+	pps_lock();
+}
 
 void init_pins(void)
 {
@@ -132,29 +144,34 @@ void init_pins(void)
     TRISFbits.TRISF2 = 0;       // ENBST (Enable Boost) - Use as an output
     LATFbits.LATF2 = 1;         // Set high, to enable piezos to be fired on batt
   
-#ifdef BOARD_VER_A
-    TRISEbits.TRISE0 = 0;       // LED-RGB_RED - Use as an output
-    RED = 0;                    // Idle low
+    // Configure new LED pins (Green per pod, White intensity)
+    // Right-side green LEDs: RB15, RF4, RF5
+    ANSELBbits.ANSELB15 = 0;    // RB15 digital
+    TRISBbits.TRISB15 = 0;      // Output
+    LED_G_R0 = 0;               // Idle low
+    TRISFbits.TRISF4 = 0;       // RF4 output
+    LED_G_R1 = 0;
+    TRISFbits.TRISF5 = 0;       // RF5 output
+    LED_G_R2 = 0;
     
-    ANSELEbits.ANSE1 = 0;       // LED-RGB_GREEN - Use as digital pin
-    TRISEbits.TRISE1 = 0;       // Use as an output
-    GREEN = 0;                  // Idle low
+    // Left-side green LEDs: RD4, RD5, RD6
+    TRISDbits.TRISD4 = 0;       // RD4 output
+    LED_G_L0 = 0;
+    TRISDbits.TRISD5 = 0;       // RD5 output
+    LED_G_L1 = 0;
+    TRISDbits.TRISD6 = 0;       // RD6 output
+    LED_G_L2 = 0;
     
-    TRISFbits.TRISF0 = 0;       // LED-RGB_BLUE - Use as an output
-    BLUE = 0;                   // Idle low    
-#else
-    ANSELBbits.ANSELB8 = 0;     // LED-RGB_RED - Use as digital pin
-    TRISBbits.TRISB8 = 0;       // Use as an output
-    RED = 0;                    // Idle low
-    
-    ANSELBbits.ANSELB9 = 0;       // LED-RGB_GREEN - Use as digital pin
-    TRISBbits.TRISB9 = 0;       // Use as an output
-    GREEN = 0;                  // Idle low
-    
-    ANSELBbits.ANSELB10 = 0;    // LED-RGB_BLUE - Use as digital pin
-    TRISBbits.TRISB10 = 0;      // Use as an output
-    BLUE = 0;                   // Idle low
-#endif
+    // White LEDs for intensity: RD1, RD2, RD3
+    TRISDbits.TRISD1 = 0;       // RD1 output
+    LED_W_L0 = 0;
+    TRISDbits.TRISD2 = 0;       // RD2 output
+    LED_W_L1 = 0;
+    TRISDbits.TRISD3 = 0;       // RD3 output
+    LED_W_L2 = 0;
+   
+
+    // (Moved experimental TRISB6 indicator to after startup flash in main())
 
     // CHANGED: Button inputs on RD11 (SW2), RD10 (SW3), RD8 (SW1)
     ANSELDbits.ANSD11 = 0;
@@ -184,7 +201,6 @@ void init_pins(void)
     PWR_LATCH = 0;              // Idle high (Keep pic powered)
     __delay_ms(250);
     PWR_LATCH = 1;
-    IDLE_PURPLE;
     //while (PORTDbits.RD8);     // Previous startup polling (kept for reference)
     __delay_ms(100);
     
@@ -204,7 +220,7 @@ void init_pins(void)
     IEC1bits.INT2IE = 1;
     IFS3bits.INT3IF = 0;
     IEC3bits.INT3IE = 1;
-
+    
     uart1_init();
 }
 
@@ -232,37 +248,36 @@ void Setup_Timer4(void)
 
 void startUp(int bor, int pwr)
 {
-    // Small cycle of LED pulses to show collar is powered successfully
-    CLEAR_LEDS;
-    if (bor && !pwr)
+    // Blink all LEDs (green pod indicators and white intensity LEDs) twice
+    for (int i = 0; i < 2; i++)
     {
-        RED = 1;
-        __delay_ms(1000);
-        RED = 0;
-        __delay_ms(1000);
-        RED = 1;
-        __delay_ms(1000);
-        RED = 0;
-        __delay_ms(1000);
-        RED = 1;
-        __delay_ms(1000);
-        RED = 0;
+        LED_G_R0 = 1; LED_G_R1 = 1; LED_G_R2 = 1;
+        LED_G_L0 = 1; LED_G_L1 = 1; LED_G_L2 = 1;
+        LED_W_L0 = 1; LED_W_L1 = 1; LED_W_L2 = 1;
+        __delay_ms(200);
+        LED_G_R0 = 0; LED_G_R1 = 0; LED_G_R2 = 0;
+        LED_G_L0 = 0; LED_G_L1 = 0; LED_G_L2 = 0;
+        LED_W_L0 = 0; LED_W_L1 = 0; LED_W_L2 = 0;
+        __delay_ms(200);
     }
-    else
-    { 
-        RED = 1;
-        __delay_ms(200);
-        GREEN = 1;
-        __delay_ms(200);
-        RED = 0;
-        __delay_ms(200);
-        BLUE = 1;
-        __delay_ms(200);
-        GREEN = 0;
-        __delay_ms(200);
-        RED = 1;
-    }
-    IDLE_PURPLE;
+}
+
+static void clear_all_leds(void)
+{
+	// Turn off all pod green LEDs and white intensity LEDs
+	LED_G_R0 = 0; LED_G_R1 = 0; LED_G_R2 = 0;
+	LED_G_L0 = 0; LED_G_L1 = 0; LED_G_L2 = 0;
+	LED_W_L0 = 0; LED_W_L1 = 0; LED_W_L2 = 0;
+}
+
+static void indicate_poweroff(void)
+{
+	// Briefly light all LEDs to indicate shutdown, then clear
+	LED_G_R0 = 1; LED_G_R1 = 1; LED_G_R2 = 1;
+	LED_G_L0 = 1; LED_G_L1 = 1; LED_G_L2 = 1;
+	LED_W_L0 = 1; LED_W_L1 = 1; LED_W_L2 = 1;
+	__delay_ms(150);
+	clear_all_leds();
 }
 
 uint8_t read_count = 0;
@@ -300,7 +315,7 @@ void check_poll(void)
     
     if (battery_mV <= 3600)
     {
-        CLEAR_LEDS;
+        //CLEAR_LEDS;
         PWR_LATCH = 0;
     }
 
@@ -324,14 +339,18 @@ void check_boost_wdelay(void)
 
 int main(void)
 {   
-     int pods = 0, bor = RCONbits.BOR, pwr = RCONbits.POR;
+
+    int pods = 0, bor = RCONbits.BOR, pwr = RCONbits.POR;
     led = 0;
     memset(&store, 0, sizeof(data_store));
     memset(&messageStore, 0, sizeof(message_store));
     
     init_pins();                        // Set up relevant PIC pins
+    pps_init();
     setupBT();                          // Set up serial port.
                                         // for Bluetooth module, w/ interrupt
+
+        
     /*while(1)
     {
         sendBattLevel(50);
@@ -376,6 +395,7 @@ int main(void)
     ENBSTPIC = STAT;
     
     startUp(bor, pwr);                  // Play start up LED sequence.
+
     pods = locate_pods();
     Setup_Timer1();                     // Set up timer for Piezo PWM
     Setup_Timer4();                     // Set up timer for power button timing
@@ -411,7 +431,7 @@ void toggleLed(char dir)
     {
         case 0:                 // All off - power all LEDs off
         default:
-            CLEAR_LEDS;           
+            //CLEAR_LEDS;           
             break;
         case 1:
             item.channel = 1;
@@ -477,26 +497,27 @@ void change_global_intensity(char dir)
         global_multi -= 0.1;
     }
     
-    int i = 0, count = 0, state = 1;
-    CLEAR_LEDS;
-    count = global_multi * 10;
-    for (; i < count; i++)
-    {
-        GREEN = state = !state;
-        __delay_ms(200);
-    }
-    IDLE_PURPLE;
+    // White LED feedback: represent ~0.5..1.2 in 3 steps
+	LED_W_L0 = 0; LED_W_L1 = 0; LED_W_L2 = 0;
+	float pos = (global_multi - 0.5f) / 0.7f;   // map to 0..1
+	int steps = (int)(pos * 3.0f + 0.5f);       // round to nearest bin 0..3
+	if (steps < 0) steps = 0;
+	if (steps > 3) steps = 3;
+	if (steps >= 1) LED_W_L0 = 1;
+	if (steps >= 2) LED_W_L1 = 1;
+	if (steps >= 3) LED_W_L2 = 1;
+	__delay_ms(200);
 }
 
 void __attribute__((interrupt, no_auto_psv)) _IOCInterrupt(void)
 {
-    if (IOCFDbits.IOCFD11)
+	if (IOCFDbits.IOCFD11)
     {
         IOCFDbits.IOCFD11 = 0;    // clear this pin's change flag
 
         __delay_ms(10);        // Guard against interference
-        change_global_intensity('I');     // Yes - do interrupt function
-        up_pressed++;
+		change_global_intensity('D');     // Swapped: SW2 now DECREASES
+		down_pressed++;
         if (2 == up_pressed && 2 == down_pressed)
         {
             mode = LOCATE_REMOVE;
@@ -504,14 +525,14 @@ void __attribute__((interrupt, no_auto_psv)) _IOCInterrupt(void)
         __delay_ms(250);        // Guard against button bounce
     
     }
-      if (IOCFDbits.IOCFD10)
+	  if (IOCFDbits.IOCFD10)
     {
         IOCFDbits.IOCFD10 = 0;    // clear this pin's change flag
 
         __delay_ms(10);         // Guard against interference
         //if (PORTFbits.RF5)      // Is button still pressed?
-        change_global_intensity('D');     // Yes - do interrupt function
-        down_pressed++;
+		change_global_intensity('I');     // Swapped: SW3 now INCREASES
+		up_pressed++;
         if (2 == up_pressed && 2 == down_pressed)
         {
             mode = LOCATE_REMOVE;
@@ -574,14 +595,14 @@ void _ISR _T1Interrupt(void)
     IEC0bits.T1IE = 1;
 }
 
-void _ISR _INT1Interrupt(void)  // Increment button interrupt
+void _ISR _INT1Interrupt(void)  // Decrement button interrupt (swapped)
 {
     IFS1bits.INT1IF = 0;    // Clear interrupt flag
     IEC1bits.INT1IE = 0;    // Disable interrupt while here
     
     __delay_ms(10);        // Guard against interference
-    change_global_intensity('I');     // Yes - do interrupt function
-    up_pressed++;
+	change_global_intensity('D');     // Swapped: SW2 now DECREASES
+	down_pressed++;
     if (2 == up_pressed && 2 == down_pressed)
         mode = LOCATE_REMOVE;
     __delay_ms(250);        // Guard against button bounce
@@ -589,15 +610,15 @@ void _ISR _INT1Interrupt(void)  // Increment button interrupt
     IEC1bits.INT1IE = 1;    // Re-enable interrupt
 }
 
-void _ISR _INT2Interrupt(void)  // Decrement button interrupt
+void _ISR _INT2Interrupt(void)  // Increment button interrupt (swapped)
 {
     IFS1bits.INT2IF = 0;    // Clear interrupt flag
     IEC1bits.INT2IE = 0;    // Disable interrupt while here
     
     __delay_ms(10);         // Guard against interference
     //if (PORTFbits.RF5)      // Is button still pressed?
-    change_global_intensity('D');     // Yes - do interrupt function
-    down_pressed++;
+	change_global_intensity('I');     // Swapped: SW3 now INCREASES
+	up_pressed++;
     if (2 == up_pressed && 2 == down_pressed)
         mode = LOCATE_REMOVE;
     __delay_ms(250);        // Guard against button bounce
@@ -618,6 +639,8 @@ void _ISR _INT3Interrupt(void)  // Decrement button interrupt
     IFS1bits.T4IF = 0;
     IEC1bits.T4IE = 1;
     T4CONbits.TON = 1;
+
+
     
     // Previous blocking logic retained for reference:
     // __delay_ms(500);
@@ -676,7 +699,7 @@ void _ISR _T4Interrupt(void)
             // CHANGED: Power button read old PORTBbits.RB15 -> new PORTDbits.RD8
             if (PORTDbits.RD8)
             {
-                CLEAR_LEDS;
+                indicate_poweroff();
                 PWM_PIEZO_R(0);
                 PWM_PIEZO_L(0);
                 PWR_LATCH = 0;

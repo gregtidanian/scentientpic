@@ -590,41 +590,17 @@ int is_present(uint8_t *code)
 
 void pod_added_led(void)
 {
-    bool led_state = false;
-    CLEAR_LEDS;
-    for (int i = 0; i < 8; i++)
-    {
-        BLUE = !led_state;
-        GREEN = led_state;
-        led_state = !led_state;
-        __delay_ms(250);
-    }
+    // Removed LED indication
 }
 
 void pod_removed_led(void)
 {
-    bool led_state = false;
-    CLEAR_LEDS;
-    for (int i = 0; i < 8; i++)
-    {
-        BLUE = !led_state;
-        RED = led_state;
-        led_state = !led_state;
-        __delay_ms(250);
-    }
+    // Removed LED indication
 }
 
 void pod_error_led(void)
 {
-    bool led_state = false;
-    CLEAR_LEDS;
-    for (int i = 0; i < 16; i++)
-    {
-        GREEN = !led_state;
-        RED = led_state;
-        led_state = !led_state;
-        __delay_ms(250);
-    }
+    // Removed LED indication
 }
 
 uint8_t all_roms[6][8];
@@ -775,8 +751,8 @@ void remove_pod(void)
     {
         __delay_ms(15000);
         pod_removed_led();
-        CLEAR_LEDS;
-        IDLE_PURPLE;
+        //CLEAR_LEDS;
+        //IDLE_PURPLE;
         mode = LOCATE_ADD;
     }
 }
@@ -801,8 +777,7 @@ int locate_pods(void)
         pod_store.pods_present = MAX_PODS;
         last_all_pods = true;
     }
-    CLEAR_LEDS;
-    IDLE_PURPLE;
+    
     return pod_store.pods_present;
 #else
     int pods_on_bus = initial_search(0);
@@ -821,20 +796,17 @@ int locate_pods(void)
         default:
             return -1;
         case LOCATE_ADD:
-            CLEAR_LEDS;
-            BLUE = 1;
+            
             add_pod((MAX_PODS == pods_on_bus && !last_pods_present) || last_all_pods);
             last_pods_present = pod_store.pods_present;
             break;
         case LOCATE_IDLE:
-            CLEAR_LEDS;
-            IDLE_PURPLE;
+            
             pods_idle();
             last_pods_present = pod_store.pods_present;
             break;
         case LOCATE_REMOVE:
-            CLEAR_LEDS;
-            RED = 1;
+            
             last_all_pods = false;
             remove_pod();
             last_pods_present = pod_store.pods_present;

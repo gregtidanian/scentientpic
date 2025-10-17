@@ -33,9 +33,9 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-#define FREQ_LOW    72
-#define FREQ_MED    130
-#define FREQ_HI     144
+#define FREQ_LOW    100
+#define FREQ_MED    93
+#define FREQ_HI     88
 
 #define BASE_PWM    10  // 70 - good 10 - good
 

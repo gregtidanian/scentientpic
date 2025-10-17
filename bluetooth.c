@@ -41,7 +41,7 @@ void setupBT(void)
 {
     // Setup BT Pins
     TRISDbits.TRISD4 = 0;
-    TRISDbits.TRISD5 = 1;
+    //TRISDbits.TRISD5 = 1;
     
     ANSELDbits.ANSELD6 = 0;
     TRISDbits.TRISD6 = 0;
@@ -569,7 +569,9 @@ void BTRX(void)
         //message_buffer buffer = {0};
         memcpy(&buffer, (PiezoFIFOItem *)&flipped, sizeof(PiezoFIFOItem));
         uint8_t x = buffer.intensity;
-        buffer.intensity = x/2 - x/8 + x/64;
+        // CHANGED: Use direct 0–100% duty-cycle; remove non-linear remap
+        // buffer.intensity = x/2 - x/8 + x/64;
+        buffer.intensity = x;
         if (buffer.channel <= 3)
             piezo_fifo_right_put(&buffer);
         else

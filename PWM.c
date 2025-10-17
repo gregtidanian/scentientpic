@@ -1,7 +1,7 @@
 #include "main.h"
 #include "PWM.h"
 
-uint16_t freq = FREQ_HI;
+uint16_t freq = FREQ_MED;
 char freq_override = 0;
 float global_multi = 1;
 
@@ -43,8 +43,10 @@ void PWM_FREQ(uint8_t percent)
 
 void PWM_Setup(void)            //PPS allocating
 {
+    __builtin_write_OSCCONL(OSCCON & 0xBF);
     // CHANGED: CCP2 output old RP26 -> new RP6 (RB6) for PIEZO_R oscillator
-    RPOR3bits.RP6R = 16;       // RP6  PWM PIEZO R (CCP2)
+    //RPOR3bits.RP6R = 16;       // RP6  PWM PIEZO R (CCP2)
+    RPOR4bits.RP8R = 16;       // RP6  PWM PIEZO R (CCP2)
 #ifdef BOARD_VER_A
     // CHANGED: CCP3 output old RP31 -> new RP11 (RD0) for PIEZO_L oscillator
     RPOR5bits.RP11R = 18;      // RP11 PWM PIEZO L (CCP3)
@@ -52,38 +54,57 @@ void PWM_Setup(void)            //PPS allocating
     // CHANGED: CCP3 output old RP5 -> new RP11 (RD0) for PIEZO_L oscillator
     RPOR5bits.RP11R = 18;      // RP11 PWM PIEZO L (CCP3)
 #endif
+    __builtin_write_OSCCONL(OSCCON | 0x40);
 }
 
 void PWM_PIEZO_R(unsigned int level)
 {
-    unsigned int level_16;
-    
-    level_16 = level;// * 64;
-    CCP2CON1Lbits.CCSEL = 0;        // Setup as a PWM perhipheral
-    CCP2CON1Lbits.CCPON = 1;        // Enable PWM perhipheral
-    CCP2CON1Lbits.TMRSYNC = 1;      // Enable sync with timer
-    CCP2CON1Lbits.CLKSEL = 0;       // Use system clock
-    CCP2CON1Lbits.MOD = 4;          // Set to capture every 4th rising edge
-    CCP2CON2Hbits.OCAEN = 1;        // Enable output and set steering for PWM
-    CCP2CON2Hbits.OCBEN = 1;        // Enable output and set steering for PWM
-    CCP2RA = 0x0000;                // Write 0 to buffer A
-    CCP2RB = level_16;              // Write pulse value to buffer B
-    CCP2PRL = freq;                 // Set pulse duration for roughly 110KHz
+    unsigned int l16L = 93u * level / 144u;
+    ANSELBbits.ANSB6 = 0;                 // digital
+    TRISBbits.TRISB6 = 0;                 // output (so the PWM can drive the pin)
+
+    CCP2CON1Lbits.CCSEL  = 0;             // internal time base
+    CCP2CON1Lbits.MOD    = 0b0101;        // dual-edge buffered PWM
+    CCP2CON1Lbits.CLKSEL = 0b000;         // Tcy (Fosc/2)
+    CCP2CON1Lbits.TMRPS  = 0b00;          // 1:1 prescale
+
+    CCP2PRL = freq;                         // period
+    CCP2RA  = 0;                          // edge A
+    //CCP2RB  = (CCP2PRL + 1u) / 2u;        // ~50% duty
+    CCP2RB = l16L;
+
+    CCP2CON3Hbits.OUTM  = 0b000;          // single-ended on OCxA
+    CCP2CON2Hbits.OCAEN = 1;              // enable A output
+    CCP2CON1Lbits.CCPON = 1;              // enable MCCP2
 }
+
 
 void PWM_PIEZO_L(unsigned int level)
 {
-    unsigned int level_16;
-    
-    level_16 = level;// * 64;
-    CCP3CON1Lbits.CCSEL = 0;        // Setup as a PWM perhipheral
-    CCP3CON1Lbits.CCPON = 1;        // Enable PWM perhipheral
-    CCP3CON1Lbits.TMRSYNC = 1;      // Enable sync with timer
-    CCP3CON1Lbits.CLKSEL = 0;       // Use system clock
-    CCP3CON1Lbits.MOD = 4;          // Set to capture every 4th rising edge
-    CCP3CON2Hbits.OCAEN = 1;        // Enable output and set steering for PWM
-    CCP3CON2Hbits.OCBEN = 1;        // Enable output and set steering for PWM
-    CCP3RA = 0x0000;                // Write 0 to buffer A
-    CCP3RB = level_16;              // Write pulse value to buffer B
-    CCP3PRL = freq;                 // Set pulse duration for roughly 110KHz
+    unsigned int l16L = 93u * level / 144u;
+    TRISDbits.TRISD0 = 0;                 // output (so the PWM can drive the pin)
+
+    CCP3CON1Lbits.CCSEL  = 0;             // internal time base
+    CCP3CON1Lbits.MOD    = 0b0101;        // dual-edge buffered PWM
+    CCP3CON1Lbits.CLKSEL = 0b000;         // Tcy (Fosc/2)
+    CCP3CON1Lbits.TMRPS  = 0b00;          // 1:1 prescale
+
+    CCP3PRL = freq;                         // period (match your R side)
+    CCP3RA  = 0;                          // edge A
+    //CCP3RB  = 6u * (CCP3PRL + 1u) / 12u;        // ~50% duty (ignores 'level' just like R)
+    CCP3RB = l16L;
+
+    CCP3CON3Hbits.OUTM  = 0b000;          // single-ended on OCxA
+    if (level == 0)
+    {
+        CCP3CON2Hbits.OCAEN = 0;              // enable A output
+        CCP3CON1Lbits.CCPON = 0;              // enable MCCP3  
+    }
+    else
+    {
+        CCP3CON2Hbits.OCAEN = 1;              // enable A output
+        CCP3CON1Lbits.CCPON = 1;              // enable MCCP3
+    }
 }
+
+

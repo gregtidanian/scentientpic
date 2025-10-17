@@ -11,6 +11,7 @@
 #define FCY 16000000UL
 #include <libpic30.h>
 
+
 //#define BOARD_VER_A
 #ifndef BOARD_VER_A
 // CHANGED: PWR_LATCH old LATA0 -> new LATD9
@@ -20,16 +21,16 @@
 // CHANGED: PIEZO_V_EN not used -> commented out
 //#define PIEZO_V_EN  LATEbits.LATE5
 
-#define RED         LATBbits.LATB8
-#define GREEN       LATBbits.LATB9
-#define BLUE        LATBbits.LATB10
+#define RED         /* removed */
+#define GREEN       /* removed */
+#define BLUE        /* removed */
 #else
 #define ENBSTPIC    LATDbits.LATD3
 #define PIEZO_V_EN  LATEbits.LATE5
 
-#define RED         LATEbits.LATE0
-#define GREEN       LATEbits.LATE1
-#define BLUE        LATFbits.LATF1
+#define RED         /* removed */
+#define GREEN       /* removed */
+#define BLUE        /* removed */
 #endif
 
 // CHANGED: POT pins not used -> commented out
@@ -39,8 +40,19 @@
 // CHANGED: STAT old RD2 -> new RF6
 #define STAT        PORTFbits.RF6
 
-#define CLEAR_LEDS do {} //(RED = BLUE = GREEN = 0)
-#define IDLE_PURPLE do {} //(RED = BLUE = 1)
+// New LED mappings (Green per pod side; White for intensity level)
+// Right-side green LEDs
+#define LED_G_R0    LATBbits.LATB15   // Pin 30 RB15
+#define LED_G_R1    LATFbits.LATF4    // Pin 31 RF4
+#define LED_G_R2    LATFbits.LATF5    // Pin 32 RF5
+// Left-side green LEDs
+#define LED_G_L0    LATDbits.LATD4    // Pin 52 RD4
+#define LED_G_L1    LATDbits.LATD5    // Pin 53 RD5
+#define LED_G_L2    LATDbits.LATD6    // Pin 54 RD6
+// White LEDs for intensity feedback
+#define LED_W_L0    LATDbits.LATD1    // Pin 49 RD1
+#define LED_W_L1    LATDbits.LATD2    // Pin 50 RD2
+#define LED_W_L2    LATDbits.LATD3    // Pin 51 RD3
 
 // Firmware information
 #define VER_NUM         (double)0.01
