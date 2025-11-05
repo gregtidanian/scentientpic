@@ -280,6 +280,19 @@ static void indicate_poweroff(void)
 	clear_all_leds();
 }
 
+// Display current global intensity on the white LEDs (3-step bar).
+static inline void update_intensity_leds(void)
+{
+	LED_W_L0 = 0; LED_W_L1 = 0; LED_W_L2 = 0;
+	float pos = (global_multi - 0.5f) / 0.7f;   // map to 0..1
+	int steps = (int)(pos * 3.0f + 0.5f);       // round to nearest bin 0..3
+	if (steps < 0) steps = 0;
+	if (steps > 3) steps = 3;
+	if (steps >= 1) LED_W_L0 = 1;
+	if (steps >= 2) LED_W_L1 = 1;
+	if (steps >= 3) LED_W_L2 = 1;
+}
+
 uint8_t read_count = 0;
 void check_poll(void)
 {
@@ -395,6 +408,8 @@ int main(void)
     ENBSTPIC = STAT;
     
     startUp(bor, pwr);                  // Play start up LED sequence.
+	// Show current global intensity immediately at boot
+	update_intensity_leds();
 
     pods = locate_pods();
     Setup_Timer1();                     // Set up timer for Piezo PWM
