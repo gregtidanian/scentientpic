@@ -1,107 +1,151 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-
-#define FCY 16000000UL        // Adjust if using different oscillator
+#include "i2c.h"
 #include <xc.h>
-#include <libpic30.h>
-#define EEPROM_ADDR  0x51     // 7-bit device address (A2..A0 = 100)
 
+// Timeout helper
+#define I2C_TIMEOUT 50000UL
 
-void I2C1_Init(void);
-void I2C1_Start(void);
-void I2C1_Restart(void);
-void I2C1_Stop(void);
-void I2C1_Write(uint8_t data);
-uint8_t I2C1_Read(uint8_t ack);
-void EEPROM_WriteByte(uint8_t memAddr, uint8_t data);
-uint8_t EEPROM_ReadByte(uint8_t memAddr);
-void EEPROM_WaitForWrite(void);
-
-void I2C1_Init(void)
+static inline bool wait_clear(volatile uint16_t *reg, uint16_t mask)
 {
-    // Ensure TRIS configured as inputs (I2C module will drive them)
-    TRISGbits.TRISG2 = 1;  // SCL1
-    TRISGbits.TRISG3 = 1;  // SDA1
-
-    I2C1CONL = 0;
-    //I2C1BRG  = 0x12; //((FCY / 100000) / 2) - 2;  // 100 kHz operation
-    I2C1BRG = 0x4E;
-    I2C1CONLbits.I2CEN = 1;               // Enable I2C module
-    __delay_ms(10);
+    uint32_t t = I2C_TIMEOUT;
+    while ((*reg & mask) && --t)
+        ;
+    return t != 0;
 }
 
-void I2C1_Start(void)
+static inline bool wait_set(volatile uint16_t *reg, uint16_t mask)
 {
-    I2C1CONLbits.SEN = 1;
-    while (I2C1CONLbits.SEN);
+    uint32_t t = I2C_TIMEOUT;
+    while (((*reg & mask) == 0) && --t)
+        ;
+    return t != 0;
 }
 
-void I2C1_Restart(void)
+// Static table of register maps
+static const i2c_regs_t I2C_REGMAPS[] = {
+    {&I2C1CONL, &I2C1STAT, &I2C1BRG, &I2C1TRN, &I2C1RCV},
+#ifdef _I2C2
+    {&I2C2CONL, &I2C2STAT, &I2C2BRG, &I2C2TRN, &I2C2RCV},
+#endif
+};
+
+// ------------------------------------------------------------
+// Initialization / Deinit
+// ------------------------------------------------------------
+
+void i2c_init(i2c_t *bus, i2c_idx_t idx, uint32_t fcy, uint32_t fscl)
 {
-    I2C1CONLbits.RSEN = 1;
-    while (I2C1CONLbits.RSEN);
+    const i2c_regs_t *r = &I2C_REGMAPS[idx];
+    bus->index = idx;
+    bus->regs = r;
+    bus->initialized = true;
+
+    // Configure TRIS (SCL1=RG2, SDA1=RG3)
+    if (idx == I2C_IDX1)
+    {
+        TRISGbits.TRISG2 = 1;
+        TRISGbits.TRISG3 = 1;
+    }
+
+    *r->CONL = 0;
+    *r->BRG = (uint16_t)(((fcy / fscl) / 2) - 2);
+    *r->CONL |= (1u << 15); // I2CEN
+
+    __delay_ms(10); // Hitting ack wasn't returning -- REVISIT!
 }
 
-void I2C1_Stop(void)
+void i2c_deinit(i2c_t *bus)
 {
-    I2C1CONLbits.PEN = 1;
-    while (I2C1CONLbits.PEN);
+    if (!bus || !bus->initialized)
+    {
+        return;
+    }
+    *bus->regs->CONL &= ~(1u << 15);
+    bus->initialized = false;
 }
 
-void I2C1_Write(uint8_t data)
+// ------------------------------------------------------------
+// Core primitives
+// ------------------------------------------------------------
+
+i2c_result_t i2c_start(const i2c_t *bus)
 {
-    I2C1TRN = data;
-    while (I2C1STATbits.TBF);
-    while (I2C1STATbits.TRSTAT);
-    while (I2C1STATbits.ACKSTAT);  // Wait for ACK
+    const i2c_regs_t *r = bus->regs;
+    *r->CONL |= (1u << 0); // SEN
+    if (!wait_clear(r->CONL, (1u << 0)))
+    {
+        return I2C_ERR_TIMEOUT;
+    }
+    return I2C_OK;
 }
 
-uint8_t I2C1_Read(uint8_t ack)
+i2c_result_t i2c_restart(const i2c_t *bus)
 {
-    uint8_t data;
-    I2C1CONLbits.RCEN = 1;
-    while (!I2C1STATbits.RBF);
-    data = I2C1RCV;
-    I2C1CONLbits.ACKDT = ack;      // 0=ACK, 1=NACK
-    I2C1CONLbits.ACKEN = 1;
-    while (I2C1CONLbits.ACKEN);
-    return data;
+    const i2c_regs_t *r = bus->regs;
+    *r->CONL |= (1u << 1); // RSEN
+    if (!wait_clear(r->CONL, (1u << 1)))
+    {
+        return I2C_ERR_TIMEOUT;
+    }
+    return I2C_OK;
 }
 
-void EEPROM_WaitForWrite(void)
+i2c_result_t i2c_stop(const i2c_t *bus)
 {
-    // Poll device until it ACKs (write complete)
-    do {
-        I2C1_Start();
-        I2C1_Write((EEPROM_ADDR << 1) | 0); // Write control byte
-        I2C1_Stop();
-    } while (I2C1STATbits.ACKSTAT);
+    const i2c_regs_t *r = bus->regs;
+    *r->CONL |= (1u << 2); // PEN
+    if (!wait_clear(r->CONL, (1u << 2)))
+    {
+        return I2C_ERR_TIMEOUT;
+    }
+    return I2C_OK;
 }
 
-void EEPROM_WriteByte(uint8_t memAddr, uint8_t data)
+i2c_result_t i2c_write_byte(const i2c_t *bus, uint8_t data)
 {
-    I2C1_Start();
-    I2C1_Write((EEPROM_ADDR << 1) | 0); // Write mode
-    I2C1_Write(memAddr);
-    I2C1_Write(data);
-    I2C1_Stop();
+    const i2c_regs_t *r = bus->regs;
+    *r->TRN = data;
 
-    //EEPROM_WaitForWrite(); // Wait for internal write cycle
-    __delay_ms(10);
+    if (!wait_clear(r->STAT, (1u << 0)))
+    {
+        return I2C_ERR_TIMEOUT; // wait TBF=0
+    }
+    if (!wait_clear(r->STAT, (1u << 14)))
+    {
+        return I2C_ERR_TIMEOUT; // wait TRSTAT=0
+    }
+    if (*r->STAT & (1u << 15))
+    {
+        return I2C_ERR_NACK; // ACKSTAT=1 ? NACK
+    }
+
+    return I2C_OK;
 }
 
-uint8_t EEPROM_ReadByte(uint8_t memAddr)
+i2c_result_t i2c_read_byte(const i2c_t *bus, uint8_t *data, bool ack)
 {
-    uint8_t data;
+    const i2c_regs_t *r = bus->regs;
 
-    I2C1_Start();
-    I2C1_Write((EEPROM_ADDR << 1) | 0); // Write mode
-    I2C1_Write(memAddr);
-    I2C1_Restart();
-    I2C1_Write((EEPROM_ADDR << 1) | 1); // Read mode
-    data = I2C1_Read(1);                // NACK after last byte
-    I2C1_Stop();
+    *r->CONL |= (1u << 3); // RCEN
+    if (!wait_set(r->STAT, (1u << 1)))
+    {
+        return I2C_ERR_TIMEOUT; // RBF
+    }
+    *data = *r->RCV;
 
-    return data;
+    // ACK/NACK
+    if (ack)
+    {
+        *r->CONL &= ~(1u << 5); // ACKDT=0 ? ACK
+    }
+    else
+    {
+        *r->CONL |= (1u << 5); // ACKDT=1 ? NACK
+    }
+    *r->CONL |= (1u << 4); // ACKEN
+    if (!wait_clear(r->CONL, (1u << 4)))
+    {
+        return I2C_ERR_TIMEOUT;
+    }
+
+    return I2C_OK;
 }

@@ -5,8 +5,8 @@
         <group>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/piezos.c</file>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/PWM.c</file>
+            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/eeprom.c</file>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/main.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/i2c.c</file>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/adc.c</file>
         </group>
     </open-files>

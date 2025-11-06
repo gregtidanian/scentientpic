@@ -29,7 +29,21 @@
       <itemPath>owire.c</itemPath>
       <itemPath>adc.c</itemPath>
       <itemPath>piezos.c</itemPath>
+      <itemPath>eeprom.c</itemPath>
+      <itemPath>eeprom_async.c</itemPath>
+      <itemPath>i2c.c</itemPath>
+      <itemPath>i2c_async.c</itemPath>
+      <itemPath>pod.c</itemPath>
+      <itemPath>pod_manager.c</itemPath>
+      <itemPath>pod_manager_async.c</itemPath>
     </logicalFolder>
+    <itemPath>eeprom.h</itemPath>
+    <itemPath>eeprom_async.h</itemPath>
+    <itemPath>i2c.h</itemPath>
+    <itemPath>i2c_async.h</itemPath>
+    <itemPath>pod.h</itemPath>
+    <itemPath>pod_manager.h</itemPath>
+    <itemPath>pod_manager_async.h</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>

@@ -1,30 +1,60 @@
-#ifndef I2C_H
-#define I2C_H
+/**
+ * @file i2c.h
+ * @author Walt
+ * @brief i2c driver
+ * @version 0.1
+ * @date 2025-10-22
+ *
+ * @copyright Copyright (c) 2025
+ *
+ */
 
+#ifndef __I2C_H__
+#define __I2C_H__
+
+#define FCY 16000000UL
 #include <stdint.h>
 #include <stdbool.h>
+#include <xc.h>
+#include <libpic30.h>
 
-#ifndef FCY
-#define FCY 16000000UL
-#endif
+typedef enum
+{
+    I2C_OK = 0,
+    I2C_ERR_NACK,
+    I2C_ERR_TIMEOUT,
+    I2C_ERR_BUSCOLLISION,
+    I2C_ERR_WRITE_COLLISION
+} i2c_result_t;
 
-// Device address example for M24C02 when A2..A0 = 0b001 -> 0x51
-#ifndef EEPROM_ADDR
-#define EEPROM_ADDR  0x51
-#endif
+typedef enum
+{
+    I2C_IDX1 = 0,
+    I2C_IDX2 = 1
+} i2c_idx_t;
 
-void I2C1_Init(void);
-void I2C1_Start(void);
-void I2C1_Restart(void);
-void I2C1_Stop(void);
-// Returns true if slave ACKed, false if NACK
-bool I2C1_Write(uint8_t data);
-// ack=true sends ACK, ack=false sends NACK
-uint8_t I2C1_Read(bool ack);
+typedef struct
+{
+    volatile uint16_t *CONL;
+    volatile uint16_t *STAT;
+    volatile uint16_t *BRG;
+    volatile uint16_t *TRN;
+    volatile uint16_t *RCV;
+} i2c_regs_t;
 
-// Optional helpers for 24xx02
-void EEPROM_WaitForWrite(void);
-void EEPROM_WriteByte(uint8_t memAddr, uint8_t data);
-uint8_t EEPROM_ReadByte(uint8_t memAddr);
+typedef struct
+{
+    i2c_idx_t index;
+    const i2c_regs_t *regs;
+    bool initialized;
+} i2c_t;
+
+void i2c_init(i2c_t *bus, i2c_idx_t idx, uint32_t fcy, uint32_t fscl);
+void i2c_deinit(i2c_t *bus);
+i2c_result_t i2c_start(const i2c_t *bus);
+i2c_result_t i2c_restart(const i2c_t *bus);
+i2c_result_t i2c_stop(const i2c_t *bus);
+i2c_result_t i2c_write_byte(const i2c_t *bus, uint8_t data);
+i2c_result_t i2c_read_byte(const i2c_t *bus, uint8_t *data, bool ack);
 
 #endif
