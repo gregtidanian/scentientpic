@@ -21,9 +21,9 @@ void i2c_async_init(i2c_async_t *bus, const i2c_regs_t *regs, uint16_t brg)
 {
     memset(bus, 0, sizeof(*bus));
     bus->regs = regs;
-    *regs->CONL = 0;
-    *regs->BRG = brg;
-    *regs->CONL |= (1u << 15); // I2CEN
+    *regs->CONL_reg = 0;
+    *regs->BRG_reg = brg;
+    *regs->CONL_reg |= (1u << 15); // I2CEN
     IEC1bits.MI2C1IE = 1;
     IFS1bits.MI2C1IF = 0;
     active_bus = bus;
@@ -63,7 +63,7 @@ static void start_next_transaction(i2c_async_t *bus)
     bus->state = I2C_STATE_START;
 
     const i2c_regs_t *r = bus->regs;
-    *r->CONL |= (1u << 0); // SEN
+    *r->CONL_reg |= (1u << 0); // SEN
 }
 static bool ACKBIT = false;
 static bool FROM_ADDR = false;
@@ -82,125 +82,125 @@ void __attribute__((interrupt, no_auto_psv)) _MI2C1Interrupt(void)
     switch (bus->state)
     {
 
-    case I2C_STATE_START:
-        if (*r->CONL & (1u << 0))
+        case I2C_STATE_START:
         {
-            break; // SEN still set
+            const i2c_regs_t *r = bus->regs;
+            // Choose WRITE if any TX bytes remain; else READ
+            bool read_phase = (bus->tx_index >= bus->current.tx_len) && (bus->current.rx_len > 0);
+            *r->TRN_reg = (uint8_t)((bus->current.address << 1) | (read_phase ? 1 : 0));
+            bus->state = I2C_STATE_ADDR;
+            FROM_ADDR = false;
+            break;
         }
-        *r->TRN = (bus->current.address << 1) |
-                  (bus->current.rx_len ? 1 : 0);
-        bus->state = I2C_STATE_ADDR;
-        FROM_ADDR = false;
-        break;
-
-    case I2C_STATE_ADDR:
-        FROM_ADDR = true;
-        if (*r->STAT & (1u << 15))
-        {                          // ACKSTAT = 1 ? NACK
-            *r->CONL |= (1u << 2); // Stop
-            ACKBIT = false;
-            bus->state = I2C_STATE_STOP;
-            if (bus->current.cb)
-            {
-                bus->current.cb(bus->current.context, I2C_EVENT_NACK);
+        
+        case I2C_STATE_ADDR:
+        {
+            const i2c_regs_t *r = bus->regs;
+            FROM_ADDR = true;
+        
+            // NACK on address?
+            if (*r->STAT_reg & (1u << 15)) {
+                *r->CONL_reg |= (1u << 2); // PEN
+                ACKBIT = false;
+                bus->state = I2C_STATE_STOP;
+                if (bus->current.cb) bus->current.cb(bus->current.context, I2C_EVENT_NACK);
+                break;
+            }
+            ACKBIT = true;
+        
+            // If TX bytes remain, go send next TX byte
+            if (bus->tx_index < bus->current.tx_len) {
+                *r->TRN_reg = bus->current.tx_buf[bus->tx_index++];
+                bus->state = I2C_STATE_TX;
+                break;
+            }
+        
+            // No TX left: if RX requested, begin read
+            if (bus->current.rx_len > 0) {
+                *r->CONL_reg |= (1u << 3); // RCEN
+                bus->state = I2C_STATE_RX;
+            } else {
+                *r->CONL_reg |= (1u << 2); // PEN
+                bus->state = I2C_STATE_STOP;
             }
             break;
         }
-        ACKBIT = true;
-        if (bus->current.tx_len)
+        
+        case I2C_STATE_TX:
         {
-            *r->TRN = bus->current.tx_buf[bus->tx_index++];
-            bus->state = I2C_STATE_TX;
-        }
-        else if (bus->current.rx_len)
-        {
-            *r->CONL |= (1u << 3); // RCEN
-            bus->state = I2C_STATE_RX;
-        }
-        else
-        {
-            *r->CONL |= (1u << 2); // Stop
-            bus->state = I2C_STATE_STOP;
-        }
-        break;
-
-    case I2C_STATE_TX:
-        FROM_ADDR = false;
-        if (*r->STAT & (1u << 15))
-        { // NACK
-            *r->CONL |= (1u << 2);
-            bus->state = I2C_STATE_STOP;
-            if (bus->current.cb)
-            {
-                // bus->current.cb(bus->current.context, I2C_EVENT_NACK);
+            const i2c_regs_t *r = bus->regs;
+        
+            // NACK during TX?
+            if (*r->STAT_reg & (1u << 15)) {
+                *r->CONL_reg |= (1u << 2); // PEN
+                bus->state = I2C_STATE_STOP;
+                if (bus->current.cb) { /* optional: report NACK here */ }
+                break;
+            }
+        
+            if (bus->tx_index < bus->current.tx_len) {
+                *r->TRN_reg = bus->current.tx_buf[bus->tx_index++];
+            } else if (bus->current.rx_len > 0) {
+                // TX complete and RX requested: issue repeated START
+                *r->CONL_reg |= (1u << 1); // RSEN
+                bus->state = I2C_STATE_RESTART;
+            } else {
+                *r->CONL_reg |= (1u << 2); // PEN
+                bus->state = I2C_STATE_STOP;
             }
             break;
         }
-        if (bus->tx_index < bus->current.tx_len)
+        
+        case I2C_STATE_RESTART:
         {
-            *r->TRN = bus->current.tx_buf[bus->tx_index++];
-        }
-        else if (bus->current.rx_len)
-        {
-            // Repeated start for read
-            *r->CONL |= (1u << 1); // RSEN
-            bus->state = I2C_STATE_RESTART;
-        }
-        else
-        {
-            *r->CONL |= (1u << 2); // Stop
-            bus->state = I2C_STATE_STOP;
-        }
-        break;
-
-    case I2C_STATE_RESTART:
-        FROM_ADDR = false;
-        if (*r->CONL & (1u << 1))
-        {
+            const i2c_regs_t *r = bus->regs;
+            // RSEN still in progress?
+            if (*r->CONL_reg & (1u << 1)) break;
+        
+            // Now send READ address
+            *r->TRN_reg = (uint8_t)((bus->current.address << 1) | 1);
+            bus->state = I2C_STATE_ADDR;
             break;
         }
-        *r->TRN = (bus->current.address << 1) | 1; // Read
-        bus->state = I2C_STATE_ADDR;
-        break;
+        
+        case I2C_STATE_RX:
+        {
+            const i2c_regs_t *r = bus->regs;
+        
+            // Wait for a byte
+            if (!(*r->STAT_reg & (1u << 1))) break; // RBF not set
+        
+            bus->current.rx_buf[bus->rx_index++] = *r->RCV_reg;
+        
+            if (bus->rx_index < bus->current.rx_len) {
+                // ACK this byte and request the next
+                *r->CONL_reg &= ~(1u << 5); // ACKDT=0
+                *r->CONL_reg |= (1u << 4);  // ACKEN
+                *r->CONL_reg |= (1u << 3);  // RCEN
+            } else {
+                // Last byte: NACK and STOP
+                *r->CONL_reg |= (1u << 5); // ACKDT=1
+                *r->CONL_reg |= (1u << 4); // ACKEN
+                *r->CONL_reg |= (1u << 2); // PEN
+                bus->state = I2C_STATE_STOP;
+            }
+            break;
+        }
 
-    case I2C_STATE_RX:
-        FROM_ADDR = false;
-        if (!(*r->STAT & (1u << 1)))
+        case I2C_STATE_STOP:
         {
-            break; // RBF not set
-        }
-        bus->current.rx_buf[bus->rx_index++] = *r->RCV;
-        if (bus->rx_index < bus->current.rx_len)
-        {
-            *r->CONL &= ~(1u << 5); // ACKDT=0
-            *r->CONL |= (1u << 4);  // ACKEN
-            *r->CONL |= (1u << 3);  // RCEN again
-        }
-        else
-        {
-            *r->CONL |= (1u << 5); // NACK
-            *r->CONL |= (1u << 4); // ACKEN
-            *r->CONL |= (1u << 2); // Stop
-            bus->state = I2C_STATE_STOP;
-        }
-        break;
-
-    case I2C_STATE_STOP:
-        if (*r->CONL & (1u << 2))
-        {
-            break; // PEN still set
-        }
-        bus->state = I2C_STATE_DONE;
-        if ((FROM_ADDR == false) || (ACKBIT == true))
-        {
-            if (bus->current.cb)
-            {
+            const i2c_regs_t *r = bus->regs;
+            if (*r->CONL_reg & (1u << 2)) break; // still stopping
+            bus->state = I2C_STATE_DONE;
+        
+            if (bus->current.cb) {
+                // signal COMPLETE when we successfully progressed past address
                 bus->current.cb(bus->current.context, I2C_EVENT_COMPLETE);
             }
+        
+            start_next_transaction(bus);
+            break;
         }
-        FROM_ADDR = false;
-        start_next_transaction(bus);
-        break;
 
     case I2C_STATE_DONE:
         break;

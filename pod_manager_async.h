@@ -26,7 +26,7 @@
 #include <xc.h>
 #include <libpic30.h>
 #include "eeprom_async.h"
-//#include "relay_pwm_manager.h"
+#include "relay_pwm_manager.h"
 
 #define POD_BAY_COUNT 6
 #define POD_EEPROM_BLOCK_SIZE 20

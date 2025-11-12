@@ -68,5 +68,5 @@ void pod_manager_fire(pod_manager_async_t *pm, uint8_t bay, uint16_t duration_ms
     {
         return;
     }
-    //relay_pwm_fire(bay, duration_ms, intensity);
+    relay_pwm_fire(bay, duration_ms, intensity);
 }

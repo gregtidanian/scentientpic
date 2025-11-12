@@ -35,11 +35,11 @@ typedef enum
 
 typedef struct
 {
-    volatile uint16_t *CONL;
-    volatile uint16_t *STAT;
-    volatile uint16_t *BRG;
-    volatile uint16_t *TRN;
-    volatile uint16_t *RCV;
+    volatile uint16_t *CONL_reg;
+    volatile uint16_t *STAT_reg;
+    volatile uint16_t *BRG_reg;
+    volatile uint16_t *TRN_reg;
+    volatile uint16_t *RCV_reg;
 } i2c_regs_t;
 
 typedef struct

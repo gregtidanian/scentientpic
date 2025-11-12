@@ -1,14 +1,18 @@
-build/default/debug/main.o: main.c main.h PWM.h bluetooth.h owire.h adc.h \
- piezos.h
+build/default/debug/main.o: main.c main.h bluetooth.h adc.h i2c_async.h \
+ i2c.h relay_pwm_manager.h pod_manager_async.h eeprom_async.h
 
 main.h:
 
-PWM.h:
-
 bluetooth.h:
-
-owire.h:
 
 adc.h:
 
-piezos.h:
+i2c_async.h:
+
+i2c.h:
+
+relay_pwm_manager.h:
+
+pod_manager_async.h:
+
+eeprom_async.h:

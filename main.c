@@ -10,11 +10,20 @@
 #include <stdbool.h>
 
 #include "main.h"
-#include "PWM.h"
+//#include "PWM.h"
 #include "bluetooth.h"
-#include "owire.h"
+//#include "owire.h"
 #include "adc.h"
-#include "piezos.h"
+//#include "piezos.h"
+
+#include "i2c_async.h"
+#include "relay_pwm_manager.h"
+#include "pod_manager_async.h"
+
+float intensity_multi = 1;
+
+static i2c_async_t i2c1_async;
+static pod_manager_async_t podman;
 
 //#pragma config FWDTEN = ON//was on
 #pragma config FWDTEN = OFF
@@ -91,29 +100,29 @@ void init_pins(void)
     // CHANGED: PIEZO_R1 old RG6 -> new RB7
     ANSELBbits.ANSELB7 = 0;     // PIEZO_1_R - digital pin
     TRISBbits.TRISB7 = 0;       // Use as an output
-    PIEZO_R1 = 0;               // Start with piezo 1 disabled
+    //PIEZO_R1 = 0;               // Start with piezo 1 disabled
     
     // CHANGED: PIEZO_R2 old RE7 -> new RB8
     ANSELBbits.ANSELB8 = 0;
     TRISBbits.TRISB8 = 0;       // PIEZO_2_R - use as output
-    PIEZO_R2 = 0;               // Start with piezo 2 disabled
+    //PIEZO_R2 = 0;               // Start with piezo 2 disabled
     
     // CHANGED: PIEZO_R3 old RE6 -> new RB9
     ANSELBbits.ANSELB9 = 0;
     TRISBbits.TRISB9 = 0;       // PIEZO_3_R - use as output
-    PIEZO_R3 = 0;               // Start with piezo 3 disabled
+    //PIEZO_R3 = 0;               // Start with piezo 3 disabled
     
     // CHANGED: PIEZO_L1 old RD10 -> new RE1
     TRISEbits.TRISE1 = 0;       // PIEZO_1_L - use as output
-    PIEZO_L1 = 0;               // Start with piezo 1 disabled
+    //PIEZO_L1 = 0;               // Start with piezo 1 disabled
     
     // CHANGED: PIEZO_L2 old RD9 -> new RE0
     TRISEbits.TRISE0 = 0;       // PIEZO_2_L - use as output
-    PIEZO_L2 = 0;               // Start with piezo 2 disabled
+    //PIEZO_L2 = 0;               // Start with piezo 2 disabled
     
     // CHANGED: PIEZO_L3 old RD8 -> new RF1
     TRISFbits.TRISF1 = 0;       // PIEZO_3_L - use as output
-    PIEZO_L3 = 0;               // Start with piezo 3 disabled
+    //PIEZO_L3 = 0;               // Start with piezo 3 disabled
     
     // CHANGED: PIEZO_OSC_R old RG7 -> new RB6
     ANSELBbits.ANSELB6 = 0;     // PIEZO_OSC_R - Use as digital pin
@@ -260,6 +269,12 @@ void startUp(int bor, int pwr)
         LED_W_L0 = 0; LED_W_L1 = 0; LED_W_L2 = 0;
         __delay_ms(200);
     }
+
+    static const i2c_regs_t i2c1_regs = {
+    &I2C1CONL, &I2C1STAT, &I2C1BRG, &I2C1TRN, &I2C1RCV};
+    i2c_async_init(&i2c1_async, &i2c1_regs, 0x4E);
+    pod_manager_async_init(&podman, &i2c1_async);
+    relay_pwm_init();
 }
 
 static void clear_all_leds(void)
@@ -284,7 +299,7 @@ static void indicate_poweroff(void)
 static inline void update_intensity_leds(void)
 {
 	LED_W_L0 = 0; LED_W_L1 = 0; LED_W_L2 = 0;
-	float pos = (global_multi - 0.5f) / 0.7f;   // map to 0..1
+	float pos = (intensity_multi - 0.5f) / 0.7f;   // map to 0..1
 	int steps = (int)(pos * 3.0f + 0.5f);       // round to nearest bin 0..3
 	if (steps < 0) steps = 0;
 	if (steps > 3) steps = 3;
@@ -333,10 +348,10 @@ void check_poll(void)
     }
 
     // Locate/Read available Pods on the 1-Wire bus
-    locate_pods();
+    //locate_pods();
     
     // Fire piezos
-    piezo_handler();
+    //piezo_handler();
     up_pressed = down_pressed = 0;
 }
 
@@ -353,7 +368,9 @@ void check_boost_wdelay(void)
 int main(void)
 {   
 
-    int pods = 0, bor = RCONbits.BOR, pwr = RCONbits.POR;
+    // int pods = 0;
+    int bor = RCONbits.BOR;
+    int pwr = RCONbits.POR;
     led = 0;
     memset(&store, 0, sizeof(data_store));
     memset(&messageStore, 0, sizeof(message_store));
@@ -403,46 +420,57 @@ int main(void)
     // trans_mV = calc_adc(V_T_CHN);
     battery_mV = calc_adc(V_B_CHN);
     
-    PWM_Setup();                        // Set up PWM for Piezo oscillators
-    __delay_ms(100);
-    ENBSTPIC = STAT;
+    //PWM_Setup();                        // Set up PWM for Piezo oscillators
+    //__delay_ms(100);
+    //  ENBSTPIC = STAT;
     
     startUp(bor, pwr);                  // Play start up LED sequence.
 	// Show current global intensity immediately at boot
 	update_intensity_leds();
 
-    pods = locate_pods();
-    Setup_Timer1();                     // Set up timer for Piezo PWM
+    //pods = locate_pods();
+    //Setup_Timer1();                     // Set up timer for Piezo PWM
     Setup_Timer4();                     // Set up timer for power button timing
     __builtin_enable_interrupts();
     while (1)                           // Start infinite loop, keeping code alive
     {
-        ENBSTPIC = STAT;
-        check_boost_wdelay();
-        check_poll();
+        //ENBSTPIC = STAT;
+        //check_boost_wdelay();
+        //check_poll();
         //startUp(); // Testing LEDs
+
+        pod_manager_async_poll(&podman);
+
+        // Fire pod 2R at 70% intensity for 5 seconds
+        if (podman.pods[0].active)
+        {
+            pod_manager_fire(&podman, 0, 5000, 70);
+            __delay_ms(6000);
+        }
+
+        __delay_ms(100);
     }
     return 0;
 }
 
 void toggleLed(char dir)
 {
-    PiezoFIFOItem item = {0};
+   // PiezoFIFOItem item = {0};
     // Depending on dir, increment/decrement LED state
     if ('I' == dir)     // Increment?
     {
         led++;          // Yes - increment LED state
-        if (led > MAX_PODS)    // LED state exceeds max?
+        if (led > POD_BAY_COUNT)    // LED state exceeds max?
             led = 0;    // Yes - Reset state to 0
     }
     else
     {
         led--;          // No - decrement LED state
         if (led < 1)    // LED state lower than 0?
-            led = MAX_PODS;    // Yes - Set state to 3
+            led = POD_BAY_COUNT;    // Yes - Set state to 3
     }
     
-    switch (led)                // Current LED state?
+    /* switch (led)                // Current LED state?
     {
         case 0:                 // All off - power all LEDs off
         default:
@@ -490,31 +518,31 @@ void toggleLed(char dir)
             piezo_fifo_left_put(&item);
             //fire_piezo_L3(50, 2000);
             break;
-    }
+    } */
 }
 
 void change_global_intensity(char dir)
 {
     // Depending on dir, increment/decrement LED state
-    if (mode != LOCATE_IDLE)
-        return;
+    //if (mode != LOCATE_IDLE)
+      //  return;
     
     if ('I' == dir)     // Increment?
     {
-        if ((global_multi + 0.1) > 1.2)
+        if ((intensity_multi + 0.1) > 1.2)
             return;
-        global_multi += 0.1;
+        intensity_multi += 0.1;
     }
     else
     {
-        if ((global_multi - 0.1) < 0.5)
+        if ((intensity_multi - 0.1) < 0.5)
             return;
-        global_multi -= 0.1;
+        intensity_multi -= 0.1;
     }
     
     // White LED feedback: represent ~0.5..1.2 in 3 steps
 	LED_W_L0 = 0; LED_W_L1 = 0; LED_W_L2 = 0;
-	float pos = (global_multi - 0.5f) / 0.7f;   // map to 0..1
+	float pos = (intensity_multi - 0.5f) / 0.7f;   // map to 0..1
 	int steps = (int)(pos * 3.0f + 0.5f);       // round to nearest bin 0..3
 	if (steps < 0) steps = 0;
 	if (steps > 3) steps = 3;
@@ -535,7 +563,7 @@ void __attribute__((interrupt, no_auto_psv)) _IOCInterrupt(void)
 		down_pressed++;
         if (2 == up_pressed && 2 == down_pressed)
         {
-            mode = LOCATE_REMOVE;
+           // mode = LOCATE_REMOVE;
         }
         __delay_ms(250);        // Guard against button bounce
     
@@ -548,10 +576,10 @@ void __attribute__((interrupt, no_auto_psv)) _IOCInterrupt(void)
         //if (PORTFbits.RF5)      // Is button still pressed?
 		change_global_intensity('I');     // Swapped: SW3 now INCREASES
 		up_pressed++;
-        if (2 == up_pressed && 2 == down_pressed)
+        /* if (2 == up_pressed && 2 == down_pressed)
         {
             mode = LOCATE_REMOVE;
-        }
+        } */
             __delay_ms(250);        // Guard against button bounce
     
     }
@@ -604,7 +632,7 @@ void _ISR _T1Interrupt(void)
     IEC0bits.T1IE = 0;
     
     //check_poll();
-    piezo_handler();
+   // piezo_handler();
     up_pressed = down_pressed = 0;
     
     IEC0bits.T1IE = 1;
@@ -618,8 +646,8 @@ void _ISR _INT1Interrupt(void)  // Decrement button interrupt (swapped)
     __delay_ms(10);        // Guard against interference
 	change_global_intensity('D');     // Swapped: SW2 now DECREASES
 	down_pressed++;
-    if (2 == up_pressed && 2 == down_pressed)
-        mode = LOCATE_REMOVE;
+   // if (2 == up_pressed && 2 == down_pressed)
+        //mode = LOCATE_REMOVE;
     __delay_ms(250);        // Guard against button bounce
     
     IEC1bits.INT1IE = 1;    // Re-enable interrupt
@@ -634,8 +662,8 @@ void _ISR _INT2Interrupt(void)  // Increment button interrupt (swapped)
     //if (PORTFbits.RF5)      // Is button still pressed?
 	change_global_intensity('I');     // Swapped: SW3 now INCREASES
 	up_pressed++;
-    if (2 == up_pressed && 2 == down_pressed)
-        mode = LOCATE_REMOVE;
+    //if (2 == up_pressed && 2 == down_pressed)
+      //  mode = LOCATE_REMOVE;
     __delay_ms(250);        // Guard against button bounce
     
     IEC1bits.INT2IE = 1;    // Re-enable interrupt    
@@ -715,8 +743,8 @@ void _ISR _T4Interrupt(void)
             if (PORTDbits.RD8)
             {
                 indicate_poweroff();
-                PWM_PIEZO_R(0);
-                PWM_PIEZO_L(0);
+               // PWM_PIEZO_R(0);
+               // PWM_PIEZO_L(0);
                 PWR_LATCH = 0;
             }
             int3_state = 0;
