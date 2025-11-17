@@ -42,6 +42,10 @@ typedef struct
     bool init;
     uint8_t address;
     i2c_async_t *i2c;
+    bool pending;
+    uint8_t tx_buf[1];
+    eeproma_callback_t pending_cb;
+    void *pending_ctx;
 } eeproma_t;
 
 void eeproma_init(eeproma_t *e, i2c_async_t *bus, uint8_t addr);
