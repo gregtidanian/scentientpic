@@ -48,6 +48,8 @@ typedef enum
     I2C_STATE_TX,
     I2C_STATE_RESTART,
     I2C_STATE_RX,
+    I2C_STATE_RX_WAIT_ACK,
+    I2C_STATE_RX_LAST_WAIT_ACK,
     I2C_STATE_STOP,
     I2C_STATE_DONE
 } i2c_state_t;
