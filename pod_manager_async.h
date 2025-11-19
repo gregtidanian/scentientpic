@@ -31,6 +31,12 @@
 #define POD_BAY_COUNT 6
 #define POD_EEPROM_BLOCK_SIZE 20
 
+typedef enum
+{
+    POD_MANAGER_ASYNC_EVT_FIRE,
+    POD_MANAGER_ASYNC_EVT_STOP,
+} pod_manager_async_evt_t;
+
 typedef struct
 {
     uint32_t serial_number;
@@ -54,6 +60,8 @@ typedef struct
     bool active;
     uint8_t bay;
     eeproma_t eeprom;
+    uint8_t intensity;
+    uint16_t duration_ms;
     uint8_t buf[POD_EEPROM_BLOCK_SIZE];
 } poda_t;
 
@@ -63,7 +71,9 @@ typedef struct
     poda_t pods[POD_BAY_COUNT];
 } pod_manager_async_t;
 
-void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus);
+typedef void (*pod_manager_async_fire_callback_t)(pod_manager_async_evt_t *p_evt);
+
+void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manager_async_fire_callback_t p_cb);
 void pod_manager_async_poll(pod_manager_async_t *pm);
 void pod_manager_fire(pod_manager_async_t *pm, uint8_t bay, uint16_t duration_ms, uint8_t intensity);
 

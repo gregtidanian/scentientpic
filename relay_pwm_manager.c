@@ -33,6 +33,8 @@ static uint16_t pulse_duration_ms = 0;
 static uint16_t pulse_timer_ms = 0;
 static bool pulse_on = false;
 
+static relay_pwm_fire_callback_t p_callback = NULL;
+
 // ------------------------------------------------------------
 // Relay control
 // ------------------------------------------------------------
@@ -57,9 +59,11 @@ static inline void all_relays_off(void)
 // ------------------------------------------------------------
 // Initialize relays and CCP PWM modules
 // ------------------------------------------------------------
-void relay_pwm_init(void)
+void relay_pwm_init(relay_pwm_fire_callback_t p_cb)
 {
     uint8_t i;
+
+    p_callback = p_cb;
 
     // --- Relays ---
     for (i = 0; i < 6; i++)
@@ -131,6 +135,12 @@ void relay_pwm_init(void)
 static void pwm_start(uint8_t pod, uint16_t intensity)
 {
     uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / 144u);
+    
+    // Avoid race with 1 ms ISR while touching CCP/T2
+    uint16_t t3ie = IEC0bits.T3IE;
+    IEC0bits.T3IE = 0;
+
+    T2CONbits.TON = 0;
 
     if (pod < 3)
     {
@@ -144,13 +154,19 @@ static void pwm_start(uint8_t pod, uint16_t intensity)
     }
 
     T2CONbits.TON = 1; // enable Timer2 for PWM timebase
+    IEC0bits.T3IE = t3ie;
 }
 
 static void pwm_stop(void)
 {
+    // Avoid race with 1 ms ISR while touching CCP/T2
+    uint16_t t3ie = IEC0bits.T3IE;
+    IEC0bits.T3IE = 0;
+
     CCP2CON1Lbits.CCPON = 0;
     CCP3CON1Lbits.CCPON = 0;
     T2CONbits.TON = 0;
+    IEC0bits.T3IE = t3ie;
 }
 
 // ------------------------------------------------------------
@@ -167,7 +183,8 @@ void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t intensity)
     relay_on(pod_index);
 
     pwm_start(pod_index, intensity);
-
+    relay_pwm_evt_t evt = RELAY_PWM_EVT_FIRE;
+    p_callback(&evt);
     active_pod = pod_index;
     pulse_intensity = intensity;
     pulse_duration_ms = duration_ms;
@@ -230,6 +247,8 @@ void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void)
         else
         {
             relay_pwm_stop();
+            relay_pwm_evt_t evt = RELAY_PWM_EVT_STOP;
+            p_callback(&evt);
         }
     }
 }

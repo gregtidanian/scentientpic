@@ -17,7 +17,15 @@
 #include <xc.h>
 #include <libpic30.h>
 
-void relay_pwm_init(void);
+typedef enum
+{
+    RELAY_PWM_EVT_FIRE,
+    RELAY_PWM_EVT_STOP,
+} relay_pwm_evt_t;
+
+typedef void (*relay_pwm_fire_callback_t)(relay_pwm_evt_t *p_evt);
+
+void relay_pwm_init(relay_pwm_fire_callback_t p_cb);
 void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t intensity);
 void relay_pwm_stop(void);
 

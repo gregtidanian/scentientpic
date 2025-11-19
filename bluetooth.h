@@ -72,7 +72,22 @@
 #define USE_CHARS
 #define USE_ALIASES
 
-extern void setupBT(void);
+typedef enum 
+{
+    BLUETOOTH_EVT_POD_FIRE,
+} bluetooth_evt_t;
+
+typedef struct 
+{
+    bluetooth_evt_t evt;
+    uint8_t pod;
+    uint8_t intensity;
+    uint16_t duration;
+} bluetooth_evt_data_t;
+
+typedef void (*bluetooth_evt_callback_t)(bluetooth_evt_data_t *p_evt_data);
+
+void bluetooth_init(bluetooth_evt_callback_t p_cb);
 extern void enableSerial(bool enable);
 extern void BTTX(uint8_t *cmd, int length);
 extern void BTRX(void);

@@ -29,7 +29,9 @@
 #define UART1RXPIN 26
 #define UART1TXPIN 21
 
-uint8_t error_counter = 0;
+static bluetooth_evt_callback_t p_callback = NULL;
+
+static uint8_t error_counter = 0;
 
 typedef struct _MESSAGE_BUFFER {
     uint8_t pod;
@@ -37,7 +39,7 @@ typedef struct _MESSAGE_BUFFER {
     uint16_t duration;
 } message_buffer;
 
-void setupBT(void)
+static void setupBT(void)
 {
     // Setup BT Pins
     TRISDbits.TRISD4 = 0;
@@ -80,6 +82,12 @@ void setupBT(void)
     // ADDED: Set nonzero RX interrupt priority (required for ISR to trigger)
     IPC2bits.U1RXIP = 5;
     IEC0bits.U1RXIE = 1;
+}
+
+void bluetooth_init(bluetooth_evt_callback_t p_cb)
+{
+    p_callback = p_cb;
+    setupBT();
 }
 
 void enableSerial(bool enable)
@@ -432,28 +440,13 @@ void BTRX(void)
             
             if (i <= 100 && d > 1000 && d <= 15000)
             {
-                switch (rxbuffer[CMD+1])
-                {
-                    default:
-                    case 1:
-                        success = fire_piezo_R1(i, d);
-                        break;
-                    case 2:
-                        success = fire_piezo_R2(i, d);
-                        break;
-                    case 3:
-                        success = fire_piezo_R3(i, d);
-                        break;
-                    case 4:
-                        success = fire_piezo_L1(i, d);
-                        break;
-                    case 5:
-                        success = fire_piezo_L2(i, d);
-                        break;
-                    case 6:
-                        success = fire_piezo_L3(i, d);
-                        break;
-                }
+                bluetooth_evt_data_t evt_data = {
+                    .evt = BLUETOOTH_EVT_POD_FIRE,
+                    .pod = rxbuffer[CMD+1] - 1,
+                    .intensity = i,
+                    .duration = d
+                };
+                p_callback(&evt_data);
             }
             else
                 success = 3;
@@ -572,11 +565,20 @@ void BTRX(void)
         // CHANGED: Use direct 0–100% duty-cycle; remove non-linear remap
         // buffer.intensity = x/2 - x/8 + x/64;
         buffer.intensity = x;
-        if (buffer.channel <= 3)
+
+        bluetooth_evt_data_t evt_data = {
+            .evt = BLUETOOTH_EVT_POD_FIRE,
+            .pod = buffer.channel - 1,
+            .intensity = buffer.intensity,
+            .duration = buffer.duration
+        };
+        p_callback(&evt_data);
+        
+/*         if (buffer.channel <= 3)
             piezo_fifo_right_put(&buffer);
         else
             piezo_fifo_left_put(&buffer);
-        piezo_interrupt = 1;
+        piezo_interrupt = 1; */
 
         /*switch (buffer.pod)
         {

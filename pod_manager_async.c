@@ -11,12 +11,33 @@
  */
 static const uint8_t POD_ADDRS[POD_BAY_COUNT] = {0x51, 0x53, 0x57, 0x56, 0x55, 0x54};
 
+static pod_manager_async_fire_callback_t p_callback = NULL;
+
 static void pod_read_done(void *ctx, eeproma_result_t res);
 
-void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus)
+void relay_pwm_fire_callback(relay_pwm_evt_t *p_evt)
+{
+    pod_manager_async_evt_t evt;
+    switch (*p_evt)
+    {
+        case RELAY_PWM_EVT_FIRE:
+            break;
+    
+        case RELAY_PWM_EVT_STOP:
+            evt = POD_MANAGER_ASYNC_EVT_STOP;
+            p_callback(&evt);
+            break;
+        default:
+            break;
+    }
+}
+
+void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manager_async_fire_callback_t p_cb)
 {
     memset(pm, 0, sizeof(*pm));
     pm->bus = bus;
+    p_callback = p_cb;
+    relay_pwm_init(relay_pwm_fire_callback);
     for (uint8_t i = 0; i < POD_BAY_COUNT; i++)
     {
         pm->pods[i].bay = i;

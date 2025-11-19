@@ -20,10 +20,15 @@
 #include "relay_pwm_manager.h"
 #include "pod_manager_async.h"
 
+static void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt);
+
 float intensity_multi = 1;
 
 static i2c_async_t i2c1_async;
 static pod_manager_async_t podman;
+static bool pod_fire_active = false;
+static unsigned int pod_fire_bay = 0;
+static bool pod_is_firing = false;
 
 //#pragma config FWDTEN = ON//was on
 #pragma config FWDTEN = OFF
@@ -235,12 +240,14 @@ void init_pins(void)
 
 void Setup_Timer1(void)
 {    
-    TMR1 = 0;               // Reset timer to 0
-    T1CONbits.TON = 1;      // Enable timer 1
-    T1CONbits.TCKPS = 2;    // Set prescaler to 1:64
-    
-    IFS0bits.T1IF = 0;
-    //IEC0bits.T1IE = 1;
+    T1CONbits.TON = 0;      // Stop timer while configuring
+    T1CONbits.TCS = 0;      // Internal clock (FCY)
+    T1CONbits.TCKPS = 2;    // Prescaler 1:64
+    TMR1 = 0;
+    PR1 = 24999;            // 100 ms: (16 MHz / 64) * 0.1s = 25,000 ticks → PR1=24999
+    IFS0bits.T1IF = 0;      // Clear flag
+    IEC0bits.T1IE = 1;      // Enable interrupt
+    T1CONbits.TON = 1;      // Start
 }
 
 // Timer4 is used for non-blocking power button timing
@@ -273,8 +280,7 @@ void startUp(int bor, int pwr)
     static const i2c_regs_t i2c1_regs = {
     &I2C1CONL, &I2C1STAT, &I2C1BRG, &I2C1TRN, &I2C1RCV};
     i2c_async_init(&i2c1_async, &i2c1_regs, 0x4E);
-    pod_manager_async_init(&podman, &i2c1_async);
-    relay_pwm_init();
+    pod_manager_async_init(&podman, &i2c1_async, pod_manager_async_fire_callback);
 }
 
 static void clear_all_leds(void)
@@ -365,6 +371,57 @@ void check_boost_wdelay(void)
     }
 }
 
+void pod_fire_handler(void)
+{
+    if (pod_fire_active)
+    {
+        pod_is_firing = true;
+        pod_manager_fire(&podman, pod_fire_bay, podman.pods[pod_fire_bay].duration_ms, podman.pods[pod_fire_bay].intensity);
+        pod_fire_active = false;
+    }
+}
+
+void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt)
+{
+    switch (*p_evt)
+    {
+        case POD_MANAGER_ASYNC_EVT_FIRE:
+            break;
+        case POD_MANAGER_ASYNC_EVT_STOP:
+            pod_is_firing = false;
+            break;
+        default:
+            break;
+    }
+}
+
+void bluetooth_evt_callback(bluetooth_evt_data_t *p_evt_data)
+{
+    switch (p_evt_data->evt)
+    {
+        case BLUETOOTH_EVT_POD_FIRE:
+            if (!pod_is_firing)
+            {
+                pod_fire_active = true;
+                podman.pods[p_evt_data->pod].intensity = p_evt_data->intensity;
+                podman.pods[p_evt_data->pod].duration_ms = p_evt_data->duration;
+                pod_fire_bay = p_evt_data->pod;
+            }          
+            break;
+    }
+}
+
+/* void pod_test(void)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        if (podman.pods[i].active)
+        {
+            pod_manager_fire(&podman, i, 1000, 70);
+        }
+    }
+} */
+
 int main(void)
 {   
 
@@ -376,11 +433,8 @@ int main(void)
     memset(&messageStore, 0, sizeof(message_store));
     
     init_pins();                        // Set up relevant PIC pins
-    pps_init();
-    setupBT();                          // Set up serial port.
-                                        // for Bluetooth module, w/ interrupt
-
-        
+    pps_init();                      // Set up serial port.
+    bluetooth_init(bluetooth_evt_callback);
     /*while(1)
     {
         sendBattLevel(50);
@@ -429,26 +483,29 @@ int main(void)
 	update_intensity_leds();
 
     //pods = locate_pods();
-    //Setup_Timer1();                     // Set up timer for Piezo PWM
+    Setup_Timer1();                     // Set up timer for pod manager async polling
     Setup_Timer4();                     // Set up timer for power button timing
     __builtin_enable_interrupts();
     while (1)                           // Start infinite loop, keeping code alive
     {
+        //pod_fire_handler();
         //ENBSTPIC = STAT;
         //check_boost_wdelay();
         //check_poll();
         //startUp(); // Testing LEDs
 
-        pod_manager_async_poll(&podman);
+        //pod_manager_async_poll(&podman);
 
-        // Fire pod 2R at 70% intensity for 5 seconds
+        //pod_test();
+
         if (podman.pods[0].active)
         {
-            pod_manager_fire(&podman, 0, 5000, 70);
-            __delay_ms(6000);
+            pod_manager_fire(&podman, 0, 1000, 70);
+            __delay_ms(2000);
         }
+        
 
-        __delay_ms(100);
+      //  __delay_ms(100);
     }
     return 0;
 }
@@ -629,13 +686,11 @@ void __attribute__((interrupt, no_auto_psv)) _IOCInterrupt(void)
 void _ISR _T1Interrupt(void)
 {
     IFS0bits.T1IF = 0;
-    IEC0bits.T1IE = 0;
-    
-    //check_poll();
-   // piezo_handler();
-    up_pressed = down_pressed = 0;
-    
-    IEC0bits.T1IE = 1;
+
+    pod_manager_async_poll(&podman);
+
+    // Optional: keep these if you still want them
+    // up_pressed = down_pressed = 0;
 }
 
 void _ISR _INT1Interrupt(void)  // Decrement button interrupt (swapped)
