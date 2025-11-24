@@ -146,7 +146,7 @@ static void pwm_stop(void)
 // ------------------------------------------------------------
 // Fire a pod?s PWM + relay with pulsing
 // ------------------------------------------------------------
-void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t pulse_duty, uint16_t pulse_period, uint8_t pwm_duty, uint8_t multiplier)
+void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t pulse_duty, uint16_t pulse_period, uint8_t duty, uint8_t multiplier)
 {
     if (pod_index >= 6)
     {
@@ -166,7 +166,7 @@ void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t pulse_duty,
     pulse_duration_ms = duration_ms;
     pulse_timer_ms = 0;
     pulse_on = true;
-    pwm_duty = pwm_duty;
+    pwm_duty = duty;
     pwm_start(pod_index, pwm_duty);
     relay_pwm_evt_t evt = RELAY_PWM_EVT_FIRE;
     p_callback(&evt);
