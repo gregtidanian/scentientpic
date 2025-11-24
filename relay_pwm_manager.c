@@ -80,11 +80,11 @@ void relay_pwm_init(relay_pwm_fire_callback_t p_cb)
     __builtin_write_OSCCONL(OSCCON | 0x40); */
 
     // --- Timer2 for PWM timebase ---
-    T2CON = 0;
-    TMR2 = 0;
-    PR2 = 0xFFFF;
-    T2CONbits.TCKPS = 0; // 1:1 prescale
-    T2CONbits.TON = 0;
+    //T2CON = 0;
+    //TMR2 = 0;
+    //PR2 = 0xFFFF;
+    //T2CONbits.TCKPS = 0; // 1:1 prescale
+    //T2CONbits.TON = 0;
 
     // --- CCP1 (Right) ---
     ANSELBbits.ANSB6 = 0; // digital

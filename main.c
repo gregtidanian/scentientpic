@@ -73,7 +73,7 @@ static void osccon_init(void)
 
     RPINR18bits.U1RXR = UART1RXPIN;    // U1RX <- RP26 (RG7)
     RPOR10bits.RP21R = 3;              // RP21 -> U1TX (RG6)
-    RPOR4bits.RP8R = MCCP2A_FUNC_CODE; // RP6 <- MCCP2 Output A  (check func code!)
+    RPOR3bits.RP6R = MCCP2A_FUNC_CODE; // RP6 <- MCCP2 Output A  (check func code!)
     RPOR5bits.RP11R = MCCP3A_FUNC_CODE;
 
     // ADDED: Lock PPS after mapping (set IOLOCK)
@@ -295,11 +295,6 @@ void startUp(int bor, int pwr)
         LED_W_L2 = 0;
         __delay_ms(200);
     }
-
-    static const i2c_regs_t i2c1_regs = {
-        &I2C1CONL, &I2C1STAT, &I2C1BRG, &I2C1TRN, &I2C1RCV};
-    i2c_async_init(&i2c1_async, &i2c1_regs, 0x4E);
-    pod_manager_async_init(&podman, &i2c1_async, pod_manager_async_fire_callback);
 }
 
 static void clear_all_leds(void)
@@ -434,14 +429,14 @@ void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt)
 
 static void main_pwm_start(uint8_t pod, uint16_t intensity)
 {
-    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / FREQ_DEFAULT);
+    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / 256);
     
     // Avoid race with 1 ms ISR while touching CCP/T2
     //uint16_t t3ie = IEC0bits.T3IE;
     //IEC0bits.T3IE = 0;
 
     //T2CONbits.TON = 0;
-
+    LATBbits.LATB7 = 1;
     if (pod < 3)
     {
         CCP2RB = duty_16;        // falling edge (50% duty)
@@ -499,7 +494,13 @@ int main(void)
     init_pins(); // Set up relevant PIC pins
     //pps_init();  // Set up serial port.
     osccon_init();
+    pod_manager_async_init(&podman, &i2c1_async, pod_manager_async_fire_callback);
     bluetooth_init(bluetooth_evt_callback);
+    
+    static const i2c_regs_t i2c1_regs = {
+        &I2C1CONL, &I2C1STAT, &I2C1BRG, &I2C1TRN, &I2C1RCV};
+    //i2c_async_init(&i2c1_async, &i2c1_regs, 0x4E);
+
 
     __delay_ms(1000);
 
