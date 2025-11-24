@@ -72,20 +72,6 @@ void relay_pwm_init(relay_pwm_fire_callback_t p_cb)
         relay_off(i);
     }
 
-/*     __builtin_write_OSCCONL(OSCCON & 0xBF);
-    RPINR18bits.U1RXR = UART1RXPIN;    // U1RX <- RP26 (RG7)
-    RPOR10bits.RP21R = 3;              // RP21 -> U1TX (RG6)
-    RPOR4bits.RP8R = MCCP2A_FUNC_CODE; // RP6 <- MCCP2 Output A  (check func code!)
-    RPOR5bits.RP11R = MCCP3A_FUNC_CODE;
-    __builtin_write_OSCCONL(OSCCON | 0x40); */
-
-    // --- Timer2 for PWM timebase ---
-    //T2CON = 0;
-    //TMR2 = 0;
-    //PR2 = 0xFFFF;
-    //T2CONbits.TCKPS = 0; // 1:1 prescale
-    //T2CONbits.TON = 0;
-
     // --- CCP1 (Right) ---
     ANSELBbits.ANSB6 = 0; // digital
     TRISBbits.TRISB6 = 0; // output (so the PWM can drive the pin)
@@ -134,14 +120,8 @@ void relay_pwm_init(relay_pwm_fire_callback_t p_cb)
 // ------------------------------------------------------------
 static void pwm_start(uint8_t pod, uint16_t intensity)
 {
-    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / FREQ_DEFAULT);
+    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / 256U);
     
-    // Avoid race with 1 ms ISR while touching CCP/T2
-    uint16_t t3ie = IEC0bits.T3IE;
-    IEC0bits.T3IE = 0;
-
-    T2CONbits.TON = 0;
-
     if (pod < 3)
     {
         CCP2RB = duty_16;        // falling edge (50% duty)
@@ -152,21 +132,12 @@ static void pwm_start(uint8_t pod, uint16_t intensity)
         CCP3RB = duty_16;
         CCP3CON1Lbits.CCPON = 1; // enable MCCP3
     }
-
-    T2CONbits.TON = 1; // enable Timer2 for PWM timebase
-    IEC0bits.T3IE = t3ie;
 }
 
 static void pwm_stop(void)
 {
-    // Avoid race with 1 ms ISR while touching CCP/T2
-    uint16_t t3ie = IEC0bits.T3IE;
-    IEC0bits.T3IE = 0;
-
     CCP2CON1Lbits.CCPON = 0;
     CCP3CON1Lbits.CCPON = 0;
-    T2CONbits.TON = 0;
-    IEC0bits.T3IE = t3ie;
 }
 
 // ------------------------------------------------------------
