@@ -124,7 +124,7 @@ void relay_pwm_init(relay_pwm_fire_callback_t p_cb)
 static void pwm_start(uint8_t pod, uint16_t intensity)
 {
     uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / 100U);
-    
+
     if (pod < 3)
     {
         CCP2RB = duty_16;        // falling edge (50% duty)
@@ -160,7 +160,9 @@ void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t pulse_duty,
     uint32_t temp_period = (uint32_t)pulse_period * pulse_duty * multiplier / 255UL;
     on_time = (uint16_t)(temp_period / 100U);
     on_time = (on_time > pulse_period) ? pulse_period : on_time;
+    on_time = (on_time > 0) ? on_time : 1;
     off_time = pulse_period - on_time;
+    off_time = (off_time > 0) ? off_time : 1;
     pulse_duration_ms = duration_ms;
     pulse_timer_ms = 0;
     pulse_on = true;
