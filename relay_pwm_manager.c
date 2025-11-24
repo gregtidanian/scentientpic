@@ -158,7 +158,7 @@ void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t pulse_duty,
 
     active_pod = pod_index;
     uint32_t temp_period = (uint32_t)pulse_period * pulse_duty * multiplier / 255UL;
-    on_time = (uint16_t)(temp_period / 100U);
+    on_time = (uint16_t)(temp_period / 10U);
     on_time = (on_time > pulse_period) ? pulse_period : on_time;
     on_time = (on_time > 0) ? on_time : 1;
     off_time = pulse_period - on_time;

@@ -20,11 +20,11 @@
 #include "relay_pwm_manager.h"
 #include "pod_manager_async.h"
 
-#define FREQ_DEFAULT 93 //remove after testing
+#define FREQ_DEFAULT 93 // remove after testing
 
 static void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt);
 
-uint8_t intensity_multi = 128;
+uint8_t intensity_multi = 10;
 
 static i2c_async_t i2c1_async;
 static pod_manager_async_t podman;
@@ -61,14 +61,14 @@ static inline void pps_lock(void) { __builtin_write_OSCCONL(OSCCON | 0x40); }
 
 static void osccon_init(void)
 {
-        // ADDED: Unlock PPS to allow RPINR/RPOR writes (clear IOLOCK)
+    // ADDED: Unlock PPS to allow RPINR/RPOR writes (clear IOLOCK)
     // Datasheet: OSCCON.IOLOCK must be cleared via unlock sequence
     __builtin_write_OSCCONL(OSCCON & 0xBF);
 
     // CHANGED: U1RXR old RP20 -> new RP21 (RG6)
     RPINR18bits.U1RXR = UART1RXPIN; // U1RX <- RP26 (RG7)
     // CHANGED: U1TX old RP25R -> new RP26R (RG7)
-    //RPOR13bits.RP26R = 3;   // RG7 as UART1 TX
+    // RPOR13bits.RP26R = 3;   // RG7 as UART1 TX
     RPOR10bits.RP21R = 3;
 
     RPINR18bits.U1RXR = UART1RXPIN;    // U1RX <- RP26 (RG7)
@@ -230,8 +230,8 @@ void init_pins(void)
 #endif
 
     // CHANGED: ENBSTPIC TRIS old RD3 -> new RF2
-    //TRISFbits.TRISF2 = 0; // ENBSTPIC - use as output pin
-    //ENBSTPIC = 0;         // Idle low
+    // TRISFbits.TRISF2 = 0; // ENBSTPIC - use as output pin
+    // ENBSTPIC = 0;         // Idle low
 
     // Clear interrupt flags and enable interrupts for the
     // Increment and Decrement buttons.
@@ -333,17 +333,11 @@ static inline void update_intensity_leds(void)
     LED_W_L0 = 0;
     LED_W_L1 = 0;
     LED_W_L2 = 0;
-    float pos = (intensity_multi - 0.5f) / 0.7f; // map to 0..1
-    int steps = (int)(pos * 3.0f + 0.5f);        // round to nearest bin 0..3
-    if (steps < 0)
-        steps = 0;
-    if (steps > 3)
-        steps = 3;
-    if (steps >= 1)
+    if (intensity_multi >= 5)
         LED_W_L0 = 1;
-    if (steps >= 2)
+    if (intensity_multi >= 8)
         LED_W_L1 = 1;
-    if (steps >= 3)
+    if (intensity_multi >= 11)
         LED_W_L2 = 1;
 }
 
@@ -414,7 +408,7 @@ void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt)
 {
     volatile int x = 243;
     switch (*p_evt)
-    {     
+    {
     case POD_MANAGER_ASYNC_EVT_FIRE:
         x++;
         break;
@@ -457,7 +451,7 @@ int main(void)
     osccon_init();
     pod_manager_async_init(&podman, &i2c1_async, pod_manager_async_fire_callback);
     bluetooth_init(bluetooth_evt_callback);
-    
+
     static const i2c_regs_t i2c1_regs = {
         &I2C1CONL, &I2C1STAT, &I2C1BRG, &I2C1TRN, &I2C1RCV};
     i2c_async_init(&i2c1_async, &i2c1_regs, 0x4E);
@@ -511,32 +505,26 @@ void change_global_intensity(char dir)
 
     if ('I' == dir) // Increment?
     {
-        if ((intensity_multi + 0.1) > 1.2)
+        if ((intensity_multi + 1) > 12)
             return;
-        intensity_multi += 0.1;
+        intensity_multi += 1;
     }
     else
     {
-        if ((intensity_multi - 0.1) < 0.5)
+        if ((intensity_multi - 1) < 5)
             return;
-        intensity_multi -= 0.1;
+        intensity_multi -= 1;
     }
 
     // White LED feedback: represent ~0.5..1.2 in 3 steps
     LED_W_L0 = 0;
     LED_W_L1 = 0;
     LED_W_L2 = 0;
-    float pos = (intensity_multi - 0.5f) / 0.7f; // map to 0..1
-    int steps = (int)(pos * 3.0f + 0.5f);        // round to nearest bin 0..3
-    if (steps < 0)
-        steps = 0;
-    if (steps > 3)
-        steps = 3;
-    if (steps >= 1)
+    if (intensity_multi >= 5)
         LED_W_L0 = 1;
-    if (steps >= 2)
+    if (intensity_multi >= 8)
         LED_W_L1 = 1;
-    if (steps >= 3)
+    if (intensity_multi >= 11)
         LED_W_L2 = 1;
     __delay_ms(200);
 }
