@@ -72,12 +72,12 @@ void relay_pwm_init(relay_pwm_fire_callback_t p_cb)
         relay_off(i);
     }
 
-    __builtin_write_OSCCONL(OSCCON & 0xBF);
+/*     __builtin_write_OSCCONL(OSCCON & 0xBF);
     RPINR18bits.U1RXR = UART1RXPIN;    // U1RX <- RP26 (RG7)
     RPOR10bits.RP21R = 3;              // RP21 -> U1TX (RG6)
-    RPOR3bits.RP6R = MCCP2A_FUNC_CODE; // RP6 <- MCCP2 Output A  (check func code!)
+    RPOR4bits.RP8R = MCCP2A_FUNC_CODE; // RP6 <- MCCP2 Output A  (check func code!)
     RPOR5bits.RP11R = MCCP3A_FUNC_CODE;
-    __builtin_write_OSCCONL(OSCCON | 0x40);
+    __builtin_write_OSCCONL(OSCCON | 0x40); */
 
     // --- Timer2 for PWM timebase ---
     T2CON = 0;
@@ -134,7 +134,7 @@ void relay_pwm_init(relay_pwm_fire_callback_t p_cb)
 // ------------------------------------------------------------
 static void pwm_start(uint8_t pod, uint16_t intensity)
 {
-    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / 144u);
+    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / FREQ_DEFAULT);
     
     // Avoid race with 1 ms ISR while touching CCP/T2
     uint16_t t3ie = IEC0bits.T3IE;

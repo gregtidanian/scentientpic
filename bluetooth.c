@@ -52,7 +52,7 @@ static void setupBT(void)
     TRISGbits.TRISG6 = 0;   // RG6 output for U1TX
     TRISGbits.TRISG7 = 1;   // RG7 input  for U1RX
 
-    // ADDED: Unlock PPS to allow RPINR/RPOR writes (clear IOLOCK)
+/*     // ADDED: Unlock PPS to allow RPINR/RPOR writes (clear IOLOCK)
     // Datasheet: OSCCON.IOLOCK must be cleared via unlock sequence
     __builtin_write_OSCCONL(OSCCON & 0xBF);
 
@@ -63,7 +63,7 @@ static void setupBT(void)
     RPOR10bits.RP21R = 3;
 
     // ADDED: Lock PPS after mapping (set IOLOCK)
-    __builtin_write_OSCCONL(OSCCON | 0x40);
+    __builtin_write_OSCCONL(OSCCON | 0x40); */
 
     
     //RPINR18bits.U1RXR = 25; // RP20 as UART1 RX

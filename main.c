@@ -59,6 +59,27 @@ volatile uint8_t int3_state = 0; // 0: idle, 1: wait 500ms, 2: wait 1000ms
 static inline void pps_unlock(void) { __builtin_write_OSCCONL(OSCCON & 0xBF); }
 static inline void pps_lock(void) { __builtin_write_OSCCONL(OSCCON | 0x40); }
 
+static void osccon_init(void)
+{
+        // ADDED: Unlock PPS to allow RPINR/RPOR writes (clear IOLOCK)
+    // Datasheet: OSCCON.IOLOCK must be cleared via unlock sequence
+    __builtin_write_OSCCONL(OSCCON & 0xBF);
+
+    // CHANGED: U1RXR old RP20 -> new RP21 (RG6)
+    RPINR18bits.U1RXR = UART1RXPIN; // U1RX <- RP26 (RG7)
+    // CHANGED: U1TX old RP25R -> new RP26R (RG7)
+    //RPOR13bits.RP26R = 3;   // RG7 as UART1 TX
+    RPOR10bits.RP21R = 3;
+
+    RPINR18bits.U1RXR = UART1RXPIN;    // U1RX <- RP26 (RG7)
+    RPOR10bits.RP21R = 3;              // RP21 -> U1TX (RG6)
+    RPOR4bits.RP8R = MCCP2A_FUNC_CODE; // RP6 <- MCCP2 Output A  (check func code!)
+    RPOR5bits.RP11R = MCCP3A_FUNC_CODE;
+
+    // ADDED: Lock PPS after mapping (set IOLOCK)
+    __builtin_write_OSCCONL(OSCCON | 0x40);
+}
+
 static void uart1_init(void)
 {
     IEC0bits.U1TXIE = 0;
@@ -209,8 +230,8 @@ void init_pins(void)
 #endif
 
     // CHANGED: ENBSTPIC TRIS old RD3 -> new RF2
-    TRISFbits.TRISF2 = 0; // ENBSTPIC - use as output pin
-    ENBSTPIC = 0;         // Idle low
+    //TRISFbits.TRISF2 = 0; // ENBSTPIC - use as output pin
+    //ENBSTPIC = 0;         // Idle low
 
     // Clear interrupt flags and enable interrupts for the
     // Increment and Decrement buttons.
@@ -413,13 +434,13 @@ void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt)
 
 static void main_pwm_start(uint8_t pod, uint16_t intensity)
 {
-    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / 144u);
+    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / FREQ_DEFAULT);
     
     // Avoid race with 1 ms ISR while touching CCP/T2
-    uint16_t t3ie = IEC0bits.T3IE;
-    IEC0bits.T3IE = 0;
+    //uint16_t t3ie = IEC0bits.T3IE;
+    //IEC0bits.T3IE = 0;
 
-    T2CONbits.TON = 0;
+    //T2CONbits.TON = 0;
 
     if (pod < 3)
     {
@@ -432,20 +453,20 @@ static void main_pwm_start(uint8_t pod, uint16_t intensity)
         CCP3CON1Lbits.CCPON = 1; // enable MCCP3
     }
 
-    T2CONbits.TON = 1; // enable Timer2 for PWM timebase
-    IEC0bits.T3IE = t3ie;
+    //T2CONbits.TON = 1; // enable Timer2 for PWM timebase
+    //IEC0bits.T3IE = t3ie;
 }
 
 static void main_pwm_stop(void)
 {
     // Avoid race with 1 ms ISR while touching CCP/T2
-    uint16_t t3ie = IEC0bits.T3IE;
-    IEC0bits.T3IE = 0;
+    //uint16_t t3ie = IEC0bits.T3IE;
+    //IEC0bits.T3IE = 0;
 
     CCP2CON1Lbits.CCPON = 0;
     CCP3CON1Lbits.CCPON = 0;
-    T2CONbits.TON = 0;
-    IEC0bits.T3IE = t3ie;
+    //T2CONbits.TON = 0;
+    //IEC0bits.T3IE = t3ie;
 }
 
 
@@ -476,7 +497,8 @@ int main(void)
     memset(&messageStore, 0, sizeof(message_store));
 
     init_pins(); // Set up relevant PIC pins
-    pps_init();  // Set up serial port.
+    //pps_init();  // Set up serial port.
+    osccon_init();
     bluetooth_init(bluetooth_evt_callback);
 
     __delay_ms(1000);
@@ -513,10 +535,11 @@ int main(void)
             //pod_manager_fire(&podman, pod_fire_bay, podman.pods[pod_fire_bay].duration_ms, podman.pods[pod_fire_bay].intensity);
             //pod_manager_fire(&podman, 0, 1000, 0x80);
 
-            main_pwm_start(4, 0x80);
+            main_pwm_start(0, 0x80);
             //pod_fire_active = false;
             __delay_ms(5000);
             main_pwm_stop();
+            __delay_ms(5000);
         //}   
     }
     return 0;

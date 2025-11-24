@@ -4,13 +4,13 @@ Tool Name:
   /Applications/microchip/xc16/v2.10/bin/bin/../bin/elf-ld
 
 Command:
-  -T/tmp/tmp00003cc5.00 \
-  -T/tmp/tmp00003cc5.01 \
-  -T/tmp/tmp00003cc5.02 \
-  -T/tmp/tmp00003cc5.03 \
-  -T/tmp/tmp00003cc5.04 \
-  -T/tmp/tmp00003cc5.05 \
-  -T/tmp/tmp00003cc5.06 \
+  -T/tmp/tmp0000b720.00 \
+  -T/tmp/tmp0000b720.01 \
+  -T/tmp/tmp0000b720.02 \
+  -T/tmp/tmp0000b720.03 \
+  -T/tmp/tmp0000b720.04 \
+  -T/tmp/tmp0000b720.05 \
+  -T/tmp/tmp0000b720.06 \
   -p24FJ128GL306 \
   --mdfp=/Applications/microchip/mplabx/v6.25/packs/Microchip/PIC24F-GL-GU_DFP/1.6.243/xc16 \
   -o \
@@ -238,12 +238,12 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100              0x3120          0x49b0  (18864)
 .const                      0x3220               0x174           0x22e  (558)
-.text                       0x3394              0x2f4c          0x46f2  (18162)
-.dinit                      0x62e0               0x21c           0x32a  (810)
-.text                       0x64fc               0x830           0xc48  (3144)
-.init.delay32               0x6d2c                0x1c            0x2a  (42)
+.text                       0x3394              0x2eee          0x4665  (18021)
+.dinit                      0x6282               0x21c           0x32a  (810)
+.text                       0x649e               0x830           0xc48  (3144)
+.init.delay32               0x6cce                0x1c            0x2a  (42)
 
-                 Total "program" memory used (bytes):         0xa26c  (41580) 30%
+                 Total "program" memory used (bytes):         0xa1df  (41439) 30%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
@@ -533,114 +533,114 @@ External Symbols in Program Memory (by address):
                   0x004056                  _pods_idle
                   0x00406a                  _remove_pod
                   0x00408a                  _locate_pods
-                  0x004160                  _bluetooth_init
-                  0x00416e                  _enableSerial
-                  0x004198                  _BTTX
-                  0x0041cc                  _sendLEName
-                  0x0041fe                  _sendName
-                  0x004230                  _enableSSP
-                  0x00425e                  _profileSelect
-                  0x00428e                  _sendTest
-                  0x004322                  _sendData
-                  0x004370                  _sendButtonState
-                  0x0043a0                  _sendBattLevel
-                  0x0043ce                  _sendPod
-                  0x004408                  _sendScentLevel
-                  0x004442                  _sendScentIDs
-                  0x00447c                  _sendScentMsg
-                  0x0044b0                  _sendReboot
-                  0x0044de                  _sendDSCA
-                  0x00450c                  _sendA2dpDisc
-                  0x004528                  _sendRestore
-                  0x004542                  _sendSPPData
-                  0x0045b2                  _sendPodIDsOLD
-                  0x004628                  _sendScentIDsOLD
-                  0x00469e                  _sendScentLevelsOLD
-                  0x0046fa                  _sendPowerStatsOLD
-                  0x004784                  _dump_OK
-                  0x0047e2                  _BTRX
-                  0x004ad4                  _activate_piezo
-                  0x004c18                  _fire_piezo_R1
-                  0x004cac                  _fire_piezo_R2
-                  0x004d40                  _fire_piezo_R3
-                  0x004dc8                  _fire_piezo_L1
-                  0x004e5c                  _fire_piezo_L2
-                  0x004ef0                  _fire_piezo_L3
-                  0x004f78                  _wait_4_piezo
-                  0x004faa                  _fire_piezo
-                  0x005128                  _fire_piezo_two
-                  0x0052a4                  _piezo_handler
-                  0x0052f4                  _adjust_intensity
-                  0x00532c                  _piezo_fifo_init
-                  0x005342                  _piezo_fifo_right_get
-                  0x005396                  _piezo_fifo_right_put
-                  0x0053be                  _piezo_fifo_right_items
-                  0x0053c6                  _piezo_fifo_left_get
-                  0x00541a                  _piezo_fifo_left_put
-                  0x005442                  _piezo_fifo_left_items
-                  0x0054c0                  _pps_init
-                  0x0054f6                  _init_pins
-                  0x00558a                  _Setup_Timer1
-                  0x0055aa                  _Setup_Timer4
-                  0x0055c6                  _startUp
-                  0x0056b6                  _check_poll
-                  0x005784                  _check_boost_wdelay
-                  0x0057b4                  _pod_fire_handler
-                  0x005800                  build/default/debug/main.o:_pod_manager_async_fire_callback
-                  0x0058a6                  _bluetooth_evt_callback
-                  0x0058fa                  _main
-                  0x005956                  _toggleLed
-                  0x005986                  _change_global_intensity
-                  0x005aa4                  _eeprom_init
-                  0x005ac6                  _eeprom_deinit
-                  0x005ada                  _eeprom_write_byte
-                  0x005b5c                  _eeprom_read_byte
-                  0x005bf8                  _eeprom_read_block
-                  0x005cba                  _eeprom_write_block
-                  0x005e10                  _i2c_init
-                  0x005e8c                  _i2c_deinit
-                  0x005ec4                  _i2c_start
-                  0x005ef4                  _i2c_restart
-                  0x005f24                  _i2c_accept
-                  0x005f54                  _i2c_stop
-                  0x005f84                  _i2c_write_byte
-                  0x005fd2                  _i2c_read_byte
-                  0x0060e0                  _relay_pwm_init
-                  0x006288                  _relay_pwm_fire
-                  0x0062ce                  _relay_pwm_stop
-                  0x006572                  _relay_pwm_fire_callback
-                  0x0065a0                  _pod_manager_async_init
-                  0x0065fa                  _pod_manager_async_poll
-                  0x006636                  build/default/debug/pod_manager_async.o:_pod_read_done
-                  0x0066ba                  _pod_manager_fire
-                  0x0066f8                  _calc_pwm_multi
-                  0x00674c                  _PWM_FREQ
-                  0x0067a0                  _PWM_Setup
-                  0x0067e0                  _PWM_PIEZO_R
-                  0x00682e                  _PWM_PIEZO_L
-                  0x0068d4                  _i2c_async_init
-                  0x006914                  _i2c_async_submit
-                  0x0069ec                  _setup_adc
-                  0x006a1a                  _calc_adc
-                  0x006b1c                  _eeproma_read_block_async
-                  0x006b9a                  build/default/debug/eeprom_async.o:_eeproma_read_cb
-                  0x006bf8                  _eeproma_init
-                  0x006c4a                  _pod_init
-                  0x006c76                  _pod_deinit
-                  0x006c8c                  _pod_detect
-                  0x006cdc                  _pod_load_metadata
-                  0x006d2c                  ___delay32
+                  0x004126                  _bluetooth_init
+                  0x004134                  _enableSerial
+                  0x00415e                  _BTTX
+                  0x004192                  _sendLEName
+                  0x0041c4                  _sendName
+                  0x0041f6                  _enableSSP
+                  0x004224                  _profileSelect
+                  0x004254                  _sendTest
+                  0x0042e8                  _sendData
+                  0x004336                  _sendButtonState
+                  0x004366                  _sendBattLevel
+                  0x004394                  _sendPod
+                  0x0043ce                  _sendScentLevel
+                  0x004408                  _sendScentIDs
+                  0x004442                  _sendScentMsg
+                  0x004476                  _sendReboot
+                  0x0044a4                  _sendDSCA
+                  0x0044d2                  _sendA2dpDisc
+                  0x0044ee                  _sendRestore
+                  0x004508                  _sendSPPData
+                  0x004578                  _sendPodIDsOLD
+                  0x0045ee                  _sendScentIDsOLD
+                  0x004664                  _sendScentLevelsOLD
+                  0x0046c0                  _sendPowerStatsOLD
+                  0x00474a                  _dump_OK
+                  0x0047a8                  _BTRX
+                  0x004a9a                  _activate_piezo
+                  0x004bde                  _fire_piezo_R1
+                  0x004c72                  _fire_piezo_R2
+                  0x004d06                  _fire_piezo_R3
+                  0x004d8e                  _fire_piezo_L1
+                  0x004e22                  _fire_piezo_L2
+                  0x004eb6                  _fire_piezo_L3
+                  0x004f3e                  _wait_4_piezo
+                  0x004f70                  _fire_piezo
+                  0x0050ee                  _fire_piezo_two
+                  0x00526a                  _piezo_handler
+                  0x0052ba                  _adjust_intensity
+                  0x0052f2                  _piezo_fifo_init
+                  0x005308                  _piezo_fifo_right_get
+                  0x00535c                  _piezo_fifo_right_put
+                  0x005384                  _piezo_fifo_right_items
+                  0x00538c                  _piezo_fifo_left_get
+                  0x0053e0                  _piezo_fifo_left_put
+                  0x005408                  _piezo_fifo_left_items
+                  0x0054f2                  _pps_init
+                  0x005528                  _init_pins
+                  0x0055b8                  _Setup_Timer1
+                  0x0055d8                  _Setup_Timer4
+                  0x0055f4                  _startUp
+                  0x0056e4                  _check_poll
+                  0x0057b2                  _check_boost_wdelay
+                  0x0057e2                  _pod_fire_handler
+                  0x00582e                  build/default/debug/main.o:_pod_manager_async_fire_callback
+                  0x005890                  _bluetooth_evt_callback
+                  0x0058e4                  _main
+                  0x005946                  _toggleLed
+                  0x005976                  _change_global_intensity
+                  0x005a94                  _eeprom_init
+                  0x005ab6                  _eeprom_deinit
+                  0x005aca                  _eeprom_write_byte
+                  0x005b4c                  _eeprom_read_byte
+                  0x005be8                  _eeprom_read_block
+                  0x005caa                  _eeprom_write_block
+                  0x005e00                  _i2c_init
+                  0x005e7c                  _i2c_deinit
+                  0x005eb4                  _i2c_start
+                  0x005ee4                  _i2c_restart
+                  0x005f14                  _i2c_accept
+                  0x005f44                  _i2c_stop
+                  0x005f74                  _i2c_write_byte
+                  0x005fc2                  _i2c_read_byte
+                  0x0060d0                  _relay_pwm_init
+                  0x00622a                  _relay_pwm_fire
+                  0x006270                  _relay_pwm_stop
+                  0x006514                  _relay_pwm_fire_callback
+                  0x006542                  _pod_manager_async_init
+                  0x00659c                  _pod_manager_async_poll
+                  0x0065d8                  build/default/debug/pod_manager_async.o:_pod_read_done
+                  0x00665c                  _pod_manager_fire
+                  0x00669a                  _calc_pwm_multi
+                  0x0066ee                  _PWM_FREQ
+                  0x006742                  _PWM_Setup
+                  0x006782                  _PWM_PIEZO_R
+                  0x0067d0                  _PWM_PIEZO_L
+                  0x006876                  _i2c_async_init
+                  0x0068b6                  _i2c_async_submit
+                  0x00698e                  _setup_adc
+                  0x0069bc                  _calc_adc
+                  0x006abe                  _eeproma_read_block_async
+                  0x006b3c                  build/default/debug/eeprom_async.o:_eeproma_read_cb
+                  0x006b9a                  _eeproma_init
+                  0x006bec                  _pod_init
+                  0x006c18                  _pod_deinit
+                  0x006c2e                  _pod_detect
+                  0x006c7e                  _pod_load_metadata
+                  0x006cce                  ___delay32
 
 External Symbols in Program Memory (by name):
 
-                  0x0047e2                  _BTRX
-                  0x004198                  _BTTX
-                  0x00674c                  _PWM_FREQ
-                  0x00682e                  _PWM_PIEZO_L
-                  0x0067e0                  _PWM_PIEZO_R
-                  0x0067a0                  _PWM_Setup
-                  0x00558a                  _Setup_Timer1
-                  0x0055aa                  _Setup_Timer4
+                  0x0047a8                  _BTRX
+                  0x00415e                  _BTTX
+                  0x0066ee                  _PWM_FREQ
+                  0x0067d0                  _PWM_PIEZO_L
+                  0x006782                  _PWM_PIEZO_R
+                  0x006742                  _PWM_Setup
+                  0x0055b8                  _Setup_Timer1
+                  0x0055d8                  _Setup_Timer4
                   0x0007ea                  __DefaultInterrupt
                   0x0002fe                  __INT1Interrupt
                   0x000344                  __INT2Interrupt
@@ -655,7 +655,7 @@ External Symbols in Program Memory (by name):
                   0x0008d6                  ___addsf3
                   0x0008d6                  ___addsf3x
                   0x001bee                  ___cvt_u
-                  0x006d2c                  ___delay32
+                  0x006cce                  ___delay32
                   0x002c76                  ___divdf3
                   0x0010b6                  ___divdi3
                   0x000aa0                  ___divsf3
@@ -750,59 +750,59 @@ External Symbols in Program Memory (by name):
                   0x000e1c                  __typef
                   0x000dbe                  __unpackdnrmf
                   0x000f08                  __unpackf
-                  0x004ad4                  _activate_piezo
+                  0x004a9a                  _activate_piezo
                   0x003f20                  _add_pod
-                  0x0052f4                  _adjust_intensity
+                  0x0052ba                  _adjust_intensity
                   0x002386                  _atoi
-                  0x0058a6                  _bluetooth_evt_callback
-                  0x004160                  _bluetooth_init
-                  0x006a1a                  _calc_adc
-                  0x0066f8                  _calc_pwm_multi
-                  0x005986                  _change_global_intensity
-                  0x005784                  _check_boost_wdelay
-                  0x0056b6                  _check_poll
+                  0x005890                  _bluetooth_evt_callback
+                  0x004126                  _bluetooth_init
+                  0x0069bc                  _calc_adc
+                  0x00669a                  _calc_pwm_multi
+                  0x005976                  _change_global_intensity
+                  0x0057b2                  _check_boost_wdelay
+                  0x0056e4                  _check_poll
                   0x003394                  _docrc8
-                  0x004784                  _dump_OK
-                  0x005ac6                  _eeprom_deinit
-                  0x005aa4                  _eeprom_init
-                  0x005bf8                  _eeprom_read_block
-                  0x005b5c                  _eeprom_read_byte
-                  0x005cba                  _eeprom_write_block
-                  0x005ada                  _eeprom_write_byte
-                  0x006bf8                  _eeproma_init
-                  0x006b1c                  _eeproma_read_block_async
-                  0x004230                  _enableSSP
-                  0x00416e                  _enableSerial
+                  0x00474a                  _dump_OK
+                  0x005ab6                  _eeprom_deinit
+                  0x005a94                  _eeprom_init
+                  0x005be8                  _eeprom_read_block
+                  0x005b4c                  _eeprom_read_byte
+                  0x005caa                  _eeprom_write_block
+                  0x005aca                  _eeprom_write_byte
+                  0x006b9a                  _eeproma_init
+                  0x006abe                  _eeproma_read_block_async
+                  0x0041f6                  _enableSSP
+                  0x004134                  _enableSerial
                   0x003c32                  _find_by_channel_num
                   0x003b36                  _find_by_pod_id
                   0x003bb4                  _find_by_scent_id
                   0x003b08                  _find_channel_by_pod_code
                   0x003eb0                  _find_missing
-                  0x004faa                  _fire_piezo
-                  0x004dc8                  _fire_piezo_L1
-                  0x004e5c                  _fire_piezo_L2
-                  0x004ef0                  _fire_piezo_L3
-                  0x004c18                  _fire_piezo_R1
-                  0x004cac                  _fire_piezo_R2
-                  0x004d40                  _fire_piezo_R3
-                  0x005128                  _fire_piezo_two
+                  0x004f70                  _fire_piezo
+                  0x004d8e                  _fire_piezo_L1
+                  0x004e22                  _fire_piezo_L2
+                  0x004eb6                  _fire_piezo_L3
+                  0x004bde                  _fire_piezo_R1
+                  0x004c72                  _fire_piezo_R2
+                  0x004d06                  _fire_piezo_R3
+                  0x0050ee                  _fire_piezo_two
                   0x003128                  _floorl
-                  0x005f24                  _i2c_accept
-                  0x0068d4                  _i2c_async_init
-                  0x006914                  _i2c_async_submit
-                  0x005e8c                  _i2c_deinit
-                  0x005e10                  _i2c_init
-                  0x005fd2                  _i2c_read_byte
-                  0x005ef4                  _i2c_restart
-                  0x005ec4                  _i2c_start
-                  0x005f54                  _i2c_stop
-                  0x005f84                  _i2c_write_byte
-                  0x0054f6                  _init_pins
+                  0x005f14                  _i2c_accept
+                  0x006876                  _i2c_async_init
+                  0x0068b6                  _i2c_async_submit
+                  0x005e7c                  _i2c_deinit
+                  0x005e00                  _i2c_init
+                  0x005fc2                  _i2c_read_byte
+                  0x005ee4                  _i2c_restart
+                  0x005eb4                  _i2c_start
+                  0x005f44                  _i2c_stop
+                  0x005f74                  _i2c_write_byte
+                  0x005528                  _init_pins
                   0x003e44                  _initial_search
                   0x003dc0                  _is_present
                   0x003e12                  _is_present_all_roms
                   0x00408a                  _locate_pods
-                  0x0058fa                  _main
+                  0x0058e4                  _main
                   0x00135e                  _memcmp
                   0x00137a                  _memcpy
                   0x001388                  _memset
@@ -816,61 +816,61 @@ External Symbols in Program Memory (by name):
                   0x0033da                  _ow_write_bit
                   0x003462                  _ow_write_byte
                   0x00354a                  _ow_write_scratchpad
-                  0x00532c                  _piezo_fifo_init
-                  0x0053c6                  _piezo_fifo_left_get
-                  0x005442                  _piezo_fifo_left_items
-                  0x00541a                  _piezo_fifo_left_put
-                  0x005342                  _piezo_fifo_right_get
-                  0x0053be                  _piezo_fifo_right_items
-                  0x005396                  _piezo_fifo_right_put
-                  0x0052a4                  _piezo_handler
+                  0x0052f2                  _piezo_fifo_init
+                  0x00538c                  _piezo_fifo_left_get
+                  0x005408                  _piezo_fifo_left_items
+                  0x0053e0                  _piezo_fifo_left_put
+                  0x005308                  _piezo_fifo_right_get
+                  0x005384                  _piezo_fifo_right_items
+                  0x00535c                  _piezo_fifo_right_put
+                  0x00526a                  _piezo_handler
                   0x003e00                  _pod_added_led
-                  0x006c76                  _pod_deinit
-                  0x006c8c                  _pod_detect
+                  0x006c18                  _pod_deinit
+                  0x006c2e                  _pod_detect
                   0x003e0c                  _pod_error_led
-                  0x0057b4                  _pod_fire_handler
-                  0x006c4a                  _pod_init
-                  0x006cdc                  _pod_load_metadata
-                  0x0065a0                  _pod_manager_async_init
-                  0x0065fa                  _pod_manager_async_poll
-                  0x0066ba                  _pod_manager_fire
+                  0x0057e2                  _pod_fire_handler
+                  0x006bec                  _pod_init
+                  0x006c7e                  _pod_load_metadata
+                  0x006542                  _pod_manager_async_init
+                  0x00659c                  _pod_manager_async_poll
+                  0x00665c                  _pod_manager_fire
                   0x003e06                  _pod_removed_led
                   0x004056                  _pods_idle
-                  0x0054c0                  _pps_init
-                  0x00425e                  _profileSelect
+                  0x0054f2                  _pps_init
+                  0x004224                  _profileSelect
                   0x003722                  _read_eeprom
                   0x00383e                  _read_pod_eeprom
-                  0x006288                  _relay_pwm_fire
-                  0x006572                  _relay_pwm_fire_callback
-                  0x0060e0                  _relay_pwm_init
-                  0x0062ce                  _relay_pwm_stop
+                  0x00622a                  _relay_pwm_fire
+                  0x006514                  _relay_pwm_fire_callback
+                  0x0060d0                  _relay_pwm_init
+                  0x006270                  _relay_pwm_stop
                   0x00406a                  _remove_pod
                   0x003490                  _rom_code_to_bits
-                  0x00450c                  _sendA2dpDisc
-                  0x0043a0                  _sendBattLevel
-                  0x004370                  _sendButtonState
-                  0x0044de                  _sendDSCA
-                  0x004322                  _sendData
-                  0x0041cc                  _sendLEName
-                  0x0041fe                  _sendName
-                  0x0043ce                  _sendPod
-                  0x0045b2                  _sendPodIDsOLD
-                  0x0046fa                  _sendPowerStatsOLD
-                  0x0044b0                  _sendReboot
-                  0x004528                  _sendRestore
-                  0x004542                  _sendSPPData
-                  0x004442                  _sendScentIDs
-                  0x004628                  _sendScentIDsOLD
-                  0x004408                  _sendScentLevel
-                  0x00469e                  _sendScentLevelsOLD
-                  0x00447c                  _sendScentMsg
-                  0x00428e                  _sendTest
+                  0x0044d2                  _sendA2dpDisc
+                  0x004366                  _sendBattLevel
+                  0x004336                  _sendButtonState
+                  0x0044a4                  _sendDSCA
+                  0x0042e8                  _sendData
+                  0x004192                  _sendLEName
+                  0x0041c4                  _sendName
+                  0x004394                  _sendPod
+                  0x004578                  _sendPodIDsOLD
+                  0x0046c0                  _sendPowerStatsOLD
+                  0x004476                  _sendReboot
+                  0x0044ee                  _sendRestore
+                  0x004508                  _sendSPPData
+                  0x004408                  _sendScentIDs
+                  0x0045ee                  _sendScentIDsOLD
+                  0x0043ce                  _sendScentLevel
+                  0x004664                  _sendScentLevelsOLD
+                  0x004442                  _sendScentMsg
+                  0x004254                  _sendTest
                   0x003c9c                  _set_pod_id
                   0x003d30                  _set_pod_position
                   0x003ce6                  _set_scent_id
                   0x003d7a                  _set_scent_level
-                  0x0069ec                  _setup_adc
-                  0x0055c6                  _startUp
+                  0x00698e                  _setup_adc
+                  0x0055f4                  _startUp
                   0x002992                  _strcpy
                   0x0029a0                  _strlen
                   0x0014c2                  _strtoimax
@@ -879,15 +879,15 @@ External Symbols in Program Memory (by name):
                   0x0014b2                  _strtoul
                   0x0014a2                  _strtoull
                   0x0014c4                  _strtoumax
-                  0x005956                  _toggleLed
+                  0x005946                  _toggleLed
                   0x0029d0                  _tolower
                   0x0029de                  _toupper
                   0x00394a                  _verify_eeprom
-                  0x004f78                  _wait_4_piezo
+                  0x004f3e                  _wait_4_piezo
                   0x0036c2                  _write_save_eeprom
-                  0x006b9a                  build/default/debug/eeprom_async.o:_eeproma_read_cb
-                  0x005800                  build/default/debug/main.o:_pod_manager_async_fire_callback
-                  0x006636                  build/default/debug/pod_manager_async.o:_pod_read_done
+                  0x006b3c                  build/default/debug/eeprom_async.o:_eeproma_read_cb
+                  0x00582e                  build/default/debug/main.o:_pod_manager_async_fire_callback
+                  0x0065d8                  build/default/debug/pod_manager_async.o:_pod_read_done
 
 Memory Configuration
 
@@ -1390,199 +1390,199 @@ __FDEVOPT1
 .comment
  *(.comment)
 
-.debug_info       0x000000      0x11c44
+.debug_info       0x000000      0x11808
  *(.debug_info)
  .debug_info      0x000000       0x17ae build/default/debug/PWM.o
- .debug_info      0x0017ae       0x1c38 build/default/debug/bluetooth.o
- .debug_info      0x0033e6       0x465b build/default/debug/main.o
- .debug_info      0x007a41       0x14f0 build/default/debug/owire.o
- .debug_info      0x008f31        0xd87 build/default/debug/adc.o
- .debug_info      0x009cb8        0xfb5 build/default/debug/piezos.o
- .debug_info      0x00ac6d        0x721 build/default/debug/eeprom.o
- .debug_info      0x00b38e        0x75c build/default/debug/eeprom_async.o
- .debug_info      0x00baea        0x762 build/default/debug/i2c.o
- .debug_info      0x00c24c        0x99f build/default/debug/i2c_async.o
- .debug_info      0x00cbeb        0x592 build/default/debug/pod.o
- .debug_info      0x00d17d        0x6d7 build/default/debug/pod_manager.o
- .debug_info      0x00d854        0xbe1 build/default/debug/pod_manager_async.o
- .debug_info      0x00e435       0x2290 build/default/debug/relay_pwm_manager.o
- .debug_info      0x0106c5         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
- .debug_info      0x010752         0x8b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
- .debug_info      0x0107dd         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
- .debug_info      0x01086a         0x90 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
- .debug_info      0x0108fa         0x8f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
- .debug_info      0x010989         0x91 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_info      0x010a1a         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
- .debug_info      0x010aa7         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(udivsi3.DA_o)
- .debug_info      0x010b34         0x9d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(addsf3x.DA_o)
- .debug_info      0x010bd1         0x9d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_info      0x010c6e         0x9d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsf3x.DA_o)
- .debug_info      0x010d0b         0xa0 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dnrmpackfx.DA_o)
- .debug_info      0x010dab         0xa2 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackdnrmfx.DA_o)
- .debug_info      0x010e4d         0x9c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(typefx.DA_o)
- .debug_info      0x010ee9         0x9f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(propnanfx.DA_o)
- .debug_info      0x010f88         0x9d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(spackfx.DA_o)
- .debug_info      0x011025         0x9e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_info      0x0110c3         0x8e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
- .debug_info      0x011151         0x8f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
- .debug_info      0x0111e0         0x91 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_info      0x011271         0x8b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
- .debug_info      0x0112fc         0x8e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
- .debug_info      0x01138a         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
- .debug_info      0x011417         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
- .debug_info      0x0114a4         0x8b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
- .debug_info      0x01152f         0x90 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_info      0x0115bf         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
- .debug_info      0x01164c         0x8c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
- .debug_info      0x0116d8         0xa9 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
- .debug_info      0x011781         0xa9 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
- .debug_info      0x01182a         0xa9 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
- .debug_info      0x0118d3         0xaa /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
- .debug_info      0x01197d         0x8e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
- .debug_info      0x011a0b         0x8b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
- .debug_info      0x011a96         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
- .debug_info      0x011b23         0x8e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
- .debug_info      0x011bb1         0x93 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
+ .debug_info      0x0017ae       0x1b2b build/default/debug/bluetooth.o
+ .debug_info      0x0032d9       0x451b build/default/debug/main.o
+ .debug_info      0x0077f4       0x14f0 build/default/debug/owire.o
+ .debug_info      0x008ce4        0xd87 build/default/debug/adc.o
+ .debug_info      0x009a6b        0xfb5 build/default/debug/piezos.o
+ .debug_info      0x00aa20        0x721 build/default/debug/eeprom.o
+ .debug_info      0x00b141        0x75c build/default/debug/eeprom_async.o
+ .debug_info      0x00b89d        0x762 build/default/debug/i2c.o
+ .debug_info      0x00bfff        0x99f build/default/debug/i2c_async.o
+ .debug_info      0x00c99e        0x592 build/default/debug/pod.o
+ .debug_info      0x00cf30        0x6d7 build/default/debug/pod_manager.o
+ .debug_info      0x00d607        0xbe1 build/default/debug/pod_manager_async.o
+ .debug_info      0x00e1e8       0x20a1 build/default/debug/relay_pwm_manager.o
+ .debug_info      0x010289         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
+ .debug_info      0x010316         0x8b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
+ .debug_info      0x0103a1         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
+ .debug_info      0x01042e         0x90 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
+ .debug_info      0x0104be         0x8f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
+ .debug_info      0x01054d         0x91 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_info      0x0105de         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
+ .debug_info      0x01066b         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(udivsi3.DA_o)
+ .debug_info      0x0106f8         0x9d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(addsf3x.DA_o)
+ .debug_info      0x010795         0x9d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_info      0x010832         0x9d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsf3x.DA_o)
+ .debug_info      0x0108cf         0xa0 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dnrmpackfx.DA_o)
+ .debug_info      0x01096f         0xa2 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackdnrmfx.DA_o)
+ .debug_info      0x010a11         0x9c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(typefx.DA_o)
+ .debug_info      0x010aad         0x9f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(propnanfx.DA_o)
+ .debug_info      0x010b4c         0x9d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_info      0x010be9         0x9e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_info      0x010c87         0x8e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
+ .debug_info      0x010d15         0x8f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
+ .debug_info      0x010da4         0x91 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_info      0x010e35         0x8b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
+ .debug_info      0x010ec0         0x8e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
+ .debug_info      0x010f4e         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
+ .debug_info      0x010fdb         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
+ .debug_info      0x011068         0x8b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
+ .debug_info      0x0110f3         0x90 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_info      0x011183         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
+ .debug_info      0x011210         0x8c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_info      0x01129c         0xa9 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
+ .debug_info      0x011345         0xa9 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
+ .debug_info      0x0113ee         0xa9 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
+ .debug_info      0x011497         0xaa /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
+ .debug_info      0x011541         0x8e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
+ .debug_info      0x0115cf         0x8b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
+ .debug_info      0x01165a         0x8d /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
+ .debug_info      0x0116e7         0x8e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
+ .debug_info      0x011775         0x93 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000       0x182b
+.debug_abbrev     0x000000       0x17f0
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x157 build/default/debug/PWM.o
  .debug_abbrev    0x000157        0x273 build/default/debug/bluetooth.o
- .debug_abbrev    0x0003ca        0x2c5 build/default/debug/main.o
- .debug_abbrev    0x00068f        0x22d build/default/debug/owire.o
- .debug_abbrev    0x0008bc        0x143 build/default/debug/adc.o
- .debug_abbrev    0x0009ff        0x212 build/default/debug/piezos.o
- .debug_abbrev    0x000c11         0xff build/default/debug/eeprom.o
- .debug_abbrev    0x000d10         0xff build/default/debug/eeprom_async.o
- .debug_abbrev    0x000e0f        0x13f build/default/debug/i2c.o
- .debug_abbrev    0x000f4e        0x16e build/default/debug/i2c_async.o
- .debug_abbrev    0x0010bc         0xfc build/default/debug/pod.o
- .debug_abbrev    0x0011b8         0xad build/default/debug/pod_manager.o
- .debug_abbrev    0x001265        0x133 build/default/debug/pod_manager_async.o
- .debug_abbrev    0x001398        0x1af build/default/debug/relay_pwm_manager.o
- .debug_abbrev    0x001547         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
- .debug_abbrev    0x00155b         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
- .debug_abbrev    0x00156f         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
- .debug_abbrev    0x001583         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
- .debug_abbrev    0x001597         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
- .debug_abbrev    0x0015ab         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_abbrev    0x0015bf         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
- .debug_abbrev    0x0015d3         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(udivsi3.DA_o)
- .debug_abbrev    0x0015e7         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(addsf3x.DA_o)
- .debug_abbrev    0x0015fb         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_abbrev    0x00160f         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsf3x.DA_o)
- .debug_abbrev    0x001623         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dnrmpackfx.DA_o)
- .debug_abbrev    0x001637         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackdnrmfx.DA_o)
- .debug_abbrev    0x00164b         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(typefx.DA_o)
- .debug_abbrev    0x00165f         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(propnanfx.DA_o)
- .debug_abbrev    0x001673         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(spackfx.DA_o)
- .debug_abbrev    0x001687         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_abbrev    0x00169b         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
- .debug_abbrev    0x0016af         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
- .debug_abbrev    0x0016c3         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_abbrev    0x0016d7         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
- .debug_abbrev    0x0016eb         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
- .debug_abbrev    0x0016ff         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
- .debug_abbrev    0x001713         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
- .debug_abbrev    0x001727         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
- .debug_abbrev    0x00173b         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_abbrev    0x00174f         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
- .debug_abbrev    0x001763         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
- .debug_abbrev    0x001777         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
- .debug_abbrev    0x00178b         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
- .debug_abbrev    0x00179f         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
- .debug_abbrev    0x0017b3         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
- .debug_abbrev    0x0017c7         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
- .debug_abbrev    0x0017db         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
- .debug_abbrev    0x0017ef         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
- .debug_abbrev    0x001803         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
- .debug_abbrev    0x001817         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
+ .debug_abbrev    0x0003ca        0x28a build/default/debug/main.o
+ .debug_abbrev    0x000654        0x22d build/default/debug/owire.o
+ .debug_abbrev    0x000881        0x143 build/default/debug/adc.o
+ .debug_abbrev    0x0009c4        0x212 build/default/debug/piezos.o
+ .debug_abbrev    0x000bd6         0xff build/default/debug/eeprom.o
+ .debug_abbrev    0x000cd5         0xff build/default/debug/eeprom_async.o
+ .debug_abbrev    0x000dd4        0x13f build/default/debug/i2c.o
+ .debug_abbrev    0x000f13        0x16e build/default/debug/i2c_async.o
+ .debug_abbrev    0x001081         0xfc build/default/debug/pod.o
+ .debug_abbrev    0x00117d         0xad build/default/debug/pod_manager.o
+ .debug_abbrev    0x00122a        0x133 build/default/debug/pod_manager_async.o
+ .debug_abbrev    0x00135d        0x1af build/default/debug/relay_pwm_manager.o
+ .debug_abbrev    0x00150c         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
+ .debug_abbrev    0x001520         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
+ .debug_abbrev    0x001534         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
+ .debug_abbrev    0x001548         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
+ .debug_abbrev    0x00155c         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
+ .debug_abbrev    0x001570         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_abbrev    0x001584         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
+ .debug_abbrev    0x001598         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(udivsi3.DA_o)
+ .debug_abbrev    0x0015ac         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(addsf3x.DA_o)
+ .debug_abbrev    0x0015c0         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_abbrev    0x0015d4         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsf3x.DA_o)
+ .debug_abbrev    0x0015e8         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dnrmpackfx.DA_o)
+ .debug_abbrev    0x0015fc         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackdnrmfx.DA_o)
+ .debug_abbrev    0x001610         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(typefx.DA_o)
+ .debug_abbrev    0x001624         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(propnanfx.DA_o)
+ .debug_abbrev    0x001638         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_abbrev    0x00164c         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_abbrev    0x001660         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
+ .debug_abbrev    0x001674         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
+ .debug_abbrev    0x001688         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_abbrev    0x00169c         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
+ .debug_abbrev    0x0016b0         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
+ .debug_abbrev    0x0016c4         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
+ .debug_abbrev    0x0016d8         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
+ .debug_abbrev    0x0016ec         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
+ .debug_abbrev    0x001700         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_abbrev    0x001714         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
+ .debug_abbrev    0x001728         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_abbrev    0x00173c         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
+ .debug_abbrev    0x001750         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
+ .debug_abbrev    0x001764         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
+ .debug_abbrev    0x001778         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
+ .debug_abbrev    0x00178c         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
+ .debug_abbrev    0x0017a0         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
+ .debug_abbrev    0x0017b4         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
+ .debug_abbrev    0x0017c8         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
+ .debug_abbrev    0x0017dc         0x14 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
 
-.debug_line       0x000000       0x27ba
+.debug_line       0x000000       0x27b4
  *(.debug_line)
  .debug_line      0x000000        0x147 build/default/debug/PWM.o
- .debug_line      0x000147        0x2a3 build/default/debug/bluetooth.o
- .debug_line      0x0003ea        0x325 build/default/debug/main.o
- .debug_line      0x00070f        0x2f4 build/default/debug/owire.o
- .debug_line      0x000a03        0x124 build/default/debug/adc.o
- .debug_line      0x000b27        0x292 build/default/debug/piezos.o
- .debug_line      0x000db9        0x127 build/default/debug/eeprom.o
- .debug_line      0x000ee0         0xde build/default/debug/eeprom_async.o
- .debug_line      0x000fbe        0x15f build/default/debug/i2c.o
- .debug_line      0x00111d        0x1dc build/default/debug/i2c_async.o
- .debug_line      0x0012f9         0xbd build/default/debug/pod.o
- .debug_line      0x0013b6         0xb5 build/default/debug/pod_manager.o
- .debug_line      0x00146b        0x12d build/default/debug/pod_manager_async.o
- .debug_line      0x001598        0x1be build/default/debug/relay_pwm_manager.o
- .debug_line      0x001756         0x37 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
- .debug_line      0x00178d         0x35 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
- .debug_line      0x0017c2         0x56 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
- .debug_line      0x001818         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
- .debug_line      0x00186b         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
- .debug_line      0x0018a5         0x3b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_line      0x0018e0         0x4a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
- .debug_line      0x00192a         0x45 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(udivsi3.DA_o)
- .debug_line      0x00196f        0x136 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(addsf3x.DA_o)
- .debug_line      0x001aa5        0x124 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_line      0x001bc9         0xcc /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsf3x.DA_o)
- .debug_line      0x001c95         0x72 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dnrmpackfx.DA_o)
- .debug_line      0x001d07         0x7a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackdnrmfx.DA_o)
- .debug_line      0x001d81         0x5e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(typefx.DA_o)
- .debug_line      0x001ddf         0x51 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(propnanfx.DA_o)
- .debug_line      0x001e30         0x98 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(spackfx.DA_o)
- .debug_line      0x001ec8         0x79 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_line      0x001f41         0x1a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(errno.DA_o)
- .debug_line      0x001f5b         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
- .debug_line      0x001fae         0x47 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
- .debug_line      0x001ff5         0x6c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_line      0x002061         0x5a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
- .debug_line      0x0020bb         0x3e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
- .debug_line      0x0020f9         0x57 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
- .debug_line      0x002150         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
- .debug_line      0x00218a         0x38 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
- .debug_line      0x0021c2         0x59 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_line      0x00221b         0x61 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
- .debug_line      0x00227c         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
- .debug_line      0x0022b6         0xa2 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
- .debug_line      0x002358        0x100 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
- .debug_line      0x002458         0xde /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
- .debug_line      0x002536         0xe8 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
- .debug_line      0x00261e         0x5f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
- .debug_line      0x00267d         0x45 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
- .debug_line      0x0026c2         0x5c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
- .debug_line      0x00271e         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
- .debug_line      0x002771         0x49 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
+ .debug_line      0x000147        0x29f build/default/debug/bluetooth.o
+ .debug_line      0x0003e6        0x328 build/default/debug/main.o
+ .debug_line      0x00070e        0x2f4 build/default/debug/owire.o
+ .debug_line      0x000a02        0x124 build/default/debug/adc.o
+ .debug_line      0x000b26        0x292 build/default/debug/piezos.o
+ .debug_line      0x000db8        0x127 build/default/debug/eeprom.o
+ .debug_line      0x000edf         0xde build/default/debug/eeprom_async.o
+ .debug_line      0x000fbd        0x15f build/default/debug/i2c.o
+ .debug_line      0x00111c        0x1dc build/default/debug/i2c_async.o
+ .debug_line      0x0012f8         0xbd build/default/debug/pod.o
+ .debug_line      0x0013b5         0xb5 build/default/debug/pod_manager.o
+ .debug_line      0x00146a        0x12d build/default/debug/pod_manager_async.o
+ .debug_line      0x001597        0x1b9 build/default/debug/relay_pwm_manager.o
+ .debug_line      0x001750         0x37 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
+ .debug_line      0x001787         0x35 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
+ .debug_line      0x0017bc         0x56 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
+ .debug_line      0x001812         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
+ .debug_line      0x001865         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
+ .debug_line      0x00189f         0x3b /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_line      0x0018da         0x4a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
+ .debug_line      0x001924         0x45 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(udivsi3.DA_o)
+ .debug_line      0x001969        0x136 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(addsf3x.DA_o)
+ .debug_line      0x001a9f        0x124 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_line      0x001bc3         0xcc /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsf3x.DA_o)
+ .debug_line      0x001c8f         0x72 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dnrmpackfx.DA_o)
+ .debug_line      0x001d01         0x7a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackdnrmfx.DA_o)
+ .debug_line      0x001d7b         0x5e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(typefx.DA_o)
+ .debug_line      0x001dd9         0x51 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(propnanfx.DA_o)
+ .debug_line      0x001e2a         0x98 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_line      0x001ec2         0x79 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_line      0x001f3b         0x1a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(errno.DA_o)
+ .debug_line      0x001f55         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
+ .debug_line      0x001fa8         0x47 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
+ .debug_line      0x001fef         0x6c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_line      0x00205b         0x5a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
+ .debug_line      0x0020b5         0x3e /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
+ .debug_line      0x0020f3         0x57 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
+ .debug_line      0x00214a         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
+ .debug_line      0x002184         0x38 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
+ .debug_line      0x0021bc         0x59 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_line      0x002215         0x61 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
+ .debug_line      0x002276         0x3a /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_line      0x0022b0         0xa2 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
+ .debug_line      0x002352        0x100 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
+ .debug_line      0x002452         0xde /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
+ .debug_line      0x002530         0xe8 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
+ .debug_line      0x002618         0x5f /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
+ .debug_line      0x002677         0x45 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
+ .debug_line      0x0026bc         0x5c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
+ .debug_line      0x002718         0x53 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
+ .debug_line      0x00276b         0x49 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
 
-.debug_frame      0x000000       0x1486
+.debug_frame      0x000000       0x14a0
  *(.debug_frame)
  .debug_frame     0x000000         0x9e build/default/debug/PWM.o
  .debug_frame     0x00009e        0x3e8 build/default/debug/bluetooth.o
- .debug_frame     0x000486        0x3be build/default/debug/main.o
- .debug_frame     0x000844        0x3ba build/default/debug/owire.o
- .debug_frame     0x000bfe         0x48 build/default/debug/adc.o
- .debug_frame     0x000c46        0x26a build/default/debug/piezos.o
- .debug_frame     0x000eb0         0xca build/default/debug/eeprom.o
- .debug_frame     0x000f7a         0x62 build/default/debug/eeprom_async.o
- .debug_frame     0x000fdc        0x120 build/default/debug/i2c.o
- .debug_frame     0x0010fc         0xd4 build/default/debug/i2c_async.o
- .debug_frame     0x0011d0         0x96 build/default/debug/pod.o
- .debug_frame     0x001266         0xfe build/default/debug/pod_manager_async.o
- .debug_frame     0x001364        0x122 build/default/debug/relay_pwm_manager.o
+ .debug_frame     0x000486        0x3d8 build/default/debug/main.o
+ .debug_frame     0x00085e        0x3ba build/default/debug/owire.o
+ .debug_frame     0x000c18         0x48 build/default/debug/adc.o
+ .debug_frame     0x000c60        0x26a build/default/debug/piezos.o
+ .debug_frame     0x000eca         0xca build/default/debug/eeprom.o
+ .debug_frame     0x000f94         0x62 build/default/debug/eeprom_async.o
+ .debug_frame     0x000ff6        0x120 build/default/debug/i2c.o
+ .debug_frame     0x001116         0xd4 build/default/debug/i2c_async.o
+ .debug_frame     0x0011ea         0x96 build/default/debug/pod.o
+ .debug_frame     0x001280         0xfe build/default/debug/pod_manager_async.o
+ .debug_frame     0x00137e        0x122 build/default/debug/relay_pwm_manager.o
 
-.debug_str        0x000000        0x603
+.debug_str        0x000000        0x5a5
  *(.debug_str)
  .debug_str       0x000000         0xa2 build/default/debug/PWM.o
- .debug_str       0x0000a2         0xae build/default/debug/bluetooth.o
- .debug_str       0x000150        0x221 build/default/debug/main.o
- .debug_str       0x000371         0x60 build/default/debug/owire.o
- .debug_str       0x0003d1         0x68 build/default/debug/adc.o
- .debug_str       0x000439         0xa4 build/default/debug/piezos.o
- .debug_str       0x0004dd         0x14 build/default/debug/eeprom.o
- .debug_str       0x0004f1         0x1c build/default/debug/i2c.o
- .debug_str       0x00050d         0x12 build/default/debug/i2c_async.o
- .debug_str       0x00051f         0x16 build/default/debug/pod_manager_async.o
- .debug_str       0x000535         0xce build/default/debug/relay_pwm_manager.o
+ .debug_str       0x0000a2         0x97 build/default/debug/bluetooth.o
+ .debug_str       0x000139        0x205 build/default/debug/main.o
+ .debug_str       0x00033e         0x60 build/default/debug/owire.o
+ .debug_str       0x00039e         0x68 build/default/debug/adc.o
+ .debug_str       0x000406         0xa4 build/default/debug/piezos.o
+ .debug_str       0x0004aa         0x14 build/default/debug/eeprom.o
+ .debug_str       0x0004be         0x1c build/default/debug/i2c.o
+ .debug_str       0x0004da         0x12 build/default/debug/i2c_async.o
+ .debug_str       0x0004ec         0x16 build/default/debug/pod_manager_async.o
+ .debug_str       0x000502         0xa3 build/default/debug/relay_pwm_manager.o
 
 .debug_loc
  *(.debug_loc)
@@ -3485,200 +3485,200 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x0005d8       0x1503
+                  0x0005d8       0x143d
  .debug_pubtypes
                   0x0005d8        0x1b2 build/default/debug/PWM.o
  .debug_pubtypes
-                  0x00078a        0x228 build/default/debug/bluetooth.o
+                  0x00078a        0x1e4 build/default/debug/bluetooth.o
  .debug_pubtypes
-                  0x0009b2        0x648 build/default/debug/main.o
+                  0x00096e        0x648 build/default/debug/main.o
  .debug_pubtypes
-                  0x000ffa         0xf0 build/default/debug/owire.o
+                  0x000fb6         0xf0 build/default/debug/owire.o
  .debug_pubtypes
-                  0x0010ea         0xd2 build/default/debug/adc.o
+                  0x0010a6         0xd2 build/default/debug/adc.o
  .debug_pubtypes
-                  0x0011bc         0xf4 build/default/debug/piezos.o
+                  0x001178         0xf4 build/default/debug/piezos.o
  .debug_pubtypes
-                  0x0012b0         0x84 build/default/debug/eeprom.o
+                  0x00126c         0x84 build/default/debug/eeprom.o
  .debug_pubtypes
-                  0x001334         0xcd build/default/debug/eeprom_async.o
+                  0x0012f0         0xcd build/default/debug/eeprom_async.o
  .debug_pubtypes
-                  0x001401         0x8f build/default/debug/i2c.o
+                  0x0013bd         0x8f build/default/debug/i2c.o
  .debug_pubtypes
-                  0x001490         0xcd build/default/debug/i2c_async.o
+                  0x00144c         0xcd build/default/debug/i2c_async.o
  .debug_pubtypes
-                  0x00155d         0x7a build/default/debug/pod.o
+                  0x001519         0x7a build/default/debug/pod.o
  .debug_pubtypes
-                  0x0015d7         0xe1 build/default/debug/pod_manager.o
+                  0x001593         0xe1 build/default/debug/pod_manager.o
  .debug_pubtypes
-                  0x0016b8        0x173 build/default/debug/pod_manager_async.o
+                  0x001674        0x173 build/default/debug/pod_manager_async.o
  .debug_pubtypes
-                  0x00182b        0x2b0 build/default/debug/relay_pwm_manager.o
+                  0x0017e7        0x22e build/default/debug/relay_pwm_manager.o
 
 __c30_signature
-                  0x001adb        0x1e6
+                  0x001a15        0x1e6
  __c30_signature
-                  0x001adb          0x6 build/default/debug/PWM.o
+                  0x001a15          0x6 build/default/debug/PWM.o
  __c30_signature
-                  0x001ae1          0x6 build/default/debug/bluetooth.o
+                  0x001a1b          0x6 build/default/debug/bluetooth.o
  __c30_signature
-                  0x001ae7          0x6 build/default/debug/main.o
+                  0x001a21          0x6 build/default/debug/main.o
  __c30_signature
-                  0x001aed          0x6 build/default/debug/owire.o
+                  0x001a27          0x6 build/default/debug/owire.o
  __c30_signature
-                  0x001af3          0x6 build/default/debug/adc.o
+                  0x001a2d          0x6 build/default/debug/adc.o
  __c30_signature
-                  0x001af9          0x6 build/default/debug/piezos.o
+                  0x001a33          0x6 build/default/debug/piezos.o
  __c30_signature
-                  0x001aff          0x6 build/default/debug/eeprom.o
+                  0x001a39          0x6 build/default/debug/eeprom.o
  __c30_signature
-                  0x001b05          0x6 build/default/debug/eeprom_async.o
+                  0x001a3f          0x6 build/default/debug/eeprom_async.o
  __c30_signature
-                  0x001b0b          0x6 build/default/debug/i2c.o
+                  0x001a45          0x6 build/default/debug/i2c.o
  __c30_signature
-                  0x001b11          0x6 build/default/debug/i2c_async.o
+                  0x001a4b          0x6 build/default/debug/i2c_async.o
  __c30_signature
-                  0x001b17          0x6 build/default/debug/pod.o
+                  0x001a51          0x6 build/default/debug/pod.o
  __c30_signature
-                  0x001b1d          0x6 build/default/debug/pod_manager.o
+                  0x001a57          0x6 build/default/debug/pod_manager.o
  __c30_signature
-                  0x001b23          0x6 build/default/debug/pod_manager_async.o
+                  0x001a5d          0x6 build/default/debug/pod_manager_async.o
  __c30_signature
-                  0x001b29          0x6 build/default/debug/relay_pwm_manager.o
+                  0x001a63          0x6 build/default/debug/relay_pwm_manager.o
  __c30_signature
-                  0x001b2f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(crt0_extended24.o)
+                  0x001a69          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(crt0_extended24.o)
  __c30_signature
-                  0x001b35          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(data_init_24.o)
+                  0x001a6f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(data_init_24.o)
  __c30_signature
-                  0x001b3b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
+                  0x001a75          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
  __c30_signature
-                  0x001b41          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
+                  0x001a7b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(feqltle.DA_o)
  __c30_signature
-                  0x001b47          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
+                  0x001a81          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fgtge.DA_o)
  __c30_signature
-                  0x001b4d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
+                  0x001a87          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixsfsi.DA_o)
  __c30_signature
-                  0x001b53          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
+                  0x001a8d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixunssfsi.DA_o)
  __c30_signature
-                  0x001b59          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
+                  0x001a93          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatsisf.DA_o)
  __c30_signature
-                  0x001b5f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
+                  0x001a99          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatunsisf.DA_o)
  __c30_signature
-                  0x001b65          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
+                  0x001a9f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack.DA_o)
  __c30_signature
-                  0x001b6b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(udivsi3.DA_o)
+                  0x001aa5          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(udivsi3.DA_o)
  __c30_signature
-                  0x001b71          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divmoddi3.DA_o)
+                  0x001aab          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(divmoddi3.DA_o)
  __c30_signature
-                  0x001b77          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(muldi3.DA_o)
+                  0x001ab1          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(muldi3.DA_o)
  __c30_signature
-                  0x001b7d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(errno.DA_o)
+                  0x001ab7          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(errno.DA_o)
  __c30_signature
-                  0x001b83          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
+                  0x001abd          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fcompare.DA_o)
  __c30_signature
-                  0x001b89          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
+                  0x001ac3          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatdisf.DA_o)
  __c30_signature
-                  0x001b8f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
+                  0x001ac9          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(floatundisf.DA_o)
  __c30_signature
-                  0x001b95          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
+                  0x001acf          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fpack.DA_o)
  __c30_signature
-                  0x001b9b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
+                  0x001ad5          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(funpack2.DA_o)
  __c30_signature
-                  0x001ba1          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
+                  0x001adb          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(umuldi3.DA_o)
  __c30_signature
-                  0x001ba7          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__sio_sprintf_dfosux.DA_o)
+                  0x001ae1          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__sio_sprintf_dfosux.DA_o)
  __c30_signature
-                  0x001bad          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__sio_sprintf_dosux.DA_o)
+                  0x001ae7          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__sio_sprintf_dosux.DA_o)
  __c30_signature
-                  0x001bb3          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__sio_sprintf_s.DA_o)
+                  0x001aed          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__sio_sprintf_s.DA_o)
  __c30_signature
-                  0x001bb9          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(memcmp.DA_o)
+                  0x001af3          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(memcmp.DA_o)
  __c30_signature
-                  0x001bbf          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(memcpy.DA_o)
+                  0x001af9          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(memcpy.DA_o)
  __c30_signature
-                  0x001bc5          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(memset.DA_o)
+                  0x001aff          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(memset.DA_o)
  __c30_signature
-                  0x001bcb          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(strtol.DA_o)
+                  0x001b05          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(strtol.DA_o)
  __c30_signature
-                  0x001bd1          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_d.DA_o)
+                  0x001b0b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_d.DA_o)
  __c30_signature
-                  0x001bd7          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_fp.DA_o)
+                  0x001b11          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_fp.DA_o)
  __c30_signature
-                  0x001bdd          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_o.DA_o)
+                  0x001b17          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_o.DA_o)
  __c30_signature
-                  0x001be3          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_s.DA_o)
+                  0x001b1d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_s.DA_o)
  __c30_signature
-                  0x001be9          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_u.DA_o)
+                  0x001b23          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_u.DA_o)
  __c30_signature
-                  0x001bef          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_x.DA_o)
+                  0x001b29          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__fmt_x.DA_o)
  __c30_signature
-                  0x001bf5          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__int_vsprintf.DA_o)
+                  0x001b2f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__int_vsprintf.DA_o)
  __c30_signature
-                  0x001bfb          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__pop_float.DA_o)
+                  0x001b35          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__pop_float.DA_o)
  __c30_signature
-                  0x001c01          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__pop_int.DA_o)
+                  0x001b3b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__pop_int.DA_o)
  __c30_signature
-                  0x001c07          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__pop_ptr.DA_o)
+                  0x001b41          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__pop_ptr.DA_o)
  __c30_signature
-                  0x001c0d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__printf_core.DA_o)
+                  0x001b47          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__printf_core.DA_o)
  __c30_signature
-                  0x001c13          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(atoi.DA_o)
+                  0x001b4d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(atoi.DA_o)
  __c30_signature
-                  0x001c19          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(intscan.DA_o)
+                  0x001b53          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(intscan.DA_o)
  __c30_signature
-                  0x001c1f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(shgetc.DA_o)
+                  0x001b59          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(shgetc.DA_o)
  __c30_signature
-                  0x001c25          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(strcpy.DA_o)
+                  0x001b5f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(strcpy.DA_o)
  __c30_signature
-                  0x001c2b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(strlen.DA_o)
+                  0x001b65          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(strlen.DA_o)
  __c30_signature
-                  0x001c31          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(tolower.DA_o)
+                  0x001b6b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(tolower.DA_o)
  __c30_signature
-                  0x001c37          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(toupper.DA_o)
+                  0x001b71          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(toupper.DA_o)
  __c30_signature
-                  0x001c3d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__errno_location.DA_o)
+                  0x001b77          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__errno_location.DA_o)
  __c30_signature
-                  0x001c43          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__int_vsnprintf.DA_o)
+                  0x001b7d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__int_vsnprintf.DA_o)
  __c30_signature
-                  0x001c49          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__uflow.DA_o)
+                  0x001b83          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__uflow.DA_o)
  __c30_signature
-                  0x001c4f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(stpcpy.DA_o)
+                  0x001b89          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(stpcpy.DA_o)
  __c30_signature
-                  0x001c55          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__int_vfprintf.DA_o)
+                  0x001b8f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__int_vfprintf.DA_o)
  __c30_signature
-                  0x001c5b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__toread.DA_o)
+                  0x001b95          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__toread.DA_o)
  __c30_signature
-                  0x001c61          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__stdio_exit.DA_o)
+                  0x001b9b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-elf.a(__stdio_exit.DA_o)
  __c30_signature
-                  0x001c67          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
+                  0x001ba1          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(deqltle.DA_o)
  __c30_signature
-                  0x001c6d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
+                  0x001ba7          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dgtge.DA_o)
  __c30_signature
-                  0x001c73          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
+                  0x001bad          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(extendsfdf.DA_o)
  __c30_signature
-                  0x001c79          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
+                  0x001bb3          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(fixdfsi.DA_o)
  __c30_signature
-                  0x001c7f          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+                  0x001bb9          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
  __c30_signature
-                  0x001c85          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
+                  0x001bbf          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpadd.DA_o)
  __c30_signature
-                  0x001c8b          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
+                  0x001bc5          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpdiv.DA_o)
  __c30_signature
-                  0x001c91          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
+                  0x001bcb          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpmul.DA_o)
  __c30_signature
-                  0x001c97          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
+                  0x001bd1          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpsubs.DA_o)
  __c30_signature
-                  0x001c9d          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
+                  0x001bd7          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dcompare.DA_o)
  __c30_signature
-                  0x001ca3          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
+                  0x001bdd          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dtype.DA_o)
  __c30_signature
-                  0x001ca9          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
+                  0x001be3          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack.DA_o)
  __c30_signature
-                  0x001caf          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
+                  0x001be9          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dunpack2.DA_o)
  __c30_signature
-                  0x001cb5          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
+                  0x001bef          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(dpropagateNaN.DA_o)
  __c30_signature
-                  0x001cbb          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libm-elf.a(floorl.DA_o)
+                  0x001bf5          0x6 /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libm-elf.a(floorl.DA_o)
 
 .nbss               0x0850         0x46
  .nbss              0x0850         0x18 build/default/debug/adc.o
@@ -3839,7 +3839,7 @@ __c30_signature
  .const             0xb388          0x6 build/default/debug/pod_manager.o
  .const             0xb38e          0x6 build/default/debug/pod_manager_async.o
 
-.text             0x003394       0x2f4c
+.text             0x003394       0x2eee
  .text            0x003394        0xd66 build/default/debug/owire.o
                   0x003394                  _docrc8
                   0x0033aa                  _ow_reset
@@ -3876,120 +3876,120 @@ __c30_signature
                   0x004056                  _pods_idle
                   0x00406a                  _remove_pod
                   0x00408a                  _locate_pods
- .text            0x0040fa        0x9da build/default/debug/bluetooth.o
-                  0x004160                  _bluetooth_init
-                  0x00416e                  _enableSerial
-                  0x004198                  _BTTX
-                  0x0041cc                  _sendLEName
-                  0x0041fe                  _sendName
-                  0x004230                  _enableSSP
-                  0x00425e                  _profileSelect
-                  0x00428e                  _sendTest
-                  0x004322                  _sendData
-                  0x004370                  _sendButtonState
-                  0x0043a0                  _sendBattLevel
-                  0x0043ce                  _sendPod
-                  0x004408                  _sendScentLevel
-                  0x004442                  _sendScentIDs
-                  0x00447c                  _sendScentMsg
-                  0x0044b0                  _sendReboot
-                  0x0044de                  _sendDSCA
-                  0x00450c                  _sendA2dpDisc
-                  0x004528                  _sendRestore
-                  0x004542                  _sendSPPData
-                  0x0045b2                  _sendPodIDsOLD
-                  0x004628                  _sendScentIDsOLD
-                  0x00469e                  _sendScentLevelsOLD
-                  0x0046fa                  _sendPowerStatsOLD
-                  0x004784                  _dump_OK
-                  0x0047e2                  _BTRX
- .text            0x004ad4        0x976 build/default/debug/piezos.o
-                  0x004ad4                  _activate_piezo
-                  0x004c18                  _fire_piezo_R1
-                  0x004cac                  _fire_piezo_R2
-                  0x004d40                  _fire_piezo_R3
-                  0x004dc8                  _fire_piezo_L1
-                  0x004e5c                  _fire_piezo_L2
-                  0x004ef0                  _fire_piezo_L3
-                  0x004f78                  _wait_4_piezo
-                  0x004faa                  _fire_piezo
-                  0x005128                  _fire_piezo_two
-                  0x0052a4                  _piezo_handler
-                  0x0052f4                  _adjust_intensity
-                  0x00532c                  _piezo_fifo_init
-                  0x005342                  _piezo_fifo_right_get
-                  0x005396                  _piezo_fifo_right_put
-                  0x0053be                  _piezo_fifo_right_items
-                  0x0053c6                  _piezo_fifo_left_get
-                  0x00541a                  _piezo_fifo_left_put
-                  0x005442                  _piezo_fifo_left_items
- .text            0x00544a        0x60e build/default/debug/main.o
-                  0x0054c0                  _pps_init
-                  0x0054f6                  _init_pins
-                  0x00558a                  _Setup_Timer1
-                  0x0055aa                  _Setup_Timer4
-                  0x0055c6                  _startUp
-                  0x0056b6                  _check_poll
-                  0x005784                  _check_boost_wdelay
-                  0x0057b4                  _pod_fire_handler
-                  0x005800                  build/default/debug/main.o:_pod_manager_async_fire_callback
-                  0x0058a6                  _bluetooth_evt_callback
-                  0x0058fa                  _main
-                  0x005956                  _toggleLed
-                  0x005986                  _change_global_intensity
- .text            0x005a58        0x340 build/default/debug/eeprom.o
-                  0x005aa4                  _eeprom_init
-                  0x005ac6                  _eeprom_deinit
-                  0x005ada                  _eeprom_write_byte
-                  0x005b5c                  _eeprom_read_byte
-                  0x005bf8                  _eeprom_read_block
-                  0x005cba                  _eeprom_write_block
- .text            0x005d98        0x2be build/default/debug/i2c.o
-                  0x005e10                  _i2c_init
-                  0x005e8c                  _i2c_deinit
-                  0x005ec4                  _i2c_start
-                  0x005ef4                  _i2c_restart
-                  0x005f24                  _i2c_accept
-                  0x005f54                  _i2c_stop
-                  0x005f84                  _i2c_write_byte
-                  0x005fd2                  _i2c_read_byte
- .text            0x006056        0x28a build/default/debug/relay_pwm_manager.o
-                  0x0060e0                  _relay_pwm_init
-                  0x006288                  _relay_pwm_fire
-                  0x0062ce                  _relay_pwm_stop
+ .text            0x0040fa        0x9a0 build/default/debug/bluetooth.o
+                  0x004126                  _bluetooth_init
+                  0x004134                  _enableSerial
+                  0x00415e                  _BTTX
+                  0x004192                  _sendLEName
+                  0x0041c4                  _sendName
+                  0x0041f6                  _enableSSP
+                  0x004224                  _profileSelect
+                  0x004254                  _sendTest
+                  0x0042e8                  _sendData
+                  0x004336                  _sendButtonState
+                  0x004366                  _sendBattLevel
+                  0x004394                  _sendPod
+                  0x0043ce                  _sendScentLevel
+                  0x004408                  _sendScentIDs
+                  0x004442                  _sendScentMsg
+                  0x004476                  _sendReboot
+                  0x0044a4                  _sendDSCA
+                  0x0044d2                  _sendA2dpDisc
+                  0x0044ee                  _sendRestore
+                  0x004508                  _sendSPPData
+                  0x004578                  _sendPodIDsOLD
+                  0x0045ee                  _sendScentIDsOLD
+                  0x004664                  _sendScentLevelsOLD
+                  0x0046c0                  _sendPowerStatsOLD
+                  0x00474a                  _dump_OK
+                  0x0047a8                  _BTRX
+ .text            0x004a9a        0x976 build/default/debug/piezos.o
+                  0x004a9a                  _activate_piezo
+                  0x004bde                  _fire_piezo_R1
+                  0x004c72                  _fire_piezo_R2
+                  0x004d06                  _fire_piezo_R3
+                  0x004d8e                  _fire_piezo_L1
+                  0x004e22                  _fire_piezo_L2
+                  0x004eb6                  _fire_piezo_L3
+                  0x004f3e                  _wait_4_piezo
+                  0x004f70                  _fire_piezo
+                  0x0050ee                  _fire_piezo_two
+                  0x00526a                  _piezo_handler
+                  0x0052ba                  _adjust_intensity
+                  0x0052f2                  _piezo_fifo_init
+                  0x005308                  _piezo_fifo_right_get
+                  0x00535c                  _piezo_fifo_right_put
+                  0x005384                  _piezo_fifo_right_items
+                  0x00538c                  _piezo_fifo_left_get
+                  0x0053e0                  _piezo_fifo_left_put
+                  0x005408                  _piezo_fifo_left_items
+ .text            0x005410        0x638 build/default/debug/main.o
+                  0x0054f2                  _pps_init
+                  0x005528                  _init_pins
+                  0x0055b8                  _Setup_Timer1
+                  0x0055d8                  _Setup_Timer4
+                  0x0055f4                  _startUp
+                  0x0056e4                  _check_poll
+                  0x0057b2                  _check_boost_wdelay
+                  0x0057e2                  _pod_fire_handler
+                  0x00582e                  build/default/debug/main.o:_pod_manager_async_fire_callback
+                  0x005890                  _bluetooth_evt_callback
+                  0x0058e4                  _main
+                  0x005946                  _toggleLed
+                  0x005976                  _change_global_intensity
+ .text            0x005a48        0x340 build/default/debug/eeprom.o
+                  0x005a94                  _eeprom_init
+                  0x005ab6                  _eeprom_deinit
+                  0x005aca                  _eeprom_write_byte
+                  0x005b4c                  _eeprom_read_byte
+                  0x005be8                  _eeprom_read_block
+                  0x005caa                  _eeprom_write_block
+ .text            0x005d88        0x2be build/default/debug/i2c.o
+                  0x005e00                  _i2c_init
+                  0x005e7c                  _i2c_deinit
+                  0x005eb4                  _i2c_start
+                  0x005ee4                  _i2c_restart
+                  0x005f14                  _i2c_accept
+                  0x005f44                  _i2c_stop
+                  0x005f74                  _i2c_write_byte
+                  0x005fc2                  _i2c_read_byte
+ .text            0x006046        0x23c build/default/debug/relay_pwm_manager.o
+                  0x0060d0                  _relay_pwm_init
+                  0x00622a                  _relay_pwm_fire
+                  0x006270                  _relay_pwm_stop
 
-.dinit            0x0062e0        0x21c
- .dinit           0x0062e0        0x21c data_init
+.dinit            0x006282        0x21c
+ .dinit           0x006282        0x21c data_init
 
-.text             0x0064fc        0x830
- .text            0x0064fc        0x1fc build/default/debug/pod_manager_async.o
-                  0x006572                  _relay_pwm_fire_callback
-                  0x0065a0                  _pod_manager_async_init
-                  0x0065fa                  _pod_manager_async_poll
-                  0x006636                  build/default/debug/pod_manager_async.o:_pod_read_done
-                  0x0066ba                  _pod_manager_fire
- .text            0x0066f8        0x18e build/default/debug/PWM.o
-                  0x0066f8                  _calc_pwm_multi
-                  0x00674c                  _PWM_FREQ
-                  0x0067a0                  _PWM_Setup
-                  0x0067e0                  _PWM_PIEZO_R
-                  0x00682e                  _PWM_PIEZO_L
- .text            0x006886        0x166 build/default/debug/i2c_async.o
-                  0x0068d4                  _i2c_async_init
-                  0x006914                  _i2c_async_submit
- .text            0x0069ec        0x130 build/default/debug/adc.o
-                  0x0069ec                  _setup_adc
-                  0x006a1a                  _calc_adc
- .text            0x006b1c        0x116 build/default/debug/eeprom_async.o
-                  0x006b1c                  _eeproma_read_block_async
-                  0x006b9a                  build/default/debug/eeprom_async.o:_eeproma_read_cb
-                  0x006bf8                  _eeproma_init
- .text            0x006c32         0xfa build/default/debug/pod.o
-                  0x006c4a                  _pod_init
-                  0x006c76                  _pod_deinit
-                  0x006c8c                  _pod_detect
-                  0x006cdc                  _pod_load_metadata
+.text             0x00649e        0x830
+ .text            0x00649e        0x1fc build/default/debug/pod_manager_async.o
+                  0x006514                  _relay_pwm_fire_callback
+                  0x006542                  _pod_manager_async_init
+                  0x00659c                  _pod_manager_async_poll
+                  0x0065d8                  build/default/debug/pod_manager_async.o:_pod_read_done
+                  0x00665c                  _pod_manager_fire
+ .text            0x00669a        0x18e build/default/debug/PWM.o
+                  0x00669a                  _calc_pwm_multi
+                  0x0066ee                  _PWM_FREQ
+                  0x006742                  _PWM_Setup
+                  0x006782                  _PWM_PIEZO_R
+                  0x0067d0                  _PWM_PIEZO_L
+ .text            0x006828        0x166 build/default/debug/i2c_async.o
+                  0x006876                  _i2c_async_init
+                  0x0068b6                  _i2c_async_submit
+ .text            0x00698e        0x130 build/default/debug/adc.o
+                  0x00698e                  _setup_adc
+                  0x0069bc                  _calc_adc
+ .text            0x006abe        0x116 build/default/debug/eeprom_async.o
+                  0x006abe                  _eeproma_read_block_async
+                  0x006b3c                  build/default/debug/eeprom_async.o:_eeproma_read_cb
+                  0x006b9a                  _eeproma_init
+ .text            0x006bd4         0xfa build/default/debug/pod.o
+                  0x006bec                  _pod_init
+                  0x006c18                  _pod_deinit
+                  0x006c2e                  _pod_detect
+                  0x006c7e                  _pod_load_metadata
 
-.init.delay32     0x006d2c         0x1c
- .init.delay32    0x006d2c         0x1c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
-                  0x006d2c                  ___delay32
+.init.delay32     0x006cce         0x1c
+ .init.delay32    0x006cce         0x1c /Applications/microchip/xc16/v2.10/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
+                  0x006cce                  ___delay32
