@@ -20,6 +20,8 @@
 #include "relay_pwm_manager.h"
 #include "pod_manager_async.h"
 
+#define FREQ_DEFAULT 93 //remove after testing
+
 static void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt);
 
 float intensity_multi = 1;
@@ -384,7 +386,7 @@ void check_boost_wdelay(void)
 
 void pod_fire_handler(void)
 {
-    if (pod_fire_active)
+    if (pod_fire_active && !pod_is_firing)
     {
         pod_is_firing = true;
         pod_manager_fire(&podman, pod_fire_bay, podman.pods[pod_fire_bay].duration_ms, podman.pods[pod_fire_bay].intensity);
@@ -394,17 +396,58 @@ void pod_fire_handler(void)
 
 void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt)
 {
+    volatile int x = 243;
     switch (*p_evt)
-    {
+    {     
     case POD_MANAGER_ASYNC_EVT_FIRE:
+        x++;
         break;
     case POD_MANAGER_ASYNC_EVT_STOP:
         pod_is_firing = false;
+        T1CONbits.TON = 1;
         break;
     default:
         break;
     }
 }
+
+static void main_pwm_start(uint8_t pod, uint16_t intensity)
+{
+    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / 144u);
+    
+    // Avoid race with 1 ms ISR while touching CCP/T2
+    uint16_t t3ie = IEC0bits.T3IE;
+    IEC0bits.T3IE = 0;
+
+    T2CONbits.TON = 0;
+
+    if (pod < 3)
+    {
+        CCP2RB = duty_16;        // falling edge (50% duty)
+        CCP2CON1Lbits.CCPON = 1; // enable MCCP2
+    }
+    else
+    {
+        CCP3RB = duty_16;
+        CCP3CON1Lbits.CCPON = 1; // enable MCCP3
+    }
+
+    T2CONbits.TON = 1; // enable Timer2 for PWM timebase
+    IEC0bits.T3IE = t3ie;
+}
+
+static void main_pwm_stop(void)
+{
+    // Avoid race with 1 ms ISR while touching CCP/T2
+    uint16_t t3ie = IEC0bits.T3IE;
+    IEC0bits.T3IE = 0;
+
+    CCP2CON1Lbits.CCPON = 0;
+    CCP3CON1Lbits.CCPON = 0;
+    T2CONbits.TON = 0;
+    IEC0bits.T3IE = t3ie;
+}
+
 
 void bluetooth_evt_callback(bluetooth_evt_data_t *p_evt_data)
 {
@@ -452,12 +495,29 @@ int main(void)
     update_intensity_leds();
 
     // pods = locate_pods();
-    Setup_Timer1(); // Set up timer for pod manager async polling
-    Setup_Timer4(); // Set up timer for power button timing
+    //Setup_Timer1(); // Set up timer for pod manager async polling
+    //Setup_Timer4(); // Set up timer for power button timing
     __builtin_enable_interrupts();
     while (1) // Start infinite loop, keeping code alive
     {
-        pod_fire_handler();
+        //pod_fire_handler();
+        //if (!pod_fire_active && !pod_is_firing && podman.pods[0].active)
+        //{
+          //  pod_fire_active = true;
+            //T1CONbits.TON = 0;
+        //}
+        //if (pod_fire_active && !pod_is_firing)
+        //if (podman.pods[0].active)
+       //{
+            //pod_is_firing = true;
+            //pod_manager_fire(&podman, pod_fire_bay, podman.pods[pod_fire_bay].duration_ms, podman.pods[pod_fire_bay].intensity);
+            //pod_manager_fire(&podman, 0, 1000, 0x80);
+
+            main_pwm_start(4, 0x80);
+            //pod_fire_active = false;
+            __delay_ms(5000);
+            main_pwm_stop();
+        //}   
     }
     return 0;
 }

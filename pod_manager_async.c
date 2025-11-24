@@ -21,6 +21,8 @@ void relay_pwm_fire_callback(relay_pwm_evt_t *p_evt)
     switch (*p_evt)
     {
         case RELAY_PWM_EVT_FIRE:
+            evt = POD_MANAGER_ASYNC_EVT_FIRE;
+            p_callback(&evt);
             break;
     
         case RELAY_PWM_EVT_STOP:
