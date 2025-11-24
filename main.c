@@ -24,7 +24,7 @@
 
 static void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt);
 
-float intensity_multi = 1;
+uint8_t intensity_multi = 128;
 
 static i2c_async_t i2c1_async;
 static pod_manager_async_t podman;
@@ -405,7 +405,7 @@ void pod_fire_handler(void)
     if (pod_fire_active && !pod_is_firing)
     {
         pod_is_firing = true;
-        pod_manager_fire(&podman, pod_fire_bay, podman.pods[pod_fire_bay].duration_ms, podman.pods[pod_fire_bay].intensity);
+        pod_manager_fire(&podman, pod_fire_bay, podman.pods[pod_fire_bay].duration_ms, podman.pods[pod_fire_bay].intensity, intensity_multi);
         pod_fire_active = false;
     }
 }

@@ -75,6 +75,6 @@ typedef void (*pod_manager_async_fire_callback_t)(pod_manager_async_evt_t *p_evt
 
 void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manager_async_fire_callback_t p_cb);
 void pod_manager_async_poll(pod_manager_async_t *pm);
-void pod_manager_fire(pod_manager_async_t *pm, uint8_t bay, uint16_t duration_ms, uint8_t intensity);
+void pod_manager_fire(pod_manager_async_t *pm, uint8_t bay, uint16_t duration_ms, uint8_t pulse_duty, uint8_t multiplier);
 
 #endif

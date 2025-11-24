@@ -80,7 +80,7 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
     }
 }
 
-void pod_manager_fire(pod_manager_async_t *pm, uint8_t bay, uint16_t duration_ms, uint8_t intensity)
+void pod_manager_fire(pod_manager_async_t *pm, uint8_t bay, uint16_t duration_ms, uint8_t pulse_duty, uint8_t multiplier)
 {
     if (bay >= POD_BAY_COUNT)
     {
@@ -91,5 +91,5 @@ void pod_manager_fire(pod_manager_async_t *pm, uint8_t bay, uint16_t duration_ms
     {
         return;
     }
-    relay_pwm_fire(bay, duration_ms, intensity);
+    relay_pwm_fire(bay, duration_ms, pulse_duty, p->data.time_period, p->data.pwm_setting, multiplier);
 }

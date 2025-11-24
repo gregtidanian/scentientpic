@@ -29,9 +29,12 @@ static const relay_pin_t RELAYS[6] = {
 
 static uint8_t active_pod = 0xFF;
 static uint8_t pulse_intensity = 100;
+static uint8_t pwm_duty = 0;
 static uint16_t pulse_duration_ms = 0;
-static uint16_t pulse_timer_ms = 0;
-static bool pulse_on = false;
+static volatile uint16_t pulse_timer_ms = 0;
+static volatile bool pulse_on = false;
+static uint16_t on_time = 0;
+static uint16_t off_time = 0;
 
 static relay_pwm_fire_callback_t p_callback = NULL;
 
@@ -120,7 +123,7 @@ void relay_pwm_init(relay_pwm_fire_callback_t p_cb)
 // ------------------------------------------------------------
 static void pwm_start(uint8_t pod, uint16_t intensity)
 {
-    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / 256U);
+    uint16_t duty_16 = (uint16_t)((FREQ_DEFAULT * intensity) / 100U);
     
     if (pod < 3)
     {
@@ -143,7 +146,7 @@ static void pwm_stop(void)
 // ------------------------------------------------------------
 // Fire a pod?s PWM + relay with pulsing
 // ------------------------------------------------------------
-void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t intensity)
+void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t pulse_duty, uint16_t pulse_period, uint8_t pwm_duty, uint8_t multiplier)
 {
     if (pod_index >= 6)
     {
@@ -153,14 +156,18 @@ void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t intensity)
     all_relays_off();
     relay_on(pod_index);
 
-    pwm_start(pod_index, intensity);
-    relay_pwm_evt_t evt = RELAY_PWM_EVT_FIRE;
-    p_callback(&evt);
     active_pod = pod_index;
-    pulse_intensity = intensity;
+    uint32_t temp_period = (uint32_t)pulse_period * pulse_duty * multiplier / 255UL;
+    on_time = (uint16_t)(temp_period / 100U);
+    on_time = (on_time > pulse_period) ? pulse_period : on_time;
+    off_time = pulse_period - on_time;
     pulse_duration_ms = duration_ms;
     pulse_timer_ms = 0;
     pulse_on = true;
+    pwm_duty = pwm_duty;
+    pwm_start(pod_index, pwm_duty);
+    relay_pwm_evt_t evt = RELAY_PWM_EVT_FIRE;
+    p_callback(&evt);
 }
 
 void relay_pwm_stop(void)
@@ -186,12 +193,9 @@ void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void)
 
     pulse_timer_ms++;
 
-    uint16_t on_ms = (pulse_intensity * 1000UL) / 100;
-    uint16_t off_ms = 1000UL - on_ms;
-
     if (pulse_on)
     {
-        if (pulse_timer_ms >= on_ms)
+        if (pulse_timer_ms >= on_time)
         {
             pwm_stop();
             pulse_on = false;
@@ -200,9 +204,9 @@ void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void)
     }
     else
     {
-        if (pulse_timer_ms >= off_ms)
+        if (pulse_timer_ms >= off_time)
         {
-            pwm_start(active_pod, 50); // re-enable PWM at nominal freq
+            pwm_start(active_pod, pwm_duty); // re-enable PWM at nominal freq
             pulse_on = true;
             pulse_timer_ms = 0;
         }

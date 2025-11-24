@@ -26,7 +26,7 @@ typedef enum
 typedef void (*relay_pwm_fire_callback_t)(relay_pwm_evt_t *p_evt);
 
 void relay_pwm_init(relay_pwm_fire_callback_t p_cb);
-void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t intensity);
 void relay_pwm_stop(void);
+void relay_pwm_fire_with_period(uint8_t pod_index, uint16_t duration_ms, uint8_t pulse_duty, uint16_t pulse_period, uint8_t pwm_duty, uint8_t multiplier);
 
 #endif
