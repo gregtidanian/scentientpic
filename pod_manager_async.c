@@ -1,6 +1,9 @@
 #include "pod_manager_async.h"
 #include <string.h>
 
+#define POD_MAX_PWM_SETTING 100
+#define POD_DEFAULT_PWM_SETTING 50
+
 /**
  * Note that the i2c addess and relay pin mapping goes
  * Pod:         1R      2R      3R      1L      2L      3L
@@ -73,6 +76,9 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
         p->data.reserved[1] = b[15];
         p->bursts.bursts_active = u32_from_buf_le(&b[16]);
 
+        // Default is active
+        p->active = true;
+
         // Check validity of pod
         if ((p->data.serial_number = 0xFFFFFFFF) &&
             (p->data.pwm_setting = 0xFF) &&
@@ -80,13 +86,9 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
         {
             // p->active = false;
         }
-        else
-        {
-            p->active = true;
-        }
 
         // Prevent invalid data range
-        p->data.pwm_setting = (p->data.pwm_setting > 100) & 100 : p->data.pwm_setting;
+        p->data.pwm_setting = (p->data.pwm_setting > POD_MAX_PWM_SETTING) & POD_DEFAULT_PWM_SETTING : p->data.pwm_setting;
     }
     else
     {
