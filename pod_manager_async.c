@@ -66,6 +66,7 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
     if (res == EEPROMA_OK)
     {
         const uint8_t *b = p->buf;
+        p->active = false;
         p->data.serial_number = u32_from_buf_le(&b[0]);
         p->data.scent_id = u16_from_buf_le(&b[4]);
         p->data.pwm_setting = (b[6] > POD_MAX_PWM_SETTING) ? POD_DEFAULT_PWM_SETTING : b[6]; // Prevent invalid data range
@@ -76,14 +77,10 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
         p->data.reserved[1] = b[15];
         p->bursts.bursts_active = u32_from_buf_le(&b[16]);
 
-        // Default is active
-        p->active = true;
-
         // Check validity of pod
-        if ((p->data.serial_number == 0xFFFFFFFF) &&
-            (p->data.time_period == 0xFFFF))
+        if (p->data.serial_number != 0xFFFFFFFF)
         {
-            p->active = false;
+            p->active = true;
         }
     }
     else
