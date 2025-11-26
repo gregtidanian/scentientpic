@@ -273,7 +273,7 @@ void Setup_Timer2(void)
     T2CONbits.TCS = 0;   // Internal clock
     T2CONbits.TCKPS = 2; // 1:64 prescale -> 4us/tick @ 16MHz FCY
     TMR2 = 0;
-    PR2 = 3750;       // ~15ms debounce window
+    PR2 = 3750; // ~15ms debounce window
     IFS0bits.T2IF = 0;
     IEC0bits.T2IE = 0; // Enabled on demand when scheduling
 }
@@ -447,7 +447,7 @@ void bluetooth_evt_callback(bluetooth_evt_data_t *p_evt_data)
     switch (p_evt_data->evt)
     {
     case BLUETOOTH_EVT_POD_FIRE:
-        if (!pod_is_firing)
+        if (!pod_is_firing && (podman.pods[p_evt_data->pod].active))
         {
             pod_fire_active = true;
             podman.pods[p_evt_data->pod].intensity = p_evt_data->intensity;
