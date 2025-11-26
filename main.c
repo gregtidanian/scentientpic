@@ -48,6 +48,15 @@ uint8_t button_state = 0, down_pressed = 0, up_pressed = 0;
 int global_intensity = 0;
 volatile uint8_t int3_state = 0; // 0: idle, 1: wait 500ms, 2: wait 1000ms
 
+// Shared Timer2 debounce for SW2/SW3
+typedef enum
+{
+    DEBOUNCE_NONE = 0,
+    DEBOUNCE_SW2_DECR,
+    DEBOUNCE_SW3_INCR
+} debounce_source_t;
+static volatile debounce_source_t debounce_source = DEBOUNCE_NONE;
+
 #define UART1RXPIN 26 // RG7 (RP26)
 #define UART1TXPIN 21 // RG6 (RP21)
 
@@ -255,6 +264,18 @@ void Setup_Timer1(void)
     IFS0bits.T1IF = 0; // Clear flag
     IEC0bits.T1IE = 1; // Enable interrupt
     T1CONbits.TON = 1; // Start
+}
+
+// Timer2: one-shot debounce for SW2/SW3
+void Setup_Timer2(void)
+{
+    T2CONbits.TON = 0;
+    T2CONbits.TCS = 0;   // Internal clock
+    T2CONbits.TCKPS = 2; // 1:64 prescale -> 4us/tick @ 16MHz FCY
+    TMR2 = 0;
+    PR2 = 3750;       // ~15ms debounce window
+    IFS0bits.T2IF = 0;
+    IEC0bits.T2IE = 0; // Enabled on demand when scheduling
 }
 
 // Timer4 is used for non-blocking power button timing
@@ -471,6 +492,7 @@ int main(void)
     update_intensity_leds();
 
     Setup_Timer1(); // Set up timer for pod manager async polling
+    Setup_Timer2(); // One-shot debounce for SW2/SW3
     Setup_Timer4(); // Set up timer for power button timing
     __builtin_enable_interrupts();
     while (1) // Start infinite loop, keeping code alive
@@ -529,34 +551,50 @@ void change_global_intensity(char dir)
     __delay_ms(200);
 }
 
+// Schedule debounce via Timer2 (shared for SW2/SW3)
+static inline void start_button_debounce(debounce_source_t source)
+{
+    if (debounce_source != DEBOUNCE_NONE)
+    {
+        return; // Debounce already in progress
+    }
+
+    debounce_source = source;
+
+    // Prevent re-entry while debouncing
+    switch (source)
+    {
+    case DEBOUNCE_SW2_DECR:
+        IEC1bits.INT1IE = 0;
+        IFS1bits.INT1IF = 0;
+        break;
+    case DEBOUNCE_SW3_INCR:
+        IEC1bits.INT2IE = 0;
+        IFS1bits.INT2IF = 0;
+        break;
+    default:
+        break;
+    }
+
+    TMR2 = 0;
+    IFS0bits.T2IF = 0;
+    IEC0bits.T2IE = 1;
+    T2CONbits.TON = 1; // One-shot; PR2 set in Setup_Timer2
+}
+
 void __attribute__((interrupt, no_auto_psv)) _IOCInterrupt(void)
 {
     if (IOCFDbits.IOCFD11)
     {
         IOCFDbits.IOCFD11 = 0; // clear this pin's change flag
 
-        __delay_ms(10);               // Guard against interference
-        change_global_intensity('D'); // Swapped: SW2 now DECREASES
-        down_pressed++;
-        if (2 == up_pressed && 2 == down_pressed)
-        {
-            // mode = LOCATE_REMOVE;
-        }
-        __delay_ms(250); // Guard against button bounce
+        start_button_debounce(DEBOUNCE_SW2_DECR);
     }
     if (IOCFDbits.IOCFD10)
     {
         IOCFDbits.IOCFD10 = 0; // clear this pin's change flag
 
-        __delay_ms(10);               // Guard against interference
-                                      // if (PORTFbits.RF5)      // Is button still pressed?
-        change_global_intensity('I'); // Swapped: SW3 now INCREASES
-        up_pressed++;
-        /* if (2 == up_pressed && 2 == down_pressed)
-        {
-            mode = LOCATE_REMOVE;
-        } */
-        __delay_ms(250); // Guard against button bounce
+        start_button_debounce(DEBOUNCE_SW3_INCR);
     }
     if (IOCFDbits.IOCFD8)
     {
@@ -591,32 +629,44 @@ void _ISR _T1Interrupt(void)
 void _ISR _INT1Interrupt(void) // Decrement button interrupt (swapped)
 {
     IFS1bits.INT1IF = 0; // Clear interrupt flag
-    IEC1bits.INT1IE = 0; // Disable interrupt while here
-
-    __delay_ms(10);               // Guard against interference
-    change_global_intensity('D'); // Swapped: SW2 now DECREASES
-    down_pressed++;
-    // if (2 == up_pressed && 2 == down_pressed)
-    // mode = LOCATE_REMOVE;
-    __delay_ms(250); // Guard against button bounce
-
-    IEC1bits.INT1IE = 1; // Re-enable interrupt
+    start_button_debounce(DEBOUNCE_SW2_DECR);
 }
 
 void _ISR _INT2Interrupt(void) // Increment button interrupt (swapped)
 {
     IFS1bits.INT2IF = 0; // Clear interrupt flag
-    IEC1bits.INT2IE = 0; // Disable interrupt while here
+    start_button_debounce(DEBOUNCE_SW3_INCR);
+}
 
-    __delay_ms(10);               // Guard against interference
-                                  // if (PORTFbits.RF5)      // Is button still pressed?
-    change_global_intensity('I'); // Swapped: SW3 now INCREASES
-    up_pressed++;
-    // if (2 == up_pressed && 2 == down_pressed)
-    //   mode = LOCATE_REMOVE;
-    __delay_ms(250); // Guard against button bounce
+void _ISR _T2Interrupt(void) // Debounce timer for SW2/SW3
+{
+    IFS0bits.T2IF = 0;
+    T2CONbits.TON = 0; // One-shot complete
 
-    IEC1bits.INT2IE = 1; // Re-enable interrupt
+    debounce_source_t source = debounce_source;
+    debounce_source = DEBOUNCE_NONE;
+
+    switch (source)
+    {
+    case DEBOUNCE_SW2_DECR:
+        if (PORTDbits.RD11)
+        {
+            change_global_intensity('D');
+            down_pressed++;
+        }
+        IEC1bits.INT1IE = 1; // Re-enable SW2 interrupt
+        break;
+    case DEBOUNCE_SW3_INCR:
+        if (PORTDbits.RD10)
+        {
+            change_global_intensity('I');
+            up_pressed++;
+        }
+        IEC1bits.INT2IE = 1; // Re-enable SW3 interrupt
+        break;
+    default:
+        break;
+    }
 }
 
 void _ISR _INT3Interrupt(void) // Decrement button interrupt
