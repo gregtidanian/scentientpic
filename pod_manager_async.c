@@ -20,17 +20,17 @@ void relay_pwm_fire_callback(relay_pwm_evt_t *p_evt)
     pod_manager_async_evt_t evt;
     switch (*p_evt)
     {
-        case RELAY_PWM_EVT_FIRE:
-            evt = POD_MANAGER_ASYNC_EVT_FIRE;
-            p_callback(&evt);
-            break;
-    
-        case RELAY_PWM_EVT_STOP:
-            evt = POD_MANAGER_ASYNC_EVT_STOP;
-            p_callback(&evt);
-            break;
-        default:
-            break;
+    case RELAY_PWM_EVT_FIRE:
+        evt = POD_MANAGER_ASYNC_EVT_FIRE;
+        p_callback(&evt);
+        break;
+
+    case RELAY_PWM_EVT_STOP:
+        evt = POD_MANAGER_ASYNC_EVT_STOP;
+        p_callback(&evt);
+        break;
+    default:
+        break;
     }
 }
 
@@ -63,16 +63,30 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
     if (res == EEPROMA_OK)
     {
         const uint8_t *b = p->buf;
-        p->data.serial_number     = u32_from_buf_le(&b[0]);
-        p->data.scent_id          = u16_from_buf_le(&b[4]);
-        p->data.pwm_setting       = b[6];
-        p->data.time_period       = u16_from_buf_le(&b[7]);
+        p->data.serial_number = u32_from_buf_le(&b[0]);
+        p->data.scent_id = u16_from_buf_le(&b[4]);
+        p->data.pwm_setting = b[6];
+        p->data.time_period = u16_from_buf_le(&b[7]);
         p->data.burst_capacity_ms = u32_from_buf_le(&b[9]);
-        p->data.version           = b[13];
-        p->data.reserved[0]       = b[14];
-        p->data.reserved[1]       = b[15];
-        p->bursts.bursts_active   = u32_from_buf_le(&b[16]);
-        p->active = true;
+        p->data.version = b[13];
+        p->data.reserved[0] = b[14];
+        p->data.reserved[1] = b[15];
+        p->bursts.bursts_active = u32_from_buf_le(&b[16]);
+
+        // Check validity of pod
+        if ((p->data.serial_number = 0xFFFFFFFF) &&
+            (p->data.pwm_setting = 0xFF) &&
+            (p->data.time_period = 0xFFFF))
+        {
+            // p->active = false;
+        }
+        else
+        {
+            p->active = true;
+        }
+
+        // Prevent invalid data range
+        p->data.pwm_setting = (p->data.pwm_setting > 100) & 100 : p->data.pwm_setting;
     }
     else
     {
