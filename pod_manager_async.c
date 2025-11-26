@@ -80,8 +80,8 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
         p->active = true;
 
         // Check validity of pod
-        if ((p->data.serial_number = 0xFFFFFFFF) &&
-            (p->data.time_period = 0xFFFF))
+        if ((p->data.serial_number == 0xFFFFFFFF) &&
+            (p->data.time_period == 0xFFFF))
         {
             p->active = false;
         }
