@@ -68,7 +68,7 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
         const uint8_t *b = p->buf;
         p->data.serial_number = u32_from_buf_le(&b[0]);
         p->data.scent_id = u16_from_buf_le(&b[4]);
-        p->data.pwm_setting = (b[6] > POD_MAX_PWM_SETTING) & POD_DEFAULT_PWM_SETTING : b[6]; // Prevent invalid data range
+        p->data.pwm_setting = (b[6] > POD_MAX_PWM_SETTING) POD_DEFAULT_PWM_SETTING : b[6]; // Prevent invalid data range
         p->data.time_period = u16_from_buf_le(&b[7]);
         p->data.burst_capacity_ms = u32_from_buf_le(&b[9]);
         p->data.version = b[13];
