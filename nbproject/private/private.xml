@@ -3,28 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/relay_pwm_manager.h</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/eeprom.h</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/piezos.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/PWM.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/eeprom.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/pod_manager_async.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/i2c.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/relay_pwm_manager.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/bluetooth.h</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/pod_manager_async.h</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/i2c_async.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/i2c.h</file>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/main.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/eeprom_async.h</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/i2c_async.h</file>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/bluetooth.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/pod.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/pod_manager.h</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/eeprom_async.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/adc.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/pod_manager.c</file>
-            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/pod.h</file>
+            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/eeprom_async.h</file>
+            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/pod_manager_async.c</file>
+            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/relay_pwm_manager.c</file>
         </group>
     </open-files>
 </project-private>

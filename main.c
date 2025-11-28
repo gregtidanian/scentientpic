@@ -60,6 +60,9 @@ static volatile debounce_source_t debounce_source = DEBOUNCE_NONE;
 #define UART1RXPIN 26 // RG7 (RP26)
 #define UART1TXPIN 21 // RG6 (RP21)
 
+// Track which bay is currently firing (for LED indication)
+static volatile uint8_t current_led_bay = 0xFF;
+
 /* NOTE: Verify this PPS function code in the datasheet's PPS table for GL306.
    16 is a COMMON value for MCCP2 Output A, but confirm on your DFP/datasheet. */
 #define MCCP2A_FUNC_CODE (16)
@@ -362,6 +365,21 @@ static inline void update_intensity_leds(void)
         LED_W_L2 = 1;
 }
 
+// Map bay index (0..5) to corresponding green LED and set it
+static inline void set_bay_led(uint8_t bay, uint8_t on)
+{
+    switch (bay)
+    {
+        case 0: LED_G_R0 = on; break; // LED_G_1
+        case 1: LED_G_R1 = on; break; // LED_G_2
+        case 2: LED_G_R2 = on; break; // LED_G_3
+        case 3: LED_G_L2 = on; break; // LED_G_6
+        case 4: LED_G_L1 = on; break; // LED_G_5
+        case 5: LED_G_L0 = on; break; // LED_G_4
+        default: break;
+    }
+}
+
 uint8_t read_count = 0;
 void check_poll(void)
 {
@@ -420,6 +438,7 @@ void pod_fire_handler(void)
     if (pod_fire_active && !pod_is_firing)
     {
         pod_is_firing = true;
+        current_led_bay = pod_fire_bay;
         pod_manager_fire(&podman, pod_fire_bay, podman.pods[pod_fire_bay].duration_ms, podman.pods[pod_fire_bay].intensity, intensity_multi);
         pod_fire_active = false;
     }
@@ -432,8 +451,10 @@ void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt)
     {
     case POD_MANAGER_ASYNC_EVT_FIRE:
         x++;
+        set_bay_led(current_led_bay, 1);
         break;
     case POD_MANAGER_ASYNC_EVT_STOP:
+        set_bay_led(current_led_bay, 0);
         pod_is_firing = false;
         T1CONbits.TON = 1;
         break;
