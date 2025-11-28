@@ -468,8 +468,17 @@ void bluetooth_evt_callback(bluetooth_evt_data_t *p_evt_data)
     switch (p_evt_data->evt)
     {
     case BLUETOOTH_EVT_POD_FIRE:
-        if (!pod_is_firing && (podman.pods[p_evt_data->pod].active))
+        // if (!pod_is_firing && (podman.pods[p_evt_data->pod].active))
+        if (podman.pods[p_evt_data->pod].active)
         {
+            if (pod_is_firing)
+            {
+                // Preempt current puff
+                set_bay_led(current_led_bay, 0);
+                relay_pwm_stop();
+                pod_is_firing = false;
+            }
+
             pod_fire_active = true;
             podman.pods[p_evt_data->pod].intensity = p_evt_data->intensity;
             podman.pods[p_evt_data->pod].duration_ms = p_evt_data->duration;
