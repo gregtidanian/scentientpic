@@ -515,7 +515,7 @@ int main(void)
 
     // CHANGED: ADC disabled -> commenting out setup and reads
     setup_adc();
-    battery_mV = calc_adc(V_B_CHN);
+    battery_mV = calc_adc();
 
     startUp(bor, pwr); // Play start up LED sequence.
     // Show current global intensity immediately at boot
