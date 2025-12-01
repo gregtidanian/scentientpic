@@ -217,7 +217,6 @@ void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void)
             pwm_stop();
             pulse_on = false;
             pulse_timer_ms = 0;
-            burst_count++;
         }
     }
     else
