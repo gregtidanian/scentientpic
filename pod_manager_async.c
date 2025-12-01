@@ -34,6 +34,16 @@ void relay_pwm_fire_callback(const relay_pwm_evt_info_t *p_evt)
         }
         break;
 
+    case RELAY_PWM_EVT_BURST:
+        if (g_pm && p_evt->pod_index < POD_BAY_COUNT)
+        {
+            poda_t *p = &g_pm->pods[p_evt->pod_index];
+            p->bursts.bursts_active += 1;
+            u32_to_le(&p->buf[16], p->bursts.bursts_active);
+            p->burst_write_needed = true;
+        }
+        break;
+
     case RELAY_PWM_EVT_STOP:
         if (g_pm && p_evt->pod_index < POD_BAY_COUNT)
         {

@@ -20,6 +20,7 @@
 typedef enum
 {
     RELAY_PWM_EVT_FIRE,
+    RELAY_PWM_EVT_BURST,
     RELAY_PWM_EVT_STOP,
 } relay_pwm_evt_t;
 

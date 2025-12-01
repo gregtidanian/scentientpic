@@ -171,15 +171,20 @@ void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t pulse_duty,
     burst_count = 0;
     last_fired_pod = pod_index;
     pwm_duty = duty;
-    pwm_start(pod_index, pwm_duty);
+    // First burst begins immediately; count and notify before enabling PWM
+    burst_count++;
     if (p_callback)
     {
         relay_pwm_evt_info_t evt = {
-            .type = RELAY_PWM_EVT_FIRE,
+            .type = RELAY_PWM_EVT_BURST,
             .pod_index = pod_index,
-            .bursts = 0};
+            .bursts = burst_count};
+        p_callback(&evt);
+        evt.type = RELAY_PWM_EVT_FIRE;
+        evt.bursts = 0;
         p_callback(&evt);
     }
+    pwm_start(pod_index, pwm_duty);
 }
 
 void relay_pwm_stop(void)
@@ -219,6 +224,16 @@ void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void)
     {
         if (pulse_timer_ms >= off_time)
         {
+            // Notify just before the next burst starts (slight over-estimate accepted)
+            burst_count++;
+            if (p_callback)
+            {
+                relay_pwm_evt_info_t evt = {
+                    .type = RELAY_PWM_EVT_BURST,
+                    .pod_index = active_pod,
+                    .bursts = burst_count};
+                p_callback(&evt);
+            }
             pwm_start(active_pod, pwm_duty); // re-enable PWM at nominal freq
             pulse_on = true;
             pulse_timer_ms = 0;
