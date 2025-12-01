@@ -400,7 +400,7 @@ void check_poll(void)
     {
         battery_poll_counter = 0;
         // Grab current voltages on BATT line
-        store.batt_mV = battery_mV = calc_adc(V_B_CHN);
+        store.batt_mV = battery_mV = calc_adc();
 
         uint16_t percent = 0;
         if (battery_mV > 4000)

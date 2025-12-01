@@ -18,9 +18,6 @@ void setup_adc(void)
 uint16_t calc_adc(void)
 {
     uint16_t b_millis = 0;
-
-    AD1CHSbits.CH0SA = channel;
-    __delay_ms(10);
     AD1CON1bits.SAMP = 1;
     __delay_ms(10);
     AD1CON1bits.SAMP = 0;
