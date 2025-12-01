@@ -43,7 +43,7 @@ typedef struct
     uint8_t address;
     i2c_async_t *i2c;
     bool pending;
-    uint8_t tx_buf[1];
+    uint8_t tx_buf[21]; // start address + up to 20 bytes
     eeproma_callback_t pending_cb;
     void *pending_ctx;
 } eeproma_t;
@@ -51,5 +51,7 @@ typedef struct
 void eeproma_init(eeproma_t *e, i2c_async_t *bus, uint8_t addr);
 bool eeproma_read_block_async(eeproma_t *e, uint8_t start_addr, uint8_t *buf, uint8_t len,
                               eeproma_callback_t cb, void *ctx);
+bool eeproma_write_block_async(eeproma_t *e, uint8_t start_addr, const uint8_t *buf, uint8_t len,
+                               eeproma_callback_t cb, void *ctx);
 
 #endif

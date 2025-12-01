@@ -15,22 +15,38 @@
 static const uint8_t POD_ADDRS[POD_BAY_COUNT] = {0x51, 0x53, 0x57, 0x56, 0x55, 0x54};
 
 static pod_manager_async_fire_callback_t p_callback = NULL;
+static pod_manager_async_t *g_pm = NULL;
 
 static void pod_read_done(void *ctx, eeproma_result_t res);
+static void pod_burst_write_done(void *ctx, eeproma_result_t res);
+static void pod_try_write_bursts(poda_t *p);
 
-void relay_pwm_fire_callback(relay_pwm_evt_t *p_evt)
+void relay_pwm_fire_callback(const relay_pwm_evt_info_t *p_evt)
 {
     pod_manager_async_evt_t evt;
-    switch (*p_evt)
+    switch (p_evt->type)
     {
     case RELAY_PWM_EVT_FIRE:
         evt = POD_MANAGER_ASYNC_EVT_FIRE;
-        p_callback(&evt);
+        if (p_callback)
+        {
+            p_callback(&evt);
+        }
         break;
 
     case RELAY_PWM_EVT_STOP:
+        if (g_pm && p_evt->pod_index < POD_BAY_COUNT)
+        {
+            poda_t *p = &g_pm->pods[p_evt->pod_index];
+            p->bursts.bursts_active += p_evt->bursts;
+            u32_to_le(&p->buf[16], p->bursts.bursts_active);
+            p->burst_write_needed = true;
+        }
         evt = POD_MANAGER_ASYNC_EVT_STOP;
-        p_callback(&evt);
+        if (p_callback)
+        {
+            p_callback(&evt);
+        }
         break;
     default:
         break;
@@ -42,6 +58,7 @@ void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manag
     memset(pm, 0, sizeof(*pm));
     pm->bus = bus;
     p_callback = p_cb;
+    g_pm = pm;
     relay_pwm_init(relay_pwm_fire_callback);
     for (uint8_t i = 0; i < POD_BAY_COUNT; i++)
     {
@@ -55,6 +72,14 @@ void pod_manager_async_poll(pod_manager_async_t *pm)
     for (uint8_t i = 0; i < POD_BAY_COUNT; i++)
     {
         poda_t *p = &pm->pods[i];
+        if (p->burst_write_needed)
+        {
+            if (!p->eeprom.pending)
+            {
+                pod_try_write_bursts(p);
+            }
+            continue; // finish pending write before issuing another transaction
+        }
         eeproma_read_block_async(&p->eeprom, 0x00, p->buf, POD_EEPROM_BLOCK_SIZE,
                                  pod_read_done, p);
     }
@@ -66,7 +91,6 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
     if (res == EEPROMA_OK)
     {
         const uint8_t *b = p->buf;
-        p->active = false;
         p->data.serial_number = u32_from_buf_le(&b[0]);
         p->data.scent_id = u16_from_buf_le(&b[4]);
         p->data.pwm_setting = (b[6] > POD_MAX_PWM_SETTING) ? POD_DEFAULT_PWM_SETTING : b[6]; // Prevent invalid data range
@@ -77,15 +101,44 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
         p->data.reserved[1] = b[15];
         p->bursts.bursts_active = u32_from_buf_le(&b[16]);
 
+        // Default is active
+        p->active = true;
+
         // Check validity of pod
-        if (p->data.serial_number != 0xFFFFFFFF)
+        if ((p->data.serial_number == 0xFFFFFFFF) &&
+            (p->data.time_period == 0xFFFF))
         {
-            p->active = true;
+            p->active = false;
         }
     }
     else
     {
         p->active = false;
+    }
+}
+
+static void pod_burst_write_done(void *ctx, eeproma_result_t res)
+{
+    poda_t *p = (poda_t *)ctx;
+    if (!p)
+    {
+        return;
+    }
+
+    if (res != EEPROMA_OK)
+    {
+        // Retry on next poll
+        p->burst_write_needed = true;
+    }
+}
+
+static void pod_try_write_bursts(poda_t *p)
+{
+    uint8_t buf[4];
+    u32_to_le(buf, p->bursts.bursts_active);
+    if (eeproma_write_block_async(&p->eeprom, 16, buf, sizeof(buf), pod_burst_write_done, p))
+    {
+        p->burst_write_needed = false;
     }
 }
 

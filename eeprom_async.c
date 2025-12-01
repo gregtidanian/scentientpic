@@ -1,6 +1,7 @@
 #include "eeprom_async.h"
 
 static void eeproma_read_cb(void *context, i2c_event_t event);
+static void eeproma_write_cb(void *context, i2c_event_t event);
 
 bool eeproma_read_block_async(eeproma_t *e, uint8_t start_addr, uint8_t *buf, uint8_t len,
                               eeproma_callback_t cb, void *ctx)
@@ -28,10 +29,86 @@ bool eeproma_read_block_async(eeproma_t *e, uint8_t start_addr, uint8_t *buf, ui
         .cb = eeproma_read_cb,
         .context = e,
     };
-    return i2c_async_submit(e->i2c, &t);
+    bool ok = i2c_async_submit(e->i2c, &t);
+    if (!ok)
+    {
+        e->pending = false;
+        e->pending_cb = NULL;
+        e->pending_ctx = NULL;
+    }
+    return ok;
 }
 
 static void eeproma_read_cb(void *context, i2c_event_t event)
+{
+    eeproma_t *e = (eeproma_t *)context;
+    if (!e)
+    {
+        return;
+    }
+
+    eeproma_result_t res = EEPROMA_ERR_TIMEOUT;
+    if (event == I2C_EVENT_COMPLETE)
+    {
+        res = EEPROMA_OK;
+    }
+    else if (event == I2C_EVENT_NACK)
+    {
+        res = EEPROMA_ERR_NACK;
+    }
+
+    eeproma_callback_t cb = e->pending_cb;
+    void *cb_ctx = e->pending_ctx;
+    e->pending_cb = NULL;
+    e->pending_ctx = NULL;
+    e->pending = false;
+    if (cb)
+    {
+        cb(cb_ctx, res);
+    }
+}
+
+bool eeproma_write_block_async(eeproma_t *e, uint8_t start_addr, const uint8_t *buf, uint8_t len,
+                               eeproma_callback_t cb, void *ctx)
+{
+    if (!e || !e->init || !len || !buf)
+    {
+        return false;
+    }
+    if (e->pending || (len + 1 > sizeof(e->tx_buf)))
+    {
+        return false;
+    }
+
+    e->tx_buf[0] = start_addr;
+    for (uint8_t i = 0; i < len; i++)
+    {
+        e->tx_buf[1 + i] = buf[i];
+    }
+    e->pending = true;
+    e->pending_cb = cb;
+    e->pending_ctx = ctx;
+
+    i2c_transaction_t t = {
+        .address = e->address,
+        .tx_buf = e->tx_buf,
+        .tx_len = (uint8_t)(len + 1),
+        .rx_buf = NULL,
+        .rx_len = 0,
+        .cb = eeproma_write_cb,
+        .context = e,
+    };
+    bool ok = i2c_async_submit(e->i2c, &t);
+    if (!ok)
+    {
+        e->pending = false;
+        e->pending_cb = NULL;
+        e->pending_ctx = NULL;
+    }
+    return ok;
+}
+
+static void eeproma_write_cb(void *context, i2c_event_t event)
 {
     eeproma_t *e = (eeproma_t *)context;
     if (!e)

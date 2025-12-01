@@ -57,6 +57,7 @@ typedef struct
 {
     pod_data_t data;
     pod_bursts_t bursts;
+    bool burst_write_needed;
     bool active;
     uint8_t bay;
     eeproma_t eeprom;

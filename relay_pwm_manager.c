@@ -35,6 +35,8 @@ static volatile uint16_t pulse_timer_ms = 0;
 static volatile bool pulse_on = false;
 static uint16_t on_time = 0;
 static uint16_t off_time = 0;
+static volatile uint32_t burst_count = 0; // counts completed on_time intervals for current fire
+static uint8_t last_fired_pod = 0xFF;
 
 static relay_pwm_fire_callback_t p_callback = NULL;
 
@@ -166,10 +168,18 @@ void relay_pwm_fire(uint8_t pod_index, uint16_t duration_ms, uint8_t pulse_duty,
     pulse_duration_ms = duration_ms;
     pulse_timer_ms = 0;
     pulse_on = true;
+    burst_count = 0;
+    last_fired_pod = pod_index;
     pwm_duty = duty;
     pwm_start(pod_index, pwm_duty);
-    relay_pwm_evt_t evt = RELAY_PWM_EVT_FIRE;
-    p_callback(&evt);
+    if (p_callback)
+    {
+        relay_pwm_evt_info_t evt = {
+            .type = RELAY_PWM_EVT_FIRE,
+            .pod_index = pod_index,
+            .bursts = 0};
+        p_callback(&evt);
+    }
 }
 
 void relay_pwm_stop(void)
@@ -202,6 +212,7 @@ void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void)
             pwm_stop();
             pulse_on = false;
             pulse_timer_ms = 0;
+            burst_count++;
         }
     }
     else
@@ -223,9 +234,27 @@ void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void)
         }
         else
         {
+            const uint8_t stopped_pod = last_fired_pod;
+            const uint32_t completed_bursts = burst_count;
             relay_pwm_stop();
-            relay_pwm_evt_t evt = RELAY_PWM_EVT_STOP;
-            p_callback(&evt);
+            if (p_callback)
+            {
+                relay_pwm_evt_info_t evt = {
+                    .type = RELAY_PWM_EVT_STOP,
+                    .pod_index = stopped_pod,
+                    .bursts = completed_bursts};
+                p_callback(&evt);
+            }
         }
     }
+}
+
+uint32_t relay_pwm_get_burst_count(void)
+{
+    return burst_count;
+}
+
+uint8_t relay_pwm_get_last_pod(void)
+{
+    return last_fired_pod;
 }

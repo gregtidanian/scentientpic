@@ -33,6 +33,7 @@ static pod_manager_async_t podman;
 static volatile bool pod_fire_active = false;
 static volatile unsigned int pod_fire_bay = 0;
 static volatile bool pod_is_firing = false;
+static volatile unsigned int battery_poll_counter = 0;
 
 // #pragma config FWDTEN = ON//was on
 #pragma config FWDTEN = OFF
@@ -370,66 +371,68 @@ static inline void set_bay_led(uint8_t bay, uint8_t on)
 {
     switch (bay)
     {
-        case 0: LED_G_R0 = on; break; // LED_G_1
-        case 1: LED_G_R1 = on; break; // LED_G_2
-        case 2: LED_G_R2 = on; break; // LED_G_3
-        case 3: LED_G_L2 = on; break; // LED_G_6
-        case 4: LED_G_L1 = on; break; // LED_G_5
-        case 5: LED_G_L0 = on; break; // LED_G_4
-        default: break;
+    case 0:
+        LED_G_R0 = on;
+        break; // LED_G_1
+    case 1:
+        LED_G_R1 = on;
+        break; // LED_G_2
+    case 2:
+        LED_G_R2 = on;
+        break; // LED_G_3
+    case 3:
+        LED_G_L2 = on;
+        break; // LED_G_6
+    case 4:
+        LED_G_L1 = on;
+        break; // LED_G_5
+    case 5:
+        LED_G_L0 = on;
+        break; // LED_G_4
+    default:
+        break;
     }
 }
 
-uint8_t read_count = 0;
 void check_poll(void)
 {
-    // Grab current voltages on VBUS-CHGIN, VOLTS_TRANSFORMER, and BATT lines
-    charge_mV = calc_adc(V_C_CHN);
-    trans_mV = calc_adc(V_T_CHN);
-    store.batt_mV = battery_mV = calc_adc(V_B_CHN);
-    __delay_ms(500);
-    store.batt_mV = battery_mV = calc_adc(V_B_CHN);
-
-    uint16_t percent = 0;
-    if (battery_mV > 4000)
-        percent = 100;
-    else if (battery_mV > 3950)
-        percent = 90;
-    else if (battery_mV > 3900)
-        percent = 80;
-    else if (battery_mV > 3850)
-        percent = 70;
-    else if (battery_mV > 3800)
-        percent = 60;
-    else if (battery_mV > 3750)
-        percent = 50;
-    else if (battery_mV > 3700)
-        percent = 40;
-    else if (battery_mV > 3650)
-        percent = 30;
-    else if (battery_mV > 3600)
-        percent = 20;
-    else if (battery_mV > 3550)
-        percent = 10;
-    sendBattLevel(percent);
-
-    if (battery_mV <= 3600)
+    if (battery_poll_counter > 50)
     {
-        // CLEAR_LEDS;
-        PWR_LATCH = 0;
-    }
+        battery_poll_counter = 0;
+        // Grab current voltages on BATT line
+        store.batt_mV = battery_mV = calc_adc(V_B_CHN);
 
-    // Fire piezos
-    up_pressed = down_pressed = 0;
-}
+        uint16_t percent = 0;
+        if (battery_mV > 4000)
+            percent = 100;
+        else if (battery_mV > 3950)
+            percent = 90;
+        else if (battery_mV > 3900)
+            percent = 80;
+        else if (battery_mV > 3850)
+            percent = 70;
+        else if (battery_mV > 3800)
+            percent = 60;
+        else if (battery_mV > 3750)
+            percent = 50;
+        else if (battery_mV > 3700)
+            percent = 40;
+        else if (battery_mV > 3650)
+            percent = 30;
+        else if (battery_mV > 3600)
+            percent = 20;
+        else if (battery_mV > 3550)
+            percent = 10;
+        sendBattLevel(percent);
 
-// One second delay, while checking if boost needs to be enabled every 10ms.
-void check_boost_wdelay(void)
-{
-    for (int i = 0; i < 100; i++)
-    {
-        __delay_ms(10);
-        ENBSTPIC = STAT;
+        if (battery_mV <= 3600)
+        {
+            // CLEAR_LEDS;
+            PWR_LATCH = 0;
+        }
+
+        // Fire piezos
+        // up_pressed = down_pressed = 0;
     }
 }
 
@@ -446,11 +449,9 @@ void pod_fire_handler(void)
 
 void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt)
 {
-    volatile int x = 243;
     switch (*p_evt)
     {
     case POD_MANAGER_ASYNC_EVT_FIRE:
-        x++;
         set_bay_led(current_led_bay, 1);
         break;
     case POD_MANAGER_ASYNC_EVT_STOP:
@@ -468,7 +469,6 @@ void bluetooth_evt_callback(bluetooth_evt_data_t *p_evt_data)
     switch (p_evt_data->evt)
     {
     case BLUETOOTH_EVT_POD_FIRE:
-        // if (!pod_is_firing && (podman.pods[p_evt_data->pod].active))
         if (podman.pods[p_evt_data->pod].active)
         {
             if (pod_is_firing)
@@ -490,11 +490,11 @@ void bluetooth_evt_callback(bluetooth_evt_data_t *p_evt_data)
 
 int main(void)
 {
-
     // int pods = 0;
     int bor = RCONbits.BOR;
     int pwr = RCONbits.POR;
     led = 0;
+    battery_poll_counter = 0;
     memset(&store, 0, sizeof(data_store));
     memset(&messageStore, 0, sizeof(message_store));
 
@@ -528,6 +528,7 @@ int main(void)
     while (1) // Start infinite loop, keeping code alive
     {
         pod_fire_handler();
+        check_poll();
     }
     return 0;
 }
@@ -578,7 +579,6 @@ void change_global_intensity(char dir)
         LED_W_L1 = 1;
     if (intensity_multi >= 11)
         LED_W_L2 = 1;
-    __delay_ms(200);
 }
 
 // Schedule debounce via Timer2 (shared for SW2/SW3)
@@ -652,8 +652,7 @@ void _ISR _T1Interrupt(void)
 
     pod_manager_async_poll(&podman);
 
-    // Optional: keep these if you still want them
-    // up_pressed = down_pressed = 0;
+    battery_poll_counter++; // processes battery ADC every 50 counts > 5s
 }
 
 void _ISR _INT1Interrupt(void) // Decrement button interrupt (swapped)
