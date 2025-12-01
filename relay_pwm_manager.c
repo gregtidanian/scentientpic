@@ -248,6 +248,20 @@ void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void)
         }
         else
         {
+            // If we are in the off phase, we were about to start the next burst;
+            // bump the count here so we don't under-report the final burst.
+            if (!pulse_on)
+            {
+                burst_count++;
+                if (p_callback)
+                {
+                    relay_pwm_evt_info_t burst_evt = {
+                        .type = RELAY_PWM_EVT_BURST,
+                        .pod_index = active_pod,
+                        .bursts = burst_count};
+                    p_callback(&burst_evt);
+                }
+            }
             const uint8_t stopped_pod = last_fired_pod;
             const uint32_t completed_bursts = burst_count;
             relay_pwm_stop();
