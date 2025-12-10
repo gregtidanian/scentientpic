@@ -57,7 +57,7 @@ void relay_pwm_fire_callback(const relay_pwm_evt_info_t *p_evt)
     }
 }
 
-void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manager_async_fire_callback_t p_fire_cb, , pod_manager_async_read_callback_t p_read_cb)
+void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manager_async_fire_callback_t p_fire_cb, pod_manager_async_read_callback_t p_read_cb)
 {
     memset(pm, 0, sizeof(*pm));
     pm->bus = bus;
@@ -126,7 +126,7 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
 
     if (p_read_callback)
     {
-        p_read_callback(ctx, read_evt);
+        p_read_callback(ctx, &read_evt);
     }
 }
 

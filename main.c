@@ -476,7 +476,7 @@ void pod_manager_async_read_callback(void *ctx, pod_manager_async_read_evt_t *p_
     }
 }
 
-void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt)
+void pod_manager_async_fire_callback(pod_manager_async_fire_evt_t *p_evt)
 {
     switch (*p_evt)
     {
