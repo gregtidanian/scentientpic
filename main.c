@@ -529,7 +529,7 @@ int main(void)
 
     init_pins(); // Set up relevant PIC pins
     osccon_init();
-    pod_manager_async_init(&podman, &i2c1_async, pod_manager_async_fire_callback);
+    pod_manager_async_init(&podman, &i2c1_async, pod_manager_async_fire_callback, pod_manager_async_read_callback);
     bluetooth_init(bluetooth_evt_callback);
 
     static const i2c_regs_t i2c1_regs = {
