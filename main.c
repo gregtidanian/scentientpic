@@ -456,7 +456,7 @@ void pod_manager_async_read_callback(void *ctx, pod_manager_async_read_evt_t *p_
     {
         // Figure out which pod this is
         int pod;
-        for (pod = 0; pod < POD_BAY_COUNT; i++)
+        for (pod = 0; pod < POD_BAY_COUNT; pod++)
         {
             if (p == &podman.pods[pod])
             {
@@ -465,7 +465,7 @@ void pod_manager_async_read_callback(void *ctx, pod_manager_async_read_evt_t *p_
         }
         // Send ScentID and level
         sendScentIDs(podman.pods[pod].bay, podman.pods[pod].data.scent_id);
-        sendScentLevel(podman.pods[pod].bay, podman.pods[pod].bursts);
+        sendScentLevel(podman.pods[pod].bay, (uint16_t)podman.pods[pod].bursts.bursts_active);
         break;
     }
 
