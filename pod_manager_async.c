@@ -24,7 +24,7 @@ static void pod_try_write_bursts(poda_t *p);
 
 void relay_pwm_fire_callback(const relay_pwm_evt_info_t *p_evt)
 {
-    pod_manager_async_evt_t evt;
+    pod_manager_async_fire_evt_t evt;
     switch (p_evt->type)
     {
     case RELAY_PWM_EVT_FIRE:
