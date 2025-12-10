@@ -465,6 +465,7 @@ void pod_manager_async_read_callback(void *ctx, pod_manager_async_read_evt_t *p_
             }
         }
         // Send ScentID and level
+        sendPod(podman.pods[pod].bay, podman.pods[pod].data.serial_number);
         sendScentIDs(podman.pods[pod].bay, podman.pods[pod].data.scent_id);
         sendScentLevel(podman.pods[pod].bay, (uint16_t)podman.pods[pod].bursts.bursts_active);
         break;
