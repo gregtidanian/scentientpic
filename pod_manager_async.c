@@ -14,7 +14,8 @@
  */
 static const uint8_t POD_ADDRS[POD_BAY_COUNT] = {0x51, 0x53, 0x57, 0x56, 0x55, 0x54};
 
-static pod_manager_async_fire_callback_t p_callback = NULL;
+static pod_manager_async_fire_callback_t p_fire_callback = NULL;
+static pod_manager_async_read_callback_t p_read_callback = NULL;
 static pod_manager_async_t *g_pm = NULL;
 
 static void pod_read_done(void *ctx, eeproma_result_t res);
@@ -27,10 +28,10 @@ void relay_pwm_fire_callback(const relay_pwm_evt_info_t *p_evt)
     switch (p_evt->type)
     {
     case RELAY_PWM_EVT_FIRE:
-        evt = POD_MANAGER_ASYNC_EVT_FIRE;
-        if (p_callback)
+        evt = POD_MANAGER_ASYNC_EVT_FIRE_START;
+        if (p_fire_callback)
         {
-            p_callback(&evt);
+            p_fire_callback(&evt);
         }
         break;
 
@@ -45,10 +46,10 @@ void relay_pwm_fire_callback(const relay_pwm_evt_info_t *p_evt)
         break;
 
     case RELAY_PWM_EVT_STOP:
-        evt = POD_MANAGER_ASYNC_EVT_STOP;
-        if (p_callback)
+        evt = POD_MANAGER_ASYNC_EVT_FIRE_STOP;
+        if (p_fire_callback)
         {
-            p_callback(&evt);
+            p_fire_callback(&evt);
         }
         break;
     default:
@@ -56,11 +57,12 @@ void relay_pwm_fire_callback(const relay_pwm_evt_info_t *p_evt)
     }
 }
 
-void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manager_async_fire_callback_t p_cb)
+void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manager_async_fire_callback_t p_fire_cb, , pod_manager_async_read_callback_t p_read_cb)
 {
     memset(pm, 0, sizeof(*pm));
     pm->bus = bus;
-    p_callback = p_cb;
+    p_fire_callback = p_fire_cb;
+    p_read_callback = p_read_cb;
     g_pm = pm;
     relay_pwm_init(relay_pwm_fire_callback);
     for (uint8_t i = 0; i < POD_BAY_COUNT; i++)
@@ -91,6 +93,7 @@ void pod_manager_async_poll(pod_manager_async_t *pm)
 static void pod_read_done(void *ctx, eeproma_result_t res)
 {
     poda_t *p = (poda_t *)ctx;
+    pod_manager_async_read_evt_t read_evt = POD_MANAGER_ASYNC_EVT_READ_FAIL;
     if (res == EEPROMA_OK)
     {
         const uint8_t *b = p->buf;
@@ -113,10 +116,17 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
         {
             p->active = false;
         }
+
+        read_evt = POD_MANAGER_ASYNC_EVT_READ_SUCCESS;
     }
     else
     {
         p->active = false;
+    }
+
+    if (p_read_callback)
+    {
+        p_read_callback(ctx, read_evt);
     }
 }
 

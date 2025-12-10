@@ -33,9 +33,15 @@
 
 typedef enum
 {
-    POD_MANAGER_ASYNC_EVT_FIRE,
-    POD_MANAGER_ASYNC_EVT_STOP,
-} pod_manager_async_evt_t;
+    POD_MANAGER_ASYNC_EVT_FIRE_START,
+    POD_MANAGER_ASYNC_EVT_FIRE_STOP,
+} pod_manager_async_fire_evt_t;
+
+typedef enum
+{
+    POD_MANAGER_ASYNC_EVT_READ_SUCCESS,
+    POD_MANAGER_ASYNC_EVT_READ_FAIL,
+} pod_manager_async_read_evt_t;
 
 typedef struct
 {
@@ -72,9 +78,10 @@ typedef struct
     poda_t pods[POD_BAY_COUNT];
 } pod_manager_async_t;
 
-typedef void (*pod_manager_async_fire_callback_t)(pod_manager_async_evt_t *p_evt);
+typedef void (*pod_manager_async_fire_callback_t)(pod_manager_async_fire_evt_t *p_evt);
+typedef void (*pod_manager_async_read_callback_t)(void *ctx, pod_manager_async_read_evt_t *p_evt);
 
-void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manager_async_fire_callback_t p_cb);
+void pod_manager_async_init(pod_manager_async_t *pm, i2c_async_t *bus, pod_manager_async_fire_callback_t p_fire_cb, pod_manager_async_read_callback_t p_read_cb);
 void pod_manager_async_poll(pod_manager_async_t *pm);
 void pod_manager_fire(pod_manager_async_t *pm, uint8_t bay, uint16_t duration_ms, uint8_t pulse_duty, uint8_t multiplier);
 

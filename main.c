@@ -447,14 +447,43 @@ void pod_fire_handler(void)
     }
 }
 
+void pod_manager_async_read_callback(void *ctx, pod_manager_async_read_evt_t *p_evt)
+{
+    poda_t *p = (poda_t *)ctx;
+    switch (*p_evt)
+    {
+    case POD_MANAGER_ASYNC_EVT_READ_SUCCESS:
+    {
+        // Figure out which pod this is
+        int pod;
+        for (pod = 0; pod < POD_BAY_COUNT; i++)
+        {
+            if (p == &podman.pods[pod])
+            {
+                break;
+            }
+        }
+        // Send ScentID and level
+        sendScentIDs(podman.pods[pod].bay, podman.pods[pod].data.scent_id);
+        sendScentLevel(podman.pods[pod].bay, podman.pods[pod].bursts);
+        break;
+    }
+
+    case POD_MANAGER_ASYNC_EVT_READ_FAIL: // Fall through for now
+
+    default:
+        break;
+    }
+}
+
 void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt)
 {
     switch (*p_evt)
     {
-    case POD_MANAGER_ASYNC_EVT_FIRE:
+    case POD_MANAGER_ASYNC_EVT_FIRE_START:
         set_bay_led(current_led_bay, 1);
         break;
-    case POD_MANAGER_ASYNC_EVT_STOP:
+    case POD_MANAGER_ASYNC_EVT_FIRE_STOP:
         set_bay_led(current_led_bay, 0);
         pod_is_firing = false;
         T1CONbits.TON = 1;
