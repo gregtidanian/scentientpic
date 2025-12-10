@@ -451,27 +451,33 @@ void pod_fire_handler(void)
 void pod_manager_async_read_callback(void *ctx, pod_manager_async_read_evt_t *p_evt)
 {
     poda_t *p = (poda_t *)ctx;
+
+    // Figure out which pod this is
+    int pod;
+    for (pod = 0; pod < POD_BAY_COUNT; pod++)
+    {
+        if (p == &podman.pods[pod])
+        {
+            break;
+        }
+    }
+
     switch (*p_evt)
     {
     case POD_MANAGER_ASYNC_EVT_READ_SUCCESS:
-    {
-        // Figure out which pod this is
-        int pod;
-        for (pod = 0; pod < POD_BAY_COUNT; pod++)
-        {
-            if (p == &podman.pods[pod])
-            {
-                break;
-            }
-        }
         // Send ScentID and level
         sendPod(podman.pods[pod].bay, podman.pods[pod].data.serial_number);
         sendScentIDs(podman.pods[pod].bay, podman.pods[pod].data.scent_id);
         sendScentLevel(podman.pods[pod].bay, (uint16_t)podman.pods[pod].bursts.bursts_active);
         break;
-    }
 
-    case POD_MANAGER_ASYNC_EVT_READ_FAIL: // Fall through for now
+    case POD_MANAGER_ASYNC_EVT_READ_FAIL:
+        // Fall through for now
+        // Send ScentID and level
+        sendPod(podman.pods[pod].bay, (uint16_t)0);
+        sendScentIDs(podman.pods[pod].bay, (uint16_t)0);
+        sendScentLevel(podman.pods[pod].bay, (uint16_t)0);
+        break;
 
     default:
         break;

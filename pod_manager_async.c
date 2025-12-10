@@ -115,6 +115,8 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
             (p->data.time_period == 0xFFFF))
         {
             p->active = false;
+            memset(p->data, 0, sizeof(p->data));
+            memset(p->bursts, 0, sizeof(p->bursts));
         }
 
         read_evt = POD_MANAGER_ASYNC_EVT_READ_SUCCESS;
@@ -122,6 +124,8 @@ static void pod_read_done(void *ctx, eeproma_result_t res)
     else
     {
         p->active = false;
+        memset(p->data, 0, sizeof(p->data));
+        memset(p->bursts, 0, sizeof(p->bursts));
     }
 
     if (p_read_callback)
