@@ -22,7 +22,8 @@
 
 #define FREQ_DEFAULT 93 // remove after testing
 
-static void pod_manager_async_fire_callback(pod_manager_async_evt_t *p_evt);
+static void pod_manager_async_fire_callback(pod_manager_async_fire_evt_t *p_evt);
+static void pod_manager_async_read_callback(void *ctx, pod_manager_async_read_evt_t *p_evt);
 
 uint8_t intensity_multi = 10;
 
