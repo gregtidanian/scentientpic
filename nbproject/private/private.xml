@@ -6,7 +6,9 @@
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/main.c</file>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/bluetooth.c</file>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/eeprom_async.h</file>
+            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/owire.c</file>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/pod_manager_async.c</file>
+            <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/adc.c</file>
             <file>file:/Users/gregorytidanian/Scentient/ScentCollCharsCopy.X/relay_pwm_manager.c</file>
         </group>
     </open-files>
